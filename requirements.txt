@@ -1,0 +1,17 @@
+# %pip install -r requirements.txt if you're on vs code or a notebook, use this to install
+
+streamlit
+st-click-detector
+openai==0.27.8
+barfi==0.7.0
+trubrics[streamlit]==1.6.1 #user feedback tool
+langchain
+docarray>=0.32.0 # if you're using an in-memory vecLib
+requests
+qdrant-client
+wanb==0.15.12 #MLOps
+beautifulsoup4==4.12.2
+PDFpy==0.0.35
+PyPDF2==2.0.0
+python-doten
+```
