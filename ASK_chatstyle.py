@@ -13,13 +13,14 @@ from ASK_inference import config
 
 st.set_page_config(page_title="ASK Auxiliary Source of Knowledge")
 
+api_key=st.sectres.QDRANT_API_KEY
 # Check if 'client' is not in locals() or 'client' is not in globals()
 #if not it runs qdrant_check_and_connect()
 #and places the client object into st.session_state
 
 if 'clientkey' not in st.session_state:
     st.session_state.clientkey = []
-    client = ASK.qdrant_connect_cloud()
+    client = ASK.qdrant_connect_cloud(api_key)
     st.session_state.clientkey = client
     print(st.session_state.clientkey)
 
