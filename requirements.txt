@@ -4,11 +4,5 @@ openai==0.27.8
 barfi==0.7.0
 trubrics[streamlit]==1.6.1
 langchain
-docarray>=0.32.0
-requests
 qdrant-client
-wanb
-beautifulsoup4==4.12.2
-PDFpy==0.0.35
-PyPDF2==2.0.0
-python-doten
+wanb==0.15.12
