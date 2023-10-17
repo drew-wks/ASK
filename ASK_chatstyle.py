@@ -15,7 +15,7 @@ st.set_page_config(page_title="ASK Auxiliary Source of Knowledge")
 
 hide_st_style = """
             <style>
-            MainMenu {visibility: hidden;}
+            MainMenu {visibility: visible;}
             footer {visibility: hidden;}
             header {visibility: hidden;}
             </style>
@@ -26,7 +26,7 @@ st.markdown("""
                .block-container {
                     padding-top: 1rem;
                     padding-bottom: 0rem;
-                    padding-left: 0rem;
+                    padding-left: 3rem;
                     padding-right: 0rem;
                 }
         </style>
