@@ -49,7 +49,7 @@ st.write(
 st.write("ASK uses Artificial Intelligence (AI) to search over 300 Coast Guard Auxiliary references to answer your questions. Full list is [here](https://drive.google.com/file/d/1BWY5zEg8yKIrS3Tx13VBpSlpPx7rKl25/view?usp=sharing).", unsafe_allow_html=True)
 st.write("  ")
 st.write("""  
-    **ASK helps answers questions such as:**   
+    **ASK can answer questions such as:**   
     *What are the requirements to run for FC?*  
     *How to stay current as a vessel examiner?*   
     *Write 10 quiz questions on tasks for boat crewmembers, with answers.*   
