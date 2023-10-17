@@ -5,4 +5,4 @@ barfi==0.7.0
 trubrics[streamlit]==1.6.1
 langchain
 qdrant-client
-wanb==0.15.12
+wandb==0.15.12
