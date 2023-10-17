@@ -1,9 +1,9 @@
 
-import os
+'''import os
 
 from dotenv import load_dotenv, find_dotenv
 _ = load_dotenv(find_dotenv()) # read local .env file
-
+'''
 
 from langchain.embeddings import OpenAIEmbeddings
 
@@ -77,7 +77,7 @@ def qdrant_connect_cloud():
     client = QdrantClient(
     "https://0c82e035-1105-40f2-a0bd-ecc44a016f15.us-east4-0.gcp.cloud.qdrant.io", 
     prefer_grpc=True,
-    api_key=os.environ.get("QDRANT_API_KEY"),
+    api_key=st.secrets.QDRANT_API_KEY,
     )
     return client
 
