@@ -13,7 +13,7 @@ from ASK_inference import config
 
 st.set_page_config(page_title="ASK Auxiliary Source of Knowledge")
 
-api_key=st.sectres.QDRANT_API_KEY
+api_key=st.secrets.QDRANT_API_KEY
 # Check if 'client' is not in locals() or 'client' is not in globals()
 #if not it runs qdrant_check_and_connect()
 #and places the client object into st.session_state
