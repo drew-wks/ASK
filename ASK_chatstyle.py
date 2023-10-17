@@ -45,7 +45,7 @@ collector = FeedbackCollector(
 st.image("https://github.com/dvvilkins/ASK/blob/4eb768800da3e592582f08b980fcc5e5c05aaa0d/ASK.png?raw=true", use_column_width="always")
 # st.title("ASK Auxiliary Source of Knowledge")
 st.write(
-    "#### ASK finds answers to USCG Auxiliary questions based on authoritative sources.")
+    "#### Get answers to USCG Auxiliary questions based on authoritative sources.")
 st.write("ASK uses Artificial Intelligence (AI) to search over 300 Coast Guard Auxiliary references to answer your questions. Full list is [here](https://drive.google.com/file/d/1BWY5zEg8yKIrS3Tx13VBpSlpPx7rKl25/view?usp=sharing).", unsafe_allow_html=True)
 st.write("  ")
 st.write("""  
