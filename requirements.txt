@@ -1,5 +1,3 @@
-# %pip install -r requirements.txt if you're on vs code or a notebook, use this to install
-
 streamlit
 st-click-detector
 openai==0.27.8
@@ -14,4 +12,3 @@ beautifulsoup4==4.12.2
 PDFpy==0.0.35
 PyPDF2==2.0.0
 python-doten
-```
