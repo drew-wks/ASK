@@ -1,6 +1,6 @@
 ''' run by placing this line in terminal
     streamlit run file_name.py
-    even easier in vscode, run from debudding window  is you have launch.json set up
+    Easiest in VSCode, "run and debug'. Make sure launch.json is set up
 '''
 
 
@@ -17,7 +17,7 @@ hide_st_style = """
             <style>
             #MainMenu {visibility: hidden;}
             footer {visibility: hidden;}
-            header {visibility: hidden;}
+            header {visibility: visible;}
             </style>
             """
 st.markdown(hide_st_style, unsafe_allow_html=True)
