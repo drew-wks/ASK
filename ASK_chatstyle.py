@@ -18,6 +18,7 @@ hide_st_style = """
             #MainMenu {visibility: hidden;}
             footer {visibility: hidden;}
             header {visibility: visible;}
+            .viewerBadge_text__1JaDK {display: none;}
             GithubIcon {visibility: hidden;}
             </style>
             """
