@@ -18,7 +18,7 @@ hide_st_style = """
             .css-1jc7ptx, .e1ewe7hr3, .viewerBadge_container__1QSob, .styles_viewerBadge__1yB5_, .viewerBadge_link__1S137, .viewerBadge_text__1JaDK {display: none;}
             #MainMenu {visibility: hidden;}
             footer {visibility: hidden;}
-            header {visibility: visible;}
+            header {visibility: hidden;}
             GithubIcon {visibility: hidden;}
             </style>
             """
@@ -65,6 +65,7 @@ collector = FeedbackCollector(
 
 st.image("https://github.com/dvvilkins/ASK/blob/4eb768800da3e592582f08b980fcc5e5c05aaa0d/ASK.png?raw=true", use_column_width="always")
 # st.title("ASK Auxiliary Source of Knowledge")
+st.divider()
 st.write(
     "#### Get answers to USCG Auxiliary questions from the authoritative sources.")
 st.write("ASK uses Artificial Intelligence (AI) to search over 300 Coast Guard Auxiliary references to answer your questions. A list of source is [here](https://drive.google.com/file/d/1BWY5zEg8yKIrS3Tx13VBpSlpPx7rKl25/view?usp=sharing).", unsafe_allow_html=True)
