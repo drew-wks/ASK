@@ -63,9 +63,8 @@ collector = FeedbackCollector(
 # see feedback at https://trubrics.streamlit.app/?ref=blog.streamlit.io
 
 
-st.image("https://github.com/dvvilkins/ASK/blob/4eb768800da3e592582f08b980fcc5e5c05aaa0d/ASK.png?raw=true", use_column_width="always")
+st.image("https://raw.githubusercontent.com/dvvilkins/ASK/main/ASK_color.png?raw=true", use_column_width="always")
 # st.title("ASK Auxiliary Source of Knowledge")
-st.write(":heavy_minus_sign:" * 34) # horizontal separator line.
 st.write(
     "#### Get answers to USCG Auxiliary questions from the authoritative sources.")
 st.write("ASK uses Artificial Intelligence (AI) to search over 300 Coast Guard Auxiliary references to answer your questions. A list of source is [here](https://drive.google.com/file/d/1BWY5zEg8yKIrS3Tx13VBpSlpPx7rKl25/view?usp=sharing).", unsafe_allow_html=True)
