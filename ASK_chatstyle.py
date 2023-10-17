@@ -20,6 +20,8 @@ hide_st_style = """
             footer {visibility: hidden;}
             header {visibility: visible;}
             GithubIcon {visibility: hidden;}
+            .appview-container .main .block-container{{
+        padding-top: {padding_top}rem;    }}
             </style>
             """
 st.markdown(hide_st_style, unsafe_allow_html=True)
