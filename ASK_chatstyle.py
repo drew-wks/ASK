@@ -67,7 +67,7 @@ st.image("https://raw.githubusercontent.com/dvvilkins/ASK/main/ASK_color.png?raw
 # st.title("ASK Auxiliary Source of Knowledge")
 st.write(
     "#### Get answers to USCG Auxiliary questions from the authoritative sources.")
-st.write("ASK uses Artificial Intelligence (AI) to search over 300 Coast Guard Auxiliary references to answer your questions. A list of source is [here](https://drive.google.com/file/d/1BWY5zEg8yKIrS3Tx13VBpSlpPx7rKl25/view?usp=sharing).", unsafe_allow_html=True)
+st.write("ASK uses Artificial Intelligence (AI) to search over 300 Coast Guard Auxiliary references to answer your questions. The reference list is [here](https://drive.google.com/file/d/1BWY5zEg8yKIrS3Tx13VBpSlpPx7rKl25/view?usp=sharing).", unsafe_allow_html=True)
 st.write("  ")
 st.write("""  
     **ASK can answer questions such as:**   
