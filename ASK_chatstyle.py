@@ -52,7 +52,7 @@ st.write("""
     **ASK can answer questions such as:**   
     *What are the requirements to run for FC?*  
     *How to stay current as a vessel examiner?*   
-    *Write 10 quiz questions on boat crewmember tasks, with answers.*   
+    *Write a 10 quiz question on boat crewmember tasks, with answers.*   
     
 """)
 st.write("  ")
