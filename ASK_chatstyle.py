@@ -13,6 +13,13 @@ from ASK_inference import config
 
 st.set_page_config(page_title="ASK Auxiliary Source of Knowledge")
 
+# Add custom CSS to hide the GitHub icon
+hide_github_icon = """
+#GithubIcon {
+  visibility: hidden;
+}
+"""
+
 api_key=st.secrets.QDRANT_API_KEY
 # Check if 'client' is not in locals() or 'client' is not in globals()
 #if not it runs qdrant_check_and_connect()
