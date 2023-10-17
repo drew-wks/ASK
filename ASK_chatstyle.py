@@ -19,6 +19,7 @@ hide_github_icon = """
   visibility: hidden;
 }
 """
+st.markdown(hide_github_icon, unsafe_allow_html=True)
 
 api_key=st.secrets.QDRANT_API_KEY
 # Check if 'client' is not in locals() or 'client' is not in globals()
