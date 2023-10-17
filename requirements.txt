@@ -3,6 +3,7 @@ st-click-detector
 openai==0.27.8
 barfi==0.7.0
 trubrics[streamlit]==1.6.1
-langchain
-qdrant-client
+langchain==0.0.315
+qdrant-client==1.6.3
 wandb==0.15.12
+tiktoken==0.5.1
