@@ -7,7 +7,7 @@ langchain
 docarray>=0.32.0 # if you're using an in-memory vecLib
 requests
 qdrant-client
-wanb==0.15.12 #MLOps
+wanb #MLOps
 beautifulsoup4==4.12.2
 PDFpy==0.0.35
 PyPDF2==2.0.0
