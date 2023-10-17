@@ -17,7 +17,7 @@ hide_st_style = """
             <style>
             MainMenu {visibility: visible;}
             footer {visibility: hidden;}
-            header {visibility: hidden;}
+            header {visibility: visible;}
             </style>
             """
 st.markdown(hide_st_style, unsafe_allow_html=True)
@@ -26,7 +26,7 @@ st.markdown("""
                .block-container {
                     padding-top: 1rem;
                     padding-bottom: 0rem;
-                    padding-left: 3rem;
+                    padding-left: 5rem;
                     padding-right: 0rem;
                 }
         </style>
