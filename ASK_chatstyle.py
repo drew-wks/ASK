@@ -13,14 +13,14 @@ from ASK_inference import config
 
 st.set_page_config(page_title="ASK Auxiliary Source of Knowledge")
 
-hide_st_style = """
+hide_streamlit_style = """
             <style>
-            #MainMenu {visibility: hidden;}
-            footer {visibility: hidden;}
-            header {visibility: visible;}
+            [data-testid="stToolbar"] {visibility: hidden !important;}
+            footer {visibility: hidden !important;}
             </style>
             """
-st.markdown(hide_st_style, unsafe_allow_html=True)
+st.markdown(hide_streamlit_style, unsafe_allow_html=True)
+
 st.markdown("""
         <style>
                .block-container {
