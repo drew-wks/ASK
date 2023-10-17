@@ -16,7 +16,7 @@ st.set_page_config(page_title="ASK Auxiliary Source of Knowledge")
 hide_st_style = """
             <style>
             MainMenu {visibility: hidden;}
-            footer {visibility: hidden;}
+            footer {visibility: visible;}
             header {visibility: visible;}
             GithubIcon {visibility: hidden;}
             </style>
