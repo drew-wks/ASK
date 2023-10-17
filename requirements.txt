@@ -2,12 +2,12 @@ streamlit
 st-click-detector
 openai==0.27.8
 barfi==0.7.0
-trubrics[streamlit]==1.6.1 #user feedback tool
+trubrics[streamlit]==1.6.1
 langchain
-docarray>=0.32.0 # if you're using an in-memory vecLib
+docarray>=0.32.0
 requests
 qdrant-client
-wanb #MLOps
+wanb
 beautifulsoup4==4.12.2
 PDFpy==0.0.35
 PyPDF2==2.0.0
