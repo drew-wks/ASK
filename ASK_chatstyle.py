@@ -46,18 +46,7 @@ st.image("https://github.com/dvvilkins/ASK/blob/4eb768800da3e592582f08b980fcc5e5
 # st.title("ASK Auxiliary Source of Knowledge")
 st.write(
     "#### ASK finds answers to USCG Auxiliary questions based on authoritative sources.")
-st.write("ASK uses Artificial Intelligence (AI) to search over 300 Coast Guard Auxiliary references to answer your questions. Click [here](https://drive.google.com/file/d/1BWY5zEg8yKIrS3Tx13VBpSlpPx7rKl25/view?usp=sharing) for the full list.", unsafe_allow_html=True)
-st.write("  ")
-st.write("""  
-    **ASK helps answers questions such as:**   
-    *What are the requirements to run for FC?*  
-    *What is required to stay current as a vessel examiner?*   
-    *Create a chart that explains the difference between a task and a competency.*  
-    *Write 10 quiz questions on the boat crew tasks for crewmembers. Give answers below.*   
-    
-""")
-st.write("  ")
-st.write("  ")
+
 
 
 
