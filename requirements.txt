@@ -1,7 +1,6 @@
 streamlit
 st-click-detector
 openai==0.27.8
-barfi==0.7.0
 trubrics[streamlit]==1.6.1
 langchain==0.0.315
 qdrant-client==1.6.3
