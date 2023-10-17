@@ -62,7 +62,7 @@ collector = FeedbackCollector(
 # see feedback at https://trubrics.streamlit.app/?ref=blog.streamlit.io
 
 
-st.image("https://raw.githubusercontent.com/dvvilkins/ASK/main/images/ASK_color.png?raw=true", use_column_width="always")
+st.image("https://raw.githubusercontent.com/dvvilkins/ASK/main/images/ASK_logotype_color.png?raw=true", use_column_width="always")
 # st.title("ASK Auxiliary Source of Knowledge")
 st.write(
     "#### Get answers to USCG Auxiliary questions from the authoritative sources.")
