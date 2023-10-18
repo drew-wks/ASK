@@ -89,7 +89,7 @@ if query:
     with st.expander("##### Full Source Details"):
         st.write(long_source_list)
     
-   # st.write("How well did Ask respond to your question?")
+   st.write("How well did Ask respond to your question?")
     user_feedback = collector.st_feedback(
         component="default",
         feedback_type="thumbs",
