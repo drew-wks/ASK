@@ -74,10 +74,6 @@ st.write(
     "#### Get answers to USCG Auxiliary questions from the authoritative sources.")
 st.write("ASK uses Artificial Intelligence (AI) to search over 300 Coast Guard Auxiliary references to answer your questions. The reference list is [here](https://github.com/dvvilkins/ASK/blob/0e975f41f8f072aac2837ac42a9fe11963dc3fb2/docs/library_doc_list.pdf). Have questions? Contact [Drew Wilkins](mailto:uscgaux.drew@wks.us)", unsafe_allow_html=True)
 examples = st.empty()
-st.write(config["model"])
-email=st.secrets.TRUBRICS_EMAIL
-
-st.write(email)
 examples.write("""  
 
     **ASK can answer questions such as:**   
