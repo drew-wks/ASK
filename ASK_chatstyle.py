@@ -100,7 +100,8 @@ if query:
         st.write("Generating response.")
         time.sleep(2)
         st.write(long_source_list)
-
+st.write("")
+st.write("")
 with stylable_container(
     key="bottom_content",
     css_styles="""
