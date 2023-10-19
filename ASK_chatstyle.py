@@ -114,7 +114,7 @@ with stylable_container(
         """,
 ):
     st.caption("ASK is not perfect and may contain inaccuracies, so please reading the official documents referenced below each response. Also, ASK only searches natonal documents, so be sure to check with your district, division and flotilla leadership for official policy in your AOR.")  # this appears above the chat_input() element.
-
+    st.write("")
 st.markdown(
     """
     <style>

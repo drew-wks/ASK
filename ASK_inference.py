@@ -132,7 +132,7 @@ def create_short_source_list(response):
         source = doc.metadata['source']  
         short_source = source.split('/')[-1].split('.')[0]  
         page = doc.metadata['page']  
-        markdown_list.append(f"*{short_source}*, page {page}<br>\n")
+        markdown_list.append(f"*{short_source}*, page {page}\n")
     
     short_source_list = '\n'.join(markdown_list)
     wandb.log({"short_source_list": short_source_list})
