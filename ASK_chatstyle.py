@@ -11,6 +11,7 @@ import ASK_inference as ASK
 
 from ASK_inference import config
 from streamlit_extras.stylable_container import stylable_container
+import time
 
 st.set_page_config(page_title="ASK Auxiliary Source of Knowledge")
 
