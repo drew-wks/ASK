@@ -5,7 +5,6 @@
 
 #
 print("starting imports")
-sys.stdout()
 import datetime
 print(f"Start imports {datetime.datetime.now().strftime('%H:%M:%S')}")
 import streamlit as st
