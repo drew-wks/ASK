@@ -119,7 +119,7 @@ st.markdown(
     """
     <style>
         .stChatFloatingInputContainer {
-            bottom: 60px;
+            bottom: 50px;
             background-color: rgba(0, 0, 0, 0)
         }
     </style>
