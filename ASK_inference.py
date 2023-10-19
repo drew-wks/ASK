@@ -31,7 +31,7 @@ qdrant_path = "/tmp/local_qdrant" # Only required for local instance /private/tm
 
 
 #CONFIG: wandb
-project = "ASK_inference.py via uscg-auxiliary-ask.streamlit.app" #for python script
+project = "ASK_inference.py via ask-test.streamlit.app" #for python script
 
     #-----------------------------------
 import wandb
