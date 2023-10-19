@@ -35,7 +35,7 @@ project = "ASK_inference.py via ask-test.streamlit.app" #for python script
 
     #-----------------------------------
 import wandb
-from langchain.callbacks.tracers import WandbTracer
+#from langchain.callbacks.tracers import WandbTracer
 from qdrant_client import QdrantClient
 from langchain.vectorstores import Qdrant
 from langchain.chains import RetrievalQA
@@ -54,7 +54,7 @@ def wandb_connect():
         project=project, 
         job_type="generation",
         config=config)
-    tracer = WandbTracer({"project": project}) # Define W and B parameters for logging
+    #tracer = WandbTracer({"project": project}) # Define W and B parameters for logging
     return wandb  
 
 

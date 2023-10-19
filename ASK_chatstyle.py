@@ -4,6 +4,9 @@
 '''
 
 #
+print("starting imports")
+import datetime
+print(f"Start imports {datetime.datetime.now().strftime('%H:%M:%S')}")
 import streamlit as st
 import pandas as pd
 from trubrics.integrations.streamlit import FeedbackCollector
@@ -12,7 +15,8 @@ import ASK_inference as ASK
 from ASK_inference import config
 from streamlit_extras.stylable_container import stylable_container
 import time
-
+print(f"Finish imports {datetime.datetime.now().strftime('%H:%M:%S')}")
+print(f"Start css and session states {datetime.datetime.now().strftime('%H:%M:%S')}")
 st.set_page_config(page_title="ASK Auxiliary Source of Knowledge")
 
 hide_st_style = """
@@ -47,15 +51,20 @@ if 'clientkey' not in st.session_state:
     st.session_state.clientkey = client
     print(st.session_state.clientkey)
 
+print(f"wandb connect start {datetime.datetime.now().strftime('%H:%M:%S')}")
 if 'wandbkey' not in st.session_state:
     st.session_state.wandbkey = []
     ASK.wandb_connect()
     st.session_state.wandbkey = True
     print(st.session_state.wandbkey)
+    print(f"wandb connect finish {datetime.datetime.now().strftime('%H:%M:%S')}")
 
-
+print(f"Qdrant start {datetime.datetime.now().strftime('%H:%M:%S')}")
 qdrant = ASK.create_langchain_qdrant(st.session_state.clientkey)
+print(f"Qdrant finish {datetime.datetime.now().strftime('%H:%M:%S')}")
+print(f"Retriever start {datetime.datetime.now().strftime('%H:%M:%S')}")
 retriever = ASK.init_retriever_and_generator(qdrant)
+print(f"Retriever finish {datetime.datetime.now().strftime('%H:%M:%S')}")
 
 collector = FeedbackCollector(
     email=st.secrets.TRUBRICS_EMAIL,
@@ -85,7 +94,9 @@ st.write("  ")
 
 query = st.chat_input("Type your question or task here", max_chars=200)
 if query:
+    print(f"Response start {datetime.datetime.now().strftime('%H:%M:%S')}")
     response = ASK.rag(query,retriever)
+    print(f"Response finish {datetime.datetime.now().strftime('%H:%M:%S')}")
     short_source_list = ASK.create_short_source_list(response)
     long_source_list = ASK.create_long_source_list(response)
     examples.empty()
