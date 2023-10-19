@@ -21,7 +21,7 @@ config = {
     'lambda_mult': .3,    # 0= max diversity, 1 is min. default is 0.5
     "score_threshold": 0.5,
     "model": "gpt-3.5-turbo-16k",
-    "temperature": 1,
+    "temperature": 0.7,
     "chain_type": "stuff",
 }
 
