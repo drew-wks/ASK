@@ -89,6 +89,7 @@ if query:
     with st.expander("##### Full Source Details"):
         st.write(long_source_list)
     st.write("")
+    st.write("")
     st.write("How well did Ask respond to your question?")
     user_feedback = collector.st_feedback(
         component="default",
@@ -118,7 +119,7 @@ st.markdown(
     """
     <style>
         .stChatFloatingInputContainer {
-            bottom: 70px;
+            bottom: 80px;
             background-color: rgba(0, 0, 0, 0)
         }
     </style>
