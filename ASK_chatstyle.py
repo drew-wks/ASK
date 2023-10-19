@@ -103,6 +103,8 @@ if query:
 st.write("")
 st.write("")
 st.write("")
+st.write("")
+st.write("")
 with stylable_container(
     key="bottom_content",
     css_styles="""
