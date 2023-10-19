@@ -51,13 +51,6 @@ if 'clientkey' not in st.session_state:
     st.session_state.clientkey = client
     print(st.session_state.clientkey)
 
-print(f"wandb connect start {datetime.datetime.now().strftime('%H:%M:%S')}")
-if 'wandbkey' not in st.session_state:
-    st.session_state.wandbkey = []
-    ASK.wandb_connect()
-    st.session_state.wandbkey = True
-    print(st.session_state.wandbkey)
-    print(f"wandb connect finish {datetime.datetime.now().strftime('%H:%M:%S')}")
 
 print(f"Qdrant start {datetime.datetime.now().strftime('%H:%M:%S')}")
 qdrant = ASK.create_langchain_qdrant(st.session_state.clientkey)

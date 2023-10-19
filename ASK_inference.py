@@ -30,12 +30,8 @@ qdrant_collection_name = "ASK_vectorstore"
 qdrant_path = "/tmp/local_qdrant" # Only required for local instance /private/tmp/local_qdrant
 
 
-#CONFIG: wandb
-project = "ASK_inference.py via ask-test.streamlit.app" #for python script
 
     #-----------------------------------
-import wandb
-#from langchain.callbacks.tracers import WandbTracer
 from qdrant_client import QdrantClient
 from langchain.vectorstores import Qdrant
 from langchain.chains import RetrievalQA
@@ -45,17 +41,6 @@ import tiktoken
 llm=ChatOpenAI(model=config["model"], temperature=config["temperature"]) #keep outside the function so it's accessible elsewhere in this notebook
 
 query = []
-
-def wandb_connect():
-    # rm ~/.netrc # use this if wandb.init times out
-    wandb.login(anonymous='allow')
-    run = wandb.run if wandb.run else wandb.init()  #checks to see if wandb is alrady running before intiailizing a new run
-    wandb.init(
-        project=project, 
-        job_type="generation",
-        config=config)
-    #tracer = WandbTracer({"project": project}) # Define W and B parameters for logging
-    return wandb  
 
 
 
@@ -135,7 +120,6 @@ def create_short_source_list(response):
         markdown_list.append(f"*{short_source}*, page {page}\n")
     
     short_source_list = '\n'.join(markdown_list)
-    wandb.log({"short_source_list": short_source_list})
     return short_source_list
 
 
@@ -158,7 +142,6 @@ def create_long_source_list(response):
         markdown_list.append(f"**Reference {i}:**    *{short_source}*, page {page}<br>  {page_content}\n")
     
     long_source_list = '\n'.join(markdown_list)
-    wandb.log({"long_source_list": long_source_list})
     return long_source_list
 
 
@@ -174,7 +157,6 @@ def count_tokens(response):
     result_length = len(result_tokens)
     tokens = encoding.encode(str(response))
     tot_tokens = len(tokens)
-    wandb.log({"tokens_used": tot_tokens, "16k context window": "4096 tokens"})
     return query_length, source_length, result_length, tot_tokens
 
 
@@ -182,10 +164,6 @@ def count_tokens(response):
 # Example usage in another script
 if __name__ == "__main__":
    
-    wandb_connect()
-    client = qdrant_connect_local()
-    qdrant = create_langchain_qdrant(client)
-    retriever = init_retriever_and_generator(qdrant)
    
     # Replace 'your_query' with the actual query you want to pass to rag
     query = 'your_query'
