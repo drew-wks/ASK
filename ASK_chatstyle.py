@@ -103,3 +103,26 @@ if query:
         st.write(user_feedback)
 
 
+with stylable_container(
+    key="bottom_content",
+    css_styles="""
+        {
+            position: fixed;
+            bottom: 5px;
+        }
+        """,
+):
+    st.markdown("ASK is not perfect and may contain inaccuracies, so please reading the official documents referenced below each response. Also, ASK only searches natonal documents, so be sure to check with your district, division and flotilla leadership for official policy in your AOR.")  # this appears above the chat_input() element.
+
+st.markdown(
+    """
+    <style>
+        .stChatFloatingInputContainer {
+            bottom: 70px;
+            background-color: rgba(0, 0, 0, 0)
+        }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+
