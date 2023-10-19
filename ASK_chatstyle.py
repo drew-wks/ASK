@@ -103,26 +103,3 @@ if query:
         st.write(user_feedback)
 
 
-
-with stylable_container(
-    key="bottom_content",
-    css_styles="""
-        {
-            position: fixed;
-            bottom: 5px;
-        }
-        """,
-):
-    st.markdown("Some content")  # this appears above the chat_input() element.
-
-st.markdown(
-    """
-    <style>
-        .stChatFloatingInputContainer {
-            bottom: 50px;
-            background-color: rgba(0, 0, 0, 0)
-        }
-    </style>
-    """,
-    unsafe_allow_html=True,
-)
