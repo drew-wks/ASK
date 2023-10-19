@@ -105,6 +105,7 @@ st.write("")
 st.write("")
 st.write("")
 st.write("")
+st.write("")
 with stylable_container(
     key="bottom_content",
     css_styles="""
@@ -121,7 +122,7 @@ st.markdown(
     """
     <style>
         .stChatFloatingInputContainer {
-            bottom: 20px;
+            bottom: 50px;
             background-color: rgba(255, 255, 255, 1)
         }
     </style>
