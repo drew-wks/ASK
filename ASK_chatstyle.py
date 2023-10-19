@@ -60,7 +60,7 @@ print(f"Retriever start {datetime.datetime.now().strftime('%H:%M:%S')}")
 retriever = ASK.init_retriever_and_generator(qdrant)
 print(f"Retriever finish {datetime.datetime.now().strftime('%H:%M:%S')}")
 
-Collector = FeedbackCollector(
+collector = FeedbackCollector(
     project="ASK_chatstyle",
     email=st.secrets.TRUBRICS_EMAIL,
     password=st.secrets.TRUBRICS_PASSWORD,
