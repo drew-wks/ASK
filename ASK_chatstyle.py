@@ -76,7 +76,7 @@ st.write("ASK uses Artificial Intelligence (AI) to search over 300 Coast Guard A
 examples = st.empty()
 st.write(config["model"])
 email=st.secrets.TRUBRICS_EMAIL
-email=str(email)
+
 st.write(email)
 examples.write("""  
 
