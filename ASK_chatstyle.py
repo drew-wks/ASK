@@ -88,19 +88,16 @@ if query:
     short_source_list = ASK.create_short_source_list(response)
     long_source_list = ASK.create_long_source_list(response)
     st.info(f"""##### Response:\n{response['result']}\n\n **Sources:**\n {short_source_list}""")
-    with st.expander("##### Full Source Details"):
-        st.write(long_source_list)
-    st.write("")
-    st.write("")
+    #old results expander went here
 
-with st.status("Downloading data..."):
-    st.write("Searching Auxiliary documents...")
-    time.sleep(2)
-    st.write("Reviewing documents.")
-    time.sleep(2)
-    st.write("Generating response.")
-    time.sleep(2)
-    st.write(long_source_list)
+    with st.status("Downloading data..."):
+        st.write("Searching Auxiliary documents...")
+        time.sleep(2)
+        st.write("Reviewing documents.")
+        time.sleep(2)
+        st.write("Generating response.")
+        time.sleep(2)
+        st.write(long_source_list)
 
 with stylable_container(
     key="bottom_content",
