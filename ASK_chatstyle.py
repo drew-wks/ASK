@@ -4,8 +4,7 @@
 '''
 
 #
-import wandb
-wandb.finish
+
 print("starting imports")
 import datetime
 print(f"Start imports {datetime.datetime.now().strftime('%H:%M:%S')}")
