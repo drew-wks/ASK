@@ -63,7 +63,7 @@ print(f"Retriever finish {datetime.datetime.now().strftime('%H:%M:%S')}")
 collector = FeedbackCollector(
     email=st.secrets.TRUBRICS_EMAIL,
     password=st.secrets.TRUBRICS_PASSWORD,
-    project="ask-test.streamlit.app via ASK_chatstyle.py"
+    project="ask-testdotstreamlitdotapp via ASK_chatstyle.py"
 )
 # see feedback at https://trubrics.streamlit.app/?ref=blog.streamlit.io
 
