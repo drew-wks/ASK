@@ -95,11 +95,10 @@ if query:
 
     with st.status("Compiling references..."):
         time.sleep(2)
-        st.write("Reviewing documents.")
-        time.sleep(2)
-        st.write("Generating response.")
-        time.sleep(2)
+        st.write("Click for references")
         st.write(long_source_list)
+st.write("")
+st.write("")
 st.write("")
 st.write("")
 st.write("")
