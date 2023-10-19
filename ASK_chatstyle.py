@@ -89,7 +89,7 @@ if query:
     short_source_list = ASK.create_short_source_list(response)
     long_source_list = ASK.create_long_source_list(response)
     examples.empty()
-    st.info(f"""##### Response:\n{response['result']}\n\n **Sources:**\n {short_source_list}\n**Note:**\nASK may contain inaccuracies. Please review the official documents. Also, ASK only searches natonal documents. Check with your district, division and flotilla leadership for official policy in your AOR.
+    st.info(f"""##### Response:\n{response['result']}\n\n **Sources:**\n {short_source_list}\n**Note:**\n\nASK may contain inaccuracies. Please review the official documents. Also, ASK only searches natonal documents. Check with your district, division and flotilla leadership for official policy in your AOR.
     """)
     #old results expander went here
 
@@ -100,6 +100,7 @@ if query:
         st.write("Generating response.")
         time.sleep(2)
         st.write(long_source_list)
+st.write("")
 st.write("")
 st.write("")
 with stylable_container(
@@ -118,7 +119,7 @@ st.markdown(
     """
     <style>
         .stChatFloatingInputContainer {
-            bottom: 40px;
+            bottom: 20px;
             background-color: rgba(255, 255, 255, 1)
         }
     </style>
