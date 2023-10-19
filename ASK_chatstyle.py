@@ -89,7 +89,11 @@ if query:
     short_source_list = ASK.create_short_source_list(response)
     long_source_list = ASK.create_long_source_list(response)
     examples.empty()
-    st.info(f"""##### Response:\n{response['result']}\n\n **Sources:**\n {short_source_list}""")
+    st.info(f"""##### Response:\n{response['result']}\n\n **Sources:**\n {short_source_list}\n
+    ASK may contain inaccuracies. Please review the official documents. 
+    Also, ASK only searches natonal documents. 
+    Check with your district, division and flotilla leadership for official policy in your AOR.
+    """)
     #old results expander went here
 
     with st.status("Compiling references..."):
@@ -110,7 +114,7 @@ with stylable_container(
         }
         """,
 ):
-    st.caption("ASK may contain inaccuracies. Please review the official documents. Also, ASK only searches natonal documents, so be sure to check with your district, division and flotilla leadership for official policy in your AOR.")  # this appears above the chat_input() element.
+    st.caption("CAPTION WAS HERE")  # this appears above the chat_input() element.
     st.write("")
 st.markdown(
     """
