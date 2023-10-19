@@ -6,6 +6,5 @@ langchain==0.0.315
 qdrant-client==1.6.3
 wandb==0.15.12
 tiktoken==0.5.1
-htbuilder
 streamlit_extras
 time
