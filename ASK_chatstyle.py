@@ -109,7 +109,7 @@ with stylable_container(
     css_styles="""
         {
             position: fixed;
-            bottom: 50px;
+            bottom: 5px;
         }
         """,
 ):
