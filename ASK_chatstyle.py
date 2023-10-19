@@ -35,10 +35,11 @@ st.markdown("""
         """, unsafe_allow_html=True)
 
 api_key=st.secrets.QDRANT_API_KEY
+
+
 # Check if 'client' is not in locals() or 'client' is not in globals()
 #if not it runs qdrant_check_and_connect()
 #and places the client object into st.session_state
-
 if 'clientkey' not in st.session_state:
     st.session_state.clientkey = []
     client = ASK.qdrant_connect_cloud(api_key)
@@ -90,19 +91,15 @@ if query:
         st.write(long_source_list)
     st.write("")
     st.write("")
-    st.write("How well did Ask respond to your question?")
-    user_feedback = collector.st_feedback(
-        component="default",
-        feedback_type="thumbs",
-        open_feedback_label="[Optional] Provide additional feedback",
-        model="gpt-3.5-turbo",
-        align="flex-end",
-        prompt_id=None,  # checkout collector.log_prompt() to log your user prompts
-    )
 
-    if user_feedback:
-        st.write(user_feedback)
-
+with st.status("Downloading data..."):
+    st.write("Searching Auxiliary documents...")
+    time.sleep(2)
+    st.write("Reviewing documents.")
+    time.sleep(2)
+    st.write("Generating response.")
+    time.sleep(2)
+    st.write(long_source_list)
 
 with stylable_container(
     key="bottom_content",
