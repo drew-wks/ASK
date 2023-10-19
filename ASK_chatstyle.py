@@ -61,7 +61,7 @@ retriever = ASK.init_retriever_and_generator(qdrant)
 print(f"Retriever finish {datetime.datetime.now().strftime('%H:%M:%S')}")
 
 collector = FeedbackCollector(
-    project="ASK_chatstyle",
+    project="ask-test.streamlit.app via ASK_chatstyle.py",
     email=st.secrets.TRUBRICS_EMAIL,
     password=st.secrets.TRUBRICS_PASSWORD,
 )
