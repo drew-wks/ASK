@@ -90,8 +90,7 @@ if query:
     st.info(f"""##### Response:\n{response['result']}\n\n **Sources:**\n {short_source_list}""")
     #old results expander went here
 
-    with st.status("Downloading data..."):
-        st.write("Searching Auxiliary documents...")
+    with st.status("Compiling references..."):
         time.sleep(2)
         st.write("Reviewing documents.")
         time.sleep(2)
@@ -108,7 +107,7 @@ with stylable_container(
         }
         """,
 ):
-    st.caption("ASK is not perfect and may contain inaccuracies, so please reading the official documents referenced below each response. Also, ASK only searches natonal documents, so be sure to check with your district, division and flotilla leadership for official policy in your AOR.")  # this appears above the chat_input() element.
+    st.caption("ASK may contain inaccuracies. Please review the official documents. Also, ASK only searches natonal documents, so be sure to check with your district, division and flotilla leadership for official policy in your AOR.")  # this appears above the chat_input() element.
     st.write("")
 st.markdown(
     """
