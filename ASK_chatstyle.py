@@ -111,7 +111,7 @@ if query:
         generation=response['result'],
     )
 
-    collector.st_feedback(
+    feedback=collector.st_feedback(
         component="default",
         feedback_type="thumbs",
         open_feedback_label="[Optional] Provide additional feedback",
