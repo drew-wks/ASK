@@ -121,6 +121,7 @@ if query:
     )
     if user_feedback:
         st.write(user_feedback)
+st.write(user_feedback)
 st.write("")
 st.write("")
 st.write("")
