@@ -105,19 +105,20 @@ if query:
         time.sleep(.2)
         st.write(long_source_list)
 
+   collector.log_prompt(
+        config_model={"model": "gpt-3.5-turbo"},
+        prompt=query,
+        generation=response['result'],
+    )
 
-user_feedback = collector.st_feedback(
-    component="default",
-    feedback_type="thumbs",
-    open_feedback_label="[Optional] Provide additional feedback",
-    model="gpt-3.5-turbo",
-    align="flex-end",
-    prompt_id=None, 
-)
-
-if user_feedback:
-    st.write(user_feedback)
-
+    collector.st_feedback(
+        component="default",
+        feedback_type="thumbs",
+        open_feedback_label="[Optional] Provide additional feedback",
+        model="gpt-3.5-turbo",
+        align="flex-end",
+        prompt_id=None, 
+    )
 
  
 
