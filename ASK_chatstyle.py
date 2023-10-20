@@ -110,17 +110,6 @@ if query:
     prompt=query,
     generation=response['result'],
 )
-
-st.write("")
-st.write("")
-st.write("")
-st.write("")
-st.write("")
-st.write("")
-st.write("")
-st.write("")
-st.write("")
-
     collector.st_feedback(
         component="default",
         feedback_type="thumbs",
@@ -129,6 +118,17 @@ st.write("")
         align="flex-end",
         prompt_id=None, 
     )
+st.write("")
+st.write("")
+st.write("")
+st.write("")
+st.write("")
+st.write("")
+st.write("")
+st.write("")
+st.write("")
+
+
 
 
 with stylable_container(
