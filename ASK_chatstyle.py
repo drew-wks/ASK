@@ -110,14 +110,14 @@ if query:
     prompt=query,
     generation=response['result'],
 )
-    collector.st_feedback(
-        component="default",
-        feedback_type="thumbs",
-        open_feedback_label="[Optional] Provide additional feedback",
-        model="gpt-3.5-turbo",
-        align="flex-end",
-        prompt_id=None, 
-    )
+collector.st_feedback(
+    component="default",
+    feedback_type="thumbs",
+    open_feedback_label="[Optional] Provide additional feedback",
+    model="gpt-3.5-turbo",
+    align="flex-end",
+    prompt_id=None, 
+)
 st.write("")
 st.write("")
 st.write("")
