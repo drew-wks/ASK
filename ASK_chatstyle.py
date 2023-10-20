@@ -115,8 +115,8 @@ if query:
         component="default",
         feedback_type="thumbs",
         open_feedback_label="[Optional] Provide additional feedback",
-        model=st.session_state.logged_prompt.config_model.model,
-        prompt_id=st.session_state.logged_prompt.id,
+        model="gpt-3.5-turbo",
+        prompt_id=none,
         key=st.session_state.feedback_key,
         align="flex-start",
     )
