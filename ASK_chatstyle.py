@@ -126,7 +126,7 @@ collector.st_feedback(
 collector.log_prompt(
     config_model={"model": "gpt-3.5-turbo"},
     prompt=query,
-    generation=str(response['result']),
+    generation=response['result'],
 )
 
 
