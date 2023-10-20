@@ -86,7 +86,7 @@ examples.write("""
 st.write("  ")
 st.write("  ")
 
-
+generation = ""
 query = st.chat_input("Type your question or task here", max_chars=200)
 if query:
     print(f"Response start {datetime.datetime.now().strftime('%H:%M:%S')}")
