@@ -120,8 +120,8 @@ if query:
         open_feedback_label="[Optional] Provide additional feedback",
         align="flex-start",
     )
-
- 
+    st.write(f"""print my {user_feedback}""")
+st.write(f"""print my {user_feedback}now!""")
 
 
 st.write("")
