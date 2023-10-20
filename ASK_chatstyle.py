@@ -86,7 +86,7 @@ examples.write("""
 st.write("  ")
 st.write("  ")
 
-response = {}
+#response = {}
 query = st.chat_input("Type your question or task here", max_chars=200)
 if query:
     print(f"Response start {datetime.datetime.now().strftime('%H:%M:%S')}")
@@ -104,6 +104,13 @@ if query:
         st.write("Click for references")
         time.sleep(.2)
         st.write(long_source_list)
+
+    collector.log_prompt(
+    config_model={"model": "gpt-3.5-turbo"},
+    prompt=query,
+    generation=response['result'],
+)
+
 st.write("")
 st.write("")
 st.write("")
@@ -122,13 +129,6 @@ collector.st_feedback(
     align="flex-end",
     prompt_id=None, 
 )
-
-collector.log_prompt(
-    config_model={"model": "gpt-3.5-turbo"},
-    prompt=query,
-    generation=response['result'],
-)
-
 
 
 with stylable_container(
