@@ -111,7 +111,7 @@ if query:
     generation=response['result'],
     )
     
-    collector.st_feedback(
+    user_feedback = collector.st_feedback(
         component="default",
         feedback_type="thumbs",
         open_feedback_label="[Optional] Provide additional feedback",
@@ -119,6 +119,8 @@ if query:
         align="flex-end",
         prompt_id=None, 
     )
+    if user_feeedback:
+        st.write(user_feedback)
 st.write("")
 st.write("")
 st.write("")
