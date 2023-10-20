@@ -86,7 +86,7 @@ examples.write("""
 st.write("  ")
 st.write("  ")
 
-user_feedback=""
+user_feedback = " "
 #response = {}
 query = st.chat_input("Type your question or task here", max_chars=200)
 if query:
