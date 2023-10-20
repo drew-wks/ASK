@@ -109,7 +109,7 @@ if query:
         config_model={"model": "gpt-3.5-turbo"},
         prompt=query,
         generation=response['result'],
-    )
+        )
 
     collector.st_feedback(
         component="default",
@@ -118,7 +118,7 @@ if query:
         model="gpt-3.5-turbo",
         align="flex-end",
         prompt_id=None, 
-    )
+        )
 
  
 
