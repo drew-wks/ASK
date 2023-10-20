@@ -111,14 +111,13 @@ if query:
         generation=response['result'],
     )
 
-    user_feedback = collector.st_feedback(
-        component="default",
-        feedback_type="thumbs",
-        open_feedback_label="[Optional] Provide additional feedback",
-        model="gpt-3.5-turbo",
-        prompt_id=none,
-        key=st.session_state.feedback_key,
-        align="flex-start",
+user_feedback = collector.st_feedback(
+    component="default",
+    feedback_type="thumbs",
+    open_feedback_label="[Optional] Provide additional feedback",
+    model="gpt-3.5-turbo",
+    prompt_id=None,  # checkout collector.log_prompt() to log your user prompts
+    align="flex-start",
     )
 
  
