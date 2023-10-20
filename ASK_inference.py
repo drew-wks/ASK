@@ -13,7 +13,7 @@ config = {
     "chunk_overlap": 200,
     "length_function" : len, 
     "separators" : ["}"],  #[" ", ",", "\n"]
-    "embedding": OpenAIEmbeddings(),
+    "embedding": OpenAIEmbeddings(), #  includes a pull of the open api key
     "embedding_dims": 1536,
     "search_type": "mmr",
     "k": 4,
