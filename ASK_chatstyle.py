@@ -22,4 +22,5 @@ user_feedback = collector.st_feedback(
     prompt_id=None,  # checkout collector.log_prompt() to log your user prompts
 )
 
+
 st.write(user_feedback)
