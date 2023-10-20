@@ -112,8 +112,8 @@ if query:
     )
 
     user_feedback = collector.st_feedback(
-        save_to_trubrics: bool = True,
-        success_fail_message: bool = True,
+        save_to_trubrics = True,
+        success_fail_message = True,
         component="default",
         feedback_type="thumbs",
         model="gpt-3.5-turbo",
