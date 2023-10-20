@@ -119,9 +119,10 @@ if query:
         align="flex-end",
         prompt_id=None, 
     )
+    
     if user_feedback:
         st.write(user_feedback)
-st.write(user_feedback)
+
 st.write("")
 st.write("")
 st.write("")
