@@ -3,4 +3,4 @@ base="light"
 font="sans serif"
 
 [logger]
-level = "debug"
+level = "info"
