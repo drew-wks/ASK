@@ -94,11 +94,11 @@ if query:
     """)
     #old results expander went here
 ###############
-    with st.status("Compiling references..."):
+    with st.status("Compiling references...", expanded=False) as status:
         time.sleep(1)
-        status.update("Click for references")
-        #time.sleep(.2)
         st.write(long_source_list)
+        status.update("Click for references", , expanded=False)
+
 ################
     collector.log_prompt(
         config_model={"model": "gpt-3.5-turbo"},
