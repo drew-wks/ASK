@@ -56,96 +56,96 @@ with patch.multiple('ASK_inference',
                     init_retriever_and_generator=lambda x: dummy_retriever,
                     rag=lambda x, y: dummy_response):
 
-    # === MOCKING END ===
+    # === MOCKING END ===BE SURE TO UNINDENT THE CODE BELOW AFTER MOCKING IS REMOVED===
 
-
-# Check if 'client' is not in locals() or 'client' is not in globals()
-#if not it runs qdrant_check_and_connect()
-#and places the client object into st.session_state
-if 'clientkey' not in st.session_state:
-    st.session_state.clientkey = []
-    client = ASK.qdrant_connect_cloud(api_key)
-    st.session_state.clientkey = client
-    print(st.session_state.clientkey)
-
-
-qdrant = ASK.create_langchain_qdrant(st.session_state.clientkey)
-retriever = ASK.init_retriever_and_generator(qdrant)
-
-collector = FeedbackCollector(
-    project="ASK Test on St CC",
-    email=st.secrets.TRUBRICS_EMAIL,
-    password=st.secrets.TRUBRICS_PASSWORD,
-)
-# see feedback at https://trubrics.streamlit.app/?ref=blog.streamlit.io
-
-
-
-st.image("https://raw.githubusercontent.com/dvvilkins/ASK/main/images/ASK_logotype_color.png?raw=true", use_column_width="always")
-# st.title("ASK Auxiliary Source of Knowledge")
-st.write(
-    "#### Get answers to USCG Auxiliary questions from the authoritative sources.")
-
-st.write("ASK uses Artificial Intelligence (AI) to search over 300 Coast Guard Auxiliary references to answer your questions. The reference list is [here](https://github.com/dvvilkins/ASK/blob/0e975f41f8f072aac2837ac42a9fe11963dc3fb2/docs/library_doc_list.pdf). Have questions? Contact [Drew Wilkins](mailto:uscgaux.drew@wks.us)", unsafe_allow_html=True)
-examples = st.empty()
-
-examples.write("""  
-    **ASK can answer questions such as:**   
-    *What are the requirements to run for FC?*  
-    *How do I stay current as a vessel examiner?*   
-    *Make a 10 question quiz on boat crewmember tasks, with answers.*   
     
-""")
-st.write("  ")
-st.write("  ")
-
-user_feedback = " "
-#response = {}
-query = st.chat_input("Type your question or task here", max_chars=200)
-if query:
-    print(f"Response start {datetime.datetime.now().strftime('%H:%M:%S')}")
-    response = ASK.rag(query,retriever)
-    print(f"Response finish {datetime.datetime.now().strftime('%H:%M:%S')}")
-    short_source_list = ASK.create_short_source_list(response)
-    long_source_list = ASK.create_long_source_list(response)
-    examples.empty()
-    st.info(f"""##### Response:\n{response['result']}\n\n **Sources:**  \n {short_source_list}\n**Note:**  \nASK may contain inaccuracies. Please review the official documents. Also, ASK only searches natonal documents. Check with your district, division and flotilla leadership for official policy in your AOR.
-    """)
-    #old results expander went here
-###############
-    with st.status("Compiling references...", expanded=False) as status:
-        time.sleep(1)
-        st.write(long_source_list)
-        status.update(label=":blue[**Click for references**]", expanded=False)
-
-################
-    collector.log_prompt(
-        config_model={"model": "gpt-3.5-turbo"},
-        prompt=query,
-        generation=response['result'],
+    # Check if 'client' is not in locals() or 'client' is not in globals()
+    #if not it runs qdrant_check_and_connect()
+    #and places the client object into st.session_state
+    if 'clientkey' not in st.session_state:
+        st.session_state.clientkey = []
+        client = ASK.qdrant_connect_cloud(api_key)
+        st.session_state.clientkey = client
+        print(st.session_state.clientkey)
+    
+    
+    qdrant = ASK.create_langchain_qdrant(st.session_state.clientkey)
+    retriever = ASK.init_retriever_and_generator(qdrant)
+    
+    collector = FeedbackCollector(
+        project="ASK Test on St CC",
+        email=st.secrets.TRUBRICS_EMAIL,
+        password=st.secrets.TRUBRICS_PASSWORD,
     )
-
-
-st.write("")
-st.write("")
-st.write("")
-st.write("")
-st.write("")
-st.write("")
-st.write("")
-st.write("")
-st.write("")
-
-with stylable_container(
-    key="bottom_content",
-    css_styles="""
-        {
-            position: fixed;
-            bottom: 0px;
-            background-color: rgba(255, 255, 255, 1)
-        }
-        """,
-):
-    # st.caption("C")  # this appears above the chat_input() element.
-    st.write("where does this appear?")
-
+    # see feedback at https://trubrics.streamlit.app/?ref=blog.streamlit.io
+    
+    
+    
+    st.image("https://raw.githubusercontent.com/dvvilkins/ASK/main/images/ASK_logotype_color.png?raw=true", use_column_width="always")
+    # st.title("ASK Auxiliary Source of Knowledge")
+    st.write(
+        "#### Get answers to USCG Auxiliary questions from the authoritative sources.")
+    
+    st.write("ASK uses Artificial Intelligence (AI) to search over 300 Coast Guard Auxiliary references to answer your questions. The reference list is [here](https://github.com/dvvilkins/ASK/blob/0e975f41f8f072aac2837ac42a9fe11963dc3fb2/docs/library_doc_list.pdf). Have questions? Contact [Drew Wilkins](mailto:uscgaux.drew@wks.us)", unsafe_allow_html=True)
+    examples = st.empty()
+    
+    examples.write("""  
+        **ASK can answer questions such as:**   
+        *What are the requirements to run for FC?*  
+        *How do I stay current as a vessel examiner?*   
+        *Make a 10 question quiz on boat crewmember tasks, with answers.*   
+        
+    """)
+    st.write("  ")
+    st.write("  ")
+    
+    user_feedback = " "
+    #response = {}
+    query = st.chat_input("Type your question or task here", max_chars=200)
+    if query:
+        print(f"Response start {datetime.datetime.now().strftime('%H:%M:%S')}")
+        response = ASK.rag(query,retriever)
+        print(f"Response finish {datetime.datetime.now().strftime('%H:%M:%S')}")
+        short_source_list = ASK.create_short_source_list(response)
+        long_source_list = ASK.create_long_source_list(response)
+        examples.empty()
+        st.info(f"""##### Response:\n{response['result']}\n\n **Sources:**  \n {short_source_list}\n**Note:**  \nASK may contain inaccuracies. Please review the official documents. Also, ASK only searches natonal documents. Check with your district, division and flotilla leadership for official policy in your AOR.
+        """)
+        #old results expander went here
+    ###############
+        with st.status("Compiling references...", expanded=False) as status:
+            time.sleep(1)
+            st.write(long_source_list)
+            status.update(label=":blue[**Click for references**]", expanded=False)
+    
+    ################
+        collector.log_prompt(
+            config_model={"model": "gpt-3.5-turbo"},
+            prompt=query,
+            generation=response['result'],
+        )
+    
+    
+    st.write("")
+    st.write("")
+    st.write("")
+    st.write("")
+    st.write("")
+    st.write("")
+    st.write("")
+    st.write("")
+    st.write("")
+    
+    with stylable_container(
+        key="bottom_content",
+        css_styles="""
+            {
+                position: fixed;
+                bottom: 0px;
+                background-color: rgba(255, 255, 255, 1)
+            }
+            """,
+    ):
+        # st.caption("C")  # this appears above the chat_input() element.
+        st.write("where does this appear?")
+    
