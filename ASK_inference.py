@@ -139,7 +139,7 @@ def create_long_source_list(response):
         source = doc.metadata['source']  
         short_source = source.split('/')[-1].split('.')[0]  
         page = doc.metadata['page']  
-        markdown_list.append(f"**Reference {i}:**    *{short_source}*, page {page}<br>  {page_content}\n")
+        markdown_list.append(f"**Reference {i}:**\n    *{short_source}*, page {page}\n  {page_content}\n")
     
     long_source_list = '\n'.join(markdown_list)
     return long_source_list
