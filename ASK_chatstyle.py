@@ -127,16 +127,14 @@ with stylable_container(
         }
         """,
 ):
-
-
-st.markdown(
-"""
-<style>
-    .stChatFloatingInputContainer {
-        bottom: 50px;
-        background-color: rgba(255, 255, 255, 1)
-    }
-</style>
-""",
-unsafe_allow_html=True,
-)
+    st.markdown(
+    """
+    <style>
+        .stChatFloatingInputContainer {
+            bottom: 50px;
+            background-color: rgba(255, 255, 255, 1)
+        }
+    </style>
+    """,
+    unsafe_allow_html=True,
+    )
