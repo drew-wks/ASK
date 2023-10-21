@@ -117,6 +117,15 @@ st.write("")
 st.write("")
 st.write("")
 
-
+with stylable_container(
+    key="bottom_content",
+    css_styles="""
+        {
+            position: fixed;
+            bottom: 0px;
+            background-color: rgba(255, 255, 255, 1)
+        }
+        """,
+):
 
 
