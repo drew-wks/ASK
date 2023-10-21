@@ -95,7 +95,7 @@ if query:
     #old results expander went here
 ###############
     with st.status("Compiling references..."):
-        #time.sleep(2)
+        time.sleep(1)
         st.write("Click for references")
         #time.sleep(.2)
         st.write(long_source_list)
