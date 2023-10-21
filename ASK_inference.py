@@ -37,6 +37,7 @@ from langchain.vectorstores import Qdrant
 from langchain.chains import RetrievalQA
 from langchain.chat_models import ChatOpenAI
 import tiktoken
+import pickle
 
 llm=ChatOpenAI(model=config["model"], temperature=config["temperature"]) #keep outside the function so it's accessible elsewhere in this notebook
 
@@ -105,7 +106,7 @@ def rag_dummy(query, retriever):
     ''returns a dummy canned response'''
     with open("dummy_response.pkl", "rb") as file:
         dummy_response = pickle.load(file)
-        return dummy_response
+    return dummy_response
         
 
 def create_short_source_list(response):
