@@ -17,6 +17,7 @@ user_feedback = collector.st_feedback(
     component="default",
     feedback_type="thumbs",
     model="gpt-3.5-turbo",
+    open_feedback_label="[Optional] Provide additional feedback",
     align="flex-end",
     prompt_id=None,  # checkout collector.log_prompt() to log your user prompts
 )
