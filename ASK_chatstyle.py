@@ -96,7 +96,7 @@ if query:
 ###############
     with st.status("Compiling references..."):
         time.sleep(1)
-        st.status("Click for references")
+        status.update("Click for references")
         #time.sleep(.2)
         st.write(long_source_list)
 ################
