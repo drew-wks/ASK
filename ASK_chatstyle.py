@@ -85,7 +85,7 @@ user_feedback = " "
 query = st.chat_input("Type your question or task here", max_chars=200)
 if query:
     print(f"Response start {datetime.datetime.now().strftime('%H:%M:%S')}")
-    response = ASK.rag(query,retriever)
+    response = ASK.rag_dummy(query,retriever) # ADDING A DUMMY FUNCTION FOR UNIT TESTING
     print(f"Response finish {datetime.datetime.now().strftime('%H:%M:%S')}")
     short_source_list = ASK.create_short_source_list(response)
     long_source_list = ASK.create_long_source_list(response)
