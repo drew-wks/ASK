@@ -97,7 +97,7 @@ if query:
     with st.status("Compiling references...", expanded=False) as status:
         time.sleep(1)
         st.write(long_source_list)
-        status.update("Click for references", , expanded=False)
+        status.update("Click for references", expanded=False)
 
 ################
     collector.log_prompt(
