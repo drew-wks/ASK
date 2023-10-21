@@ -107,4 +107,5 @@ user_feedback = collector.st_feedback(
 )
 
 
-st.write(user_feedback)
+if user_feedback:
+    st.write("feedback received)
