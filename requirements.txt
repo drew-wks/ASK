@@ -7,4 +7,3 @@ qdrant-client==1.6.3
 tiktoken==0.5.1
 streamlit_extras
 datetime
-pickle
