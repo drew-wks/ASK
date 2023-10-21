@@ -1,3 +1,11 @@
+''' run by placing this line in terminal
+    streamlit run file_name.py
+    Easiest in VSCode, "run and debug'. Make sure launch.json is set up
+'''
+
+#
+
+
 import datetime
 import streamlit as st
 import pandas as pd
@@ -7,8 +15,6 @@ import ASK_inference as ASK
 from ASK_inference import config
 from streamlit_extras.stylable_container import stylable_container
 import time
-print(f"Finish imports {datetime.datetime.now().strftime('%H:%M:%S')}")
-print(f"Start css and session states {datetime.datetime.now().strftime('%H:%M:%S')}")
 st.set_page_config(page_title="ASK Auxiliary Source of Knowledge")
 
 hide_st_style = """
@@ -44,19 +50,16 @@ if 'clientkey' not in st.session_state:
     print(st.session_state.clientkey)
 
 
-print(f"Qdrant start {datetime.datetime.now().strftime('%H:%M:%S')}")
 qdrant = ASK.create_langchain_qdrant(st.session_state.clientkey)
-print(f"Qdrant finish {datetime.datetime.now().strftime('%H:%M:%S')}")
-print(f"Retriever start {datetime.datetime.now().strftime('%H:%M:%S')}")
 retriever = ASK.init_retriever_and_generator(qdrant)
-print(f"Retriever finish {datetime.datetime.now().strftime('%H:%M:%S')}")
-
 
 collector = FeedbackCollector(
+    project="ASK Test on St CC",
     email=st.secrets.TRUBRICS_EMAIL,
     password=st.secrets.TRUBRICS_PASSWORD,
     project="ASK_chatstyle"
 )
+# see feedback at https://trubrics.streamlit.app/?ref=blog.streamlit.io
 
    # st.write("How well did Ask respond to your question?")
 user_feedback = collector.st_feedback(
