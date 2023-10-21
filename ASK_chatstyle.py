@@ -15,6 +15,8 @@ import ASK_inference as ASK
 from ASK_inference import config
 from streamlit_extras.stylable_container import stylable_container
 import time
+from unittest.mock import patch
+
 st.set_page_config(page_title="ASK Auxiliary Source of Knowledge")
 
 hide_st_style = """
@@ -38,6 +40,23 @@ st.markdown("""
         """, unsafe_allow_html=True)
 
 api_key=st.secrets.QDRANT_API_KEY
+
+# === MOCKING START: This section is for mocking and should be removed later ===
+
+# Define dummy return values
+dummy_client = "dummy_client"
+dummy_qdrant = "dummy_qdrant"
+dummy_retriever = "dummy_retriever"
+dummy_response = {"result": "dummy_response", "source": "dummy_source"}
+
+# Mock multiple functions at once
+with patch.multiple('ASK_inference',
+                    qdrant_connect_cloud=lambda x: dummy_client,
+                    create_langchain_qdrant=lambda x: dummy_qdrant,
+                    init_retriever_and_generator=lambda x: dummy_retriever,
+                    rag=lambda x, y: dummy_response):
+
+    # === MOCKING END ===
 
 
 # Check if 'client' is not in locals() or 'client' is not in globals()
