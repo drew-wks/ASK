@@ -101,6 +101,12 @@ def rag(query, retriever):
     return response
 
 
+def rag_dummy(query, retriever):
+    ''returns a dummy canned response'''
+    with open("dummy_response.pkl", "rb") as file:
+        dummy_response = pickle.load(file)
+        return dummy_response
+        
 
 def create_short_source_list(response):
     '''Extracts a list of sources with no description 
