@@ -94,7 +94,11 @@ if query:
     """)
     #old results expander went here
 ###############
-    
+    with st.status("Compiling references..."):
+        #time.sleep(2)
+        st.write("Click for references")
+        #time.sleep(.2)
+        st.write(long_source_list)
 ################
     collector.log_prompt(
         config_model={"model": "gpt-3.5-turbo"},
