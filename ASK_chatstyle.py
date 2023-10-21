@@ -93,8 +93,14 @@ if query:
     st.info(f"""##### Response:\n{response['result']}\n\n **Sources:**  \n {short_source_list}\n**Note:**  \nASK may contain inaccuracies. Please review the official documents. Also, ASK only searches natonal documents. Check with your district, division and flotilla leadership for official policy in your AOR.
     """)
     #old results expander went here
-
+###############
+    
 ################
+    collector.log_prompt(
+        config_model={"model": "gpt-3.5-turbo"},
+        prompt=query,
+        generation=response['result'],
+    )
 
    # st.write("How well did Ask respond to your question?")
 user_feedback = collector.st_feedback(
