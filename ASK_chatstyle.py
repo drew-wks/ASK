@@ -122,7 +122,7 @@ with stylable_container(
     css_styles="""
         {
             position: fixed;
-            bottom: 0px;
+            bottom: 100px;
             background-color: rgba(255, 255, 255, 1)
         }
         """,
