@@ -80,6 +80,20 @@ examples.write("""
 st.write("  ")
 st.write("  ")
 
+user_feedback = " "
+#response = {}
+query = st.chat_input("Type your question or task here", max_chars=200)
+if query:
+    print(f"Response start {datetime.datetime.now().strftime('%H:%M:%S')}")
+    response = ASK.rag(query,retriever)
+    print(f"Response finish {datetime.datetime.now().strftime('%H:%M:%S')}")
+    short_source_list = ASK.create_short_source_list(response)
+    long_source_list = ASK.create_long_source_list(response)
+    examples.empty()
+    st.info(f"""##### Response:\n{response['result']}\n\n **Sources:**  \n {short_source_list}\n**Note:**  \nASK may contain inaccuracies. Please review the official documents. Also, ASK only searches natonal documents. Check with your district, division and flotilla leadership for official policy in your AOR.
+    """)
+    #old results expander went here
+
 ################
 
    # st.write("How well did Ask respond to your question?")
