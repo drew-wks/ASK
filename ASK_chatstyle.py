@@ -122,7 +122,7 @@ with stylable_container(
     css_styles="""
         {
             position: fixed;
-            bottom: 100px;
+            bottom: 0px;
             background-color: rgba(255, 255, 255, 1)
         }
         """,
@@ -134,7 +134,7 @@ st.markdown(
 """
 <style>
     .stChatFloatingInputContainer {
-        bottom: 100px;
+        bottom: 200px;
         background-color: rgba(255, 255, 255, 1)
     }
 </style>
