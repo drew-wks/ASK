@@ -57,7 +57,6 @@ collector = FeedbackCollector(
     project="ASK Test on St CC",
     email=st.secrets.TRUBRICS_EMAIL,
     password=st.secrets.TRUBRICS_PASSWORD,
-    project="ASK_chatstyle"
 )
 # see feedback at https://trubrics.streamlit.app/?ref=blog.streamlit.io
 
