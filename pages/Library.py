@@ -64,9 +64,9 @@ with tab2:
 
 with tab3:
    st.markdown("#### Document Upload")
-   st.write("This is a placeholder page for suggesting new documents to add to the ASK Library")
-   st.write("Overview of criteria and process")
-   st.write("Upload widget here")
+   st.write("[This is a placeholder page for suggesting new documents to add to the ASK Library]")
+   st.write("[Overview of criteria and process]")
+   st.write("[Upload widget here]")
 
 
 
