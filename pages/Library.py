@@ -40,7 +40,7 @@ tab1, tab2, tab3 = st.tabs(["Overview", "Document List", "Owl"])
 
 with tab1:
    st.header("Library Overview")
-   st.image("https://static.streamlit.io/examples/cat.jpg", width=200)
+   read_markdown_file("docs/library_overview.md")
 
 with tab2:
    st.header("Document List")
