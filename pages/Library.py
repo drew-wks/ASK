@@ -35,7 +35,7 @@ def read_markdown_file(markdown_file):
 
 st.title("ASK Document Library")
 
-want_to_contribute = st.button("Return to the App")
+want_to_contribute = st.button("<< Back to App")
 if want_to_contribute:
     switch_page('ASK_chatstyle')
 
