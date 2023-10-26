@@ -33,7 +33,6 @@ if query:
     response = ASK.rag_dummy(query,retriever) # ADDING A DUMMY FUNCTION FOR UNIT TESTING
     short_source_list = ASK.create_short_source_list(response)
     long_source_list = ASK.create_long_source_list(response)
-    examples.empty()
     st.info(f"""##### Response:\n{response['result']}\n\n **Sources:**  \n {short_source_list}\n**Note:**  \nASK may contain inaccuracies. Please review the official documents. Also, ASK only searches natonal documents. Check with your district, division and flotilla leadership for official policy in your AOR.
     """)
 
