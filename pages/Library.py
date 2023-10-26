@@ -67,7 +67,7 @@ with tab1:
 with tab2:
    st.markdown("#### Document List")
    df = get_pickle_file()
-   display_df = df[['short_source']]
+   display_df = df[['source_short']]
    edited_df = st.data_editor(display_df, hide_index=True, disabled=True)
    # favorite_command = edited_df.loc[edited_df["rating"].idxmax()]["command"]
 
