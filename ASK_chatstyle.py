@@ -5,9 +5,8 @@
 
 #
 
-
+import streamlit as st 
 import datetime
-import streamlit as st
 import pandas as pd
 from trubrics.integrations.streamlit import FeedbackCollector
 import ASK_inference as ASK
@@ -17,6 +16,9 @@ from streamlit_extras.stylable_container import stylable_container
 import time
 st.set_page_config(page_title="ASK Auxiliary Source of Knowledge")
 
+'''hide sidebar'''
+st.set_page_config(initial_sidebar_state="collapsed")
+st.markdown( """ <style> [data-testid="collapsedControl"] { display: none } </style> """, unsafe_allow_html=True, )
 
 
 hide_st_style = """
