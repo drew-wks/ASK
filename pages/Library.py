@@ -38,7 +38,7 @@ def read_markdown_file(markdown_file):
 
 
 def get_pickle_file(): 
-    directory_path = '../reports/library_pkl/'
+    directory_path = 'reports/library_pkl/'
     files_in_directory = os.listdir(directory_path)
     pickle_files = [file for file in files_in_directory if file.endswith('.pkl')]
 
