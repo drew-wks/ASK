@@ -40,7 +40,7 @@ if want_to_contribute:
     switch_page('ASK_chatstyle')
 
 
-tab1, tab2, tab3 = st.tabs(["Library Overview", "Document List", "Owl"])
+tab1, tab2, tab3 = st.tabs(["Library Overview", "Document List", "A flag"])
 
 with tab1:
    overview = read_markdown_file("docs/library_overview.md")
@@ -63,8 +63,8 @@ with tab2:
    st.markdown(f"Your favorite command is **{favorite_command}** 🎈")
 
 with tab3:
-   st.header("An owl")
-   st.image("images/flag.png", width=200)
+   st.header("An flag")
+   st.image("images/flag.png", width=300)
 
 
 
