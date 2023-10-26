@@ -40,7 +40,7 @@ if want_to_contribute:
     switch_page('ASK_chatstyle')
 
 
-tab1, tab2, tab3 = st.tabs(["Overview", "Document List", "Owl"])
+tab1, tab2, tab3 = st.tabs(["Library Overview", "Document List", "Owl"])
 
 with tab1:
    overview = read_markdown_file("docs/library_overview.md")
