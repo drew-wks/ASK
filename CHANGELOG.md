@@ -1,15 +1,13 @@
 
 # Project ASK Change Log
-All notable changes to this project will be documented in this file.  
+All notable changes to this project will be documented in this file. 
 
-The format is based on [Keep a Changelog](http://keepachangelog.com/)
-and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased] - 2023-10-26
 
 ### Features
 - Add additional metadata keys and values into library data, including effective date
-- Add this changelog to repo
+- Add this changelog to repo. Format based on [Keep a Changelog](http://keepachangelog.com/)
 - -Reincorporating truberics feedback collector
 - Include search query string  with results
 
