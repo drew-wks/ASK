@@ -14,6 +14,7 @@ All notable changes to this project will be documented in this file.
 - Add this changelog to repo. Format based on [Keep a Changelog](http://keepachangelog.com/)
 
 ### Bug fixes
+- Added ASK-chat_dummy.py and a streamlit app off of it to test streamlit mobile device issues
 
 ### Breaking changes
 
