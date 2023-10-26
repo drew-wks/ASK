@@ -6,6 +6,12 @@ from ASK_inference import config
 
 api_key=st.secrets.QDRANT_API_KEY
 
+from streamlit_extras.switch_page_button import switch_page
+
+want_to_contribute = st.button("I want to contribute!")
+if want_to_contribute:
+    switch_page("2_Library")
+
 
 # Check if 'client' is not in locals() or 'client' is not in globals()
 #if not it runs qdrant_check_and_connect()
