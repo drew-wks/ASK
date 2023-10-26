@@ -40,7 +40,7 @@ if back:
     switch_page('ASK_chatstyle')
 
 
-tab1, tab2, tab3 = st.tabs(["Library Overview", "Document List", "Document Suggestion"])
+tab1, tab2, tab3 = st.tabs(["Library Overview", "Document List", "Suggest a Doc"])
 
 with tab1:
    overview = read_markdown_file("docs/library_overview.md")
