@@ -43,7 +43,6 @@ if want_to_contribute:
 tab1, tab2, tab3 = st.tabs(["Overview", "Document List", "Owl"])
 
 with tab1:
-   st.header("Library Overview")
    overview = read_markdown_file("docs/library_overview.md")
    st.markdown(overview, unsafe_allow_html=True)
 

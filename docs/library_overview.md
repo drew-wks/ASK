@@ -3,14 +3,14 @@
 
 #### Document Types
 
-1. **USCG Auxiliary Directives, including:**  
+1. **USCG Auxiliary Directives,** including: 
    - Auxiliary Manual
    - Auxiliary Process Guides
    - Auxiliary Training Handbooks
    - Auxiliary Programs 
    - Model Standing Rules  
 
-2. Other USCG Directives, such as:
+2. **Other USCG Directives, such as:**
    - Civil Rights Manual
    - Navigation Rules
    - Incident Management Handbook
@@ -18,16 +18,16 @@
    - Marine Safety Manuals
    - Requirements for Uninspected Passenger Vessels  
 
-3. CHDIRAUX documents on WOW https://wow.uscgaux.info/content.php?unit=BX-GROUP   
+3. **CHDIRAUX documents** on WOW https://wow.uscgaux.info/content.php?unit=BX-GROUP   
    - BSX Policy Letters
    - SOPs
    - Guides and Handbooks
    - ALAUXs  
 
-4. Auxiliary National Documents
+4. **Auxiliary National Documents**
    - National Leadership Documents located on National Commodore's WOW page
    - National Directorate Manuals, Handbooks FAQs and Workshops 
 
-5. Misc. documents:
+5. **Misc. documents:**
    - Acronym Glossary
    - New Member Handbook (2015)  
