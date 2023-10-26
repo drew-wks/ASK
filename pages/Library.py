@@ -46,26 +46,26 @@ with tab1:
    overview = read_markdown_file("docs/library_overview.md")
    st.markdown(overview, unsafe_allow_html=True)
 
-
 with tab2:
-    st.markdown("#### Document List")
+   st.markdown("#### Document List")
 
    df = pd.DataFrame(
-      [
-         {"command": "st.selectbox", "rating": 4, "is_widget": True},
-         {"command": "st.balloons", "rating": 5, "is_widget": False},
-         {"command": "st.time_input", "rating": 3, "is_widget": True},
-      ]
+        [
+            {"command": "st.selectbox", "rating": 4, "is_widget": True},
+            {"command": "st.balloons", "rating": 5, "is_widget": False},
+            {"command": "st.time_input", "rating": 3, "is_widget": True},
+        ]
    )
+
    edited_df = st.data_editor(df)
 
    favorite_command = edited_df.loc[edited_df["rating"].idxmax()]["command"]
    st.markdown(f"Your favorite command is **{favorite_command}** 🎈")
 
-
 with tab3:
    st.header("An owl")
    st.image("https://static.streamlit.io/examples/owl.jpg", width=200)
+
 
 
 
