@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 - Add additional metadata keys and values into library data, including effective date
-- Reincorporating truberics feedback collector
+- Reincorporatie Truberics feedback collector
 - Include search query string  with results
 - Some elements (chat window, expander box) appear 'below the fold' on some mobile devices.
 
@@ -20,10 +20,10 @@ All notable changes to this project will be documented in this file.
 ## [1.1.0] - 2023-10-22
 Lots of changes to the user interface to better explain the service and use the screen real estate  
 ### Features
-- added more explanatory text
+- Added more explanatory text
 - Text explaining examples disappears after first search to make more room for results  
 ### Bug fixes
-- Formatting errors within the detailed sources  
+- Eliminated formatting errors within the detailed sources  
 
 ### Breaking changes
 
@@ -37,7 +37,8 @@ Lots of changes to the user interface to better explain the service and use the 
 - Chat window entirely inaccessible on some mobile devices.  
 
 ### Breaking changes
-- Moved logo to assets directory  
+- Moved logo to assets directory
+- Removed Truberics feedback collector for troubleshooting streamlit code
 
 ## [1.0.0] - 2023-10-14
 Pushed ASK from local to public git and streamlit cloud. ASK is public!
