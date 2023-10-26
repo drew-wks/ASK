@@ -48,7 +48,7 @@ with tab1:
 
 
 with tab2:
-   st.header("Document List")
+    st.markdown("#### Document List")
 
    df = pd.DataFrame(
       [
