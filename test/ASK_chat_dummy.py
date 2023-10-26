@@ -1,9 +1,7 @@
 
 import streamlit as st
-
-import sys
-sys.path.append("..")
 import ASK_inference as ASK
+
 from ASK_inference import config
 
 api_key=st.secrets.QDRANT_API_KEY
