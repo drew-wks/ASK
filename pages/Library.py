@@ -8,22 +8,22 @@ st.set_page_config(page_title="ASK Library", initial_sidebar_state="collapsed")
 
 st.markdown( """ <style> [data-testid="collapsedControl"] { display: none } </style> """, unsafe_allow_html=True, )
 
-st.title("//ASK Auxiliary Source of Knowledge")
-st.write("  ")
+st.title("//ASK")
+st.write("## Document Library")
 
 want_to_contribute = st.button("Return to the App")
 if want_to_contribute:
     switch_page('ASK_chatstyle')
 
 
-tab1, tab2, tab3 = st.tabs(["Cat", "Dog", "Owl"])
+tab1, tab2, tab3 = st.tabs(["Overview", "Document List", "Owl"])
 
 with tab1:
-   st.header("A cat")
+   st.header("Library Overview")
    st.image("https://static.streamlit.io/examples/cat.jpg", width=200)
 
 with tab2:
-   st.header("A dog")
+   st.header("Document List")
    st.image("https://static.streamlit.io/examples/dog.jpg", width=200)
 
 with tab3:
