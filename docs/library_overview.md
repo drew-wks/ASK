@@ -9,26 +9,26 @@
    - Auxiliary Process Guides
    - Auxiliary Training Handbooks
    - Auxiliary Programs 
-   - Model Standing Rules
+   - Model Standing Rules  
 
-2. Other USCG Directives, such as
+2. Other USCG Directives, such as:
    - Civil Rights Manual
    - Navigation Rules
    - Incident Management Handbook
    - Contingency Preparedness Planning Manual for Incident Management and Crisis Response
    - Marine Safety Manuals
-   - Requirements for Uninspected Passenger Vessels
+   - Requirements for Uninspected Passenger Vessels  
 
 3. CHDIRAUX documents on WOW https://wow.uscgaux.info/content.php?unit=BX-GROUP   
    - BSX Policy Letters
    - SOPs
-   - uides and Handbooks
-   - CHDIRAUX ALAUXs
+   - Guides and Handbooks
+   - ALAUXs  
 
 4. Auxiliary National Documents
    - National Leadership Documents located on National Commodore's WOW page
-   - Manuals, Handbooks FAQs and Workshops issued by National Directorates
+   - National Directorate Manuals, Handbooks FAQs and Workshops 
 
-5. Misc. documents to facilitate testing of ASK using new members and a program area (surface operations) use cases:
+5. Misc. documents:
    - Acronym Glossary
-   - New Member Handbook (2015)
+   - New Member Handbook (2015)  
