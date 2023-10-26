@@ -14,10 +14,9 @@ import ASK_inference as ASK
 from ASK_inference import config
 from streamlit_extras.stylable_container import stylable_container
 import time
-st.set_page_config(page_title="ASK Auxiliary Source of Knowledge")
+st.set_page_config(page_title="ASK Auxiliary Source of Knowledge", initial_sidebar_state="collapsed")
 
-'''hide sidebar'''
-st.set_page_config(initial_sidebar_state="collapsed")
+
 st.markdown( """ <style> [data-testid="collapsedControl"] { display: none } </style> """, unsafe_allow_html=True, )
 
 
