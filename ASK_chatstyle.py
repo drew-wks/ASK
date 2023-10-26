@@ -1,10 +1,3 @@
-''' run by placing this line in terminal
-    streamlit run file_name.py
-    Easiest in VSCode, "run and debug'. Make sure launch.json is set up
-'''
-
-#
-
 import streamlit as st 
 import datetime
 import pandas as pd
