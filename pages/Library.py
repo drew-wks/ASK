@@ -5,11 +5,31 @@ from streamlit_extras.switch_page_button import switch_page
 
 st.set_page_config(page_title="ASK Library", initial_sidebar_state="collapsed")
 
-
 st.markdown( """ <style> [data-testid="collapsedControl"] { display: none } </style> """, unsafe_allow_html=True, )
 
-st.title("//ASK")
-st.write("## Document Library")
+
+hide_st_style = """
+            <style>
+            #MainMenu {visibility: hidden;}
+            footer {visibility: hidden;}
+            header {visibility: visible;}
+            </style>
+            """
+st.markdown(hide_st_style, unsafe_allow_html=True)
+
+st.markdown("""
+        <style>
+               .block-container {
+                    padding-top: 1rem;
+                    padding-bottom: 1rem;
+                    padding-left: 3rem;
+                    padding-right: 3rem;
+                }
+        </style>
+        """, unsafe_allow_html=True)
+
+
+st.title("ASK Document Library")
 
 want_to_contribute = st.button("Return to the App")
 if want_to_contribute:
