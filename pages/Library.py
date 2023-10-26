@@ -29,8 +29,23 @@ st.markdown("""
         </style>
         """, unsafe_allow_html=True)
 
+
+
 def read_markdown_file(markdown_file):
    return Path(markdown_file).read_text()
+
+
+
+def get_pickle_file(): 
+   directory_path = 'reports/library_pkl/'
+   files_in_directory = os.listdir(directory_path)
+   pickle_files = [file for file in files_in_directory if file.endswith('.pkl')]
+
+   if len(pickle_files) == 1:
+      df = pd.read_pickle(os.path.join(directory_path, pickle_files[0]))
+   else:
+      print("There's either no pickle file or more than one in the directory.")
+
 
 
 st.title("ASK Document Library")
@@ -48,17 +63,8 @@ with tab1:
 
 with tab2:
    st.markdown("#### Document List")
-
-   df = pd.DataFrame(
-        [
-            {"command": "st.selectbox", "rating": 4, "is_widget": True},
-            {"command": "st.balloons", "rating": 5, "is_widget": False},
-            {"command": "st.time_input", "rating": 3, "is_widget": True},
-        ]
-   )
-
+   df = get_pickle_file()
    edited_df = st.data_editor(df)
-
    favorite_command = edited_df.loc[edited_df["rating"].idxmax()]["command"]
 
 
