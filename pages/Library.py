@@ -80,10 +80,14 @@ with tab2:
 
 
 with tab3:
-   st.markdown("#### Document Upload")
-   st.write("[This is a placeholder page for suggesting new documents to add to the ASK Library]")
-   st.write("[Overview of criteria and process]")
-   st.write("[Upload widget here]")
+    st.markdown("#### Document Upload")
+    st.write("[This is a placeholder page for suggesting new documents to add to the ASK Library]")
+    st.write("[Overview of criteria and process]")
+    uploaded_files = st.file_uploader("Choose a pdf file", type='pdf', accept_multiple_files=True)
+    for uploaded_file in uploaded_files:
+        bytes_data = uploaded_file.read()
+        st.write("filename:", uploaded_file.name)
+        st.write(bytes_data)
 
 
 
