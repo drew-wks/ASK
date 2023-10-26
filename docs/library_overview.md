@@ -1,6 +1,6 @@
 
  #### Library Overview
- ASK has already been loaded with over 250 documents (over 8000 pages) to demonstrate its viability. All these documents are located in public sections of the USCG and USCG Auxiliary websites (cgaux.org uscg.mil). No secure content was included (i.e., content requiring Member Zone or CAC access.
+ ASK has already been loaded with over 250 documents (over 8000 pages) to demonstrate its viability. All these documents are located in public sections of the USCG and USCG Auxiliary websites (cgaux.org uscg.mil). No secure content is included (i.e., content requiring Member Zone or CAC access.
 
 #### Document Types
 
@@ -11,11 +11,11 @@
    - Auxiliary Programs 
    - Model Standing Rules  
 
-2. **Other USCG Directives, such as:**
+2. **Other USCG Directives,** such as:
    - Civil Rights Manual
    - Navigation Rules
    - Incident Management Handbook
-   - Contingency Preparedness Planning Manual for Incident Management and Crisis Response
+   - Contingency Preparedness Planning Manuals
    - Marine Safety Manuals
    - Requirements for Uninspected Passenger Vessels  
 
