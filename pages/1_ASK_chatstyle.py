@@ -63,12 +63,8 @@ collector = FeedbackCollector(
 # see feedback at https://trubrics.streamlit.app/?ref=blog.streamlit.io
 
 
-from streamlit_extras.switch_page_button import switch_page
 
-want_to_contribute = st.button("I want to contribute!")
-if want_to_contribute:
-    switch_page("2_Library")
-    
+
 
 
 st.image("https://raw.githubusercontent.com/dvvilkins/ASK/main/images/ASK_logotype_color.png?raw=true", use_column_width="always")
@@ -88,6 +84,14 @@ examples.write("""
 """)
 st.write("  ")
 st.write("  ")
+
+from streamlit_extras.switch_page_button import switch_page
+
+want_to_contribute = st.button("I want to contribute!")
+if want_to_contribute:
+    switch_page("2_Library")
+
+    
 
 user_feedback = " "
 #response = {}
