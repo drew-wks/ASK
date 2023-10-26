@@ -1,6 +1,6 @@
 
 import streamlit as st
-import ASK_inference as ASK
+import ../ASK_inference as ASK
 from ASK_inference import config
 
 
