@@ -75,7 +75,7 @@ with tab2:
     isim= 'ASK_library.csv'
     indir = edited_df.to_csv(index=False)
     b64 = base64.b64encode(indir.encode(encoding='ISO-8859-1')).decode(encoding='ISO-8859-1')  
-    linko_final= f'<a href="data:file/csv;base64,{b64}" download={isim}>Download List</a>'
+    linko_final= f'<a href="data:file/csv;base64,{b64}" download={isim}>Click to download</a>'
     st.markdown(linko_final, unsafe_allow_html=True)
 
 
