@@ -6,8 +6,8 @@ from streamlit_extras.switch_page_button import switch_page
 st.set_page_config(page_title="ASK Library")
 
 st.title("//ASK Auxiliary Source of Knowledge")
+st.write("  ")
 
-
-want_to_contribute = st.button("Return to App")
+want_to_contribute = st.button("Return to the App")
 if want_to_contribute:
     switch_page('ASK_chatstyle')
