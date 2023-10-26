@@ -5,11 +5,11 @@
 ##### Document Types
 
 1. USCG Auxiliary Directives, including:  
-  - Auxiliary Manual\
-  - Auxiliary Process Guides\
-  - Auxiliary Training Handbooks
-  - Auxiliary Programs 
-  - Model Standing Rules
+   - Auxiliary Manual\
+   - Auxiliary Process Guides\
+   - Auxiliary Training Handbooks
+    - Auxiliary Programs 
+   - Model Standing Rules
 
 2. Other USCG Directives, such as
   - Civil Rights Manual
