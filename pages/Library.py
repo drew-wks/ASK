@@ -29,6 +29,9 @@ st.markdown("""
         </style>
         """, unsafe_allow_html=True)
 
+def read_markdown_file(markdown_file):
+   return Path(markdown_file).read_text()
+
 
 st.title("ASK Document Library")
 
@@ -41,7 +44,9 @@ tab1, tab2, tab3 = st.tabs(["Overview", "Document List", "Owl"])
 
 with tab1:
    st.header("Library Overview")
-   read_markdown_file("docs/library_overview.md")
+   overview = read_markdown_file("docs/library_overview.md")
+   st.markdown(overview, unsafe_allow_html=True)
+
 
 with tab2:
    st.header("Document List")
@@ -50,3 +55,8 @@ with tab2:
 with tab3:
    st.header("An owl")
    st.image("https://static.streamlit.io/examples/owl.jpg", width=200)
+
+
+
+
+
