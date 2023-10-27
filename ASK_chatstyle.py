@@ -67,6 +67,7 @@ st.write(
     "#### Get answers to USCG Auxiliary questions from authoritative sources.")
 
 st.write("ASK uses Artificial Intelligence (AI) to search over [250](https://github.com/dvvilkins/ASK/blob/0e975f41f8f072aac2837ac42a9fe11963dc3fb2/docs/library_doc_list.pdf) Coast Guard Auxiliary references to answer your questions.  Please note: ASK is offered on evaluation basis and has not been officially adopted by the USCG Auxiliary. For questions or feedback, contact [Drew Wilkins](mailto:uscgaux.drew@wks.us).", unsafe_allow_html=True)
+st.markdown("ASK uses Artificial Intelligence (AI) to search over<a href='Library' target='_self'>250</a>Coast Guard Auxiliary references to answer your questions.  Please note: ASK is offered on evaluation basis and has not been officially adopted by the USCG Auxiliary. For questions or feedback, contact [Drew Wilkins](mailto:uscgaux.drew@wks.us", unsafe_allow_html=True)
 examples = st.empty()
 
 examples.write("""  
@@ -79,13 +80,7 @@ examples.write("""
 st.write("  ")
 st.write("  ")
 
-from streamlit_extras.switch_page_button import switch_page
 
-want_to_contribute = st.button("I want to contribute!")
-if want_to_contribute:
-    switch_page('Library')
-
-st.markdown("<a href='Library' target='_self'>Library</a>", unsafe_allow_html=True)
 
 user_feedback = " "
 #response = {}
