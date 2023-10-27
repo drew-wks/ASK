@@ -81,13 +81,8 @@ with tab2:
 
 with tab3:
     st.markdown("#### Document Upload")
-    st.write("[This is a placeholder page for suggesting new documents to add to the ASK Library]")
-    st.write("[Overview of criteria and process]")
-    uploaded_files = st.file_uploader("Choose a pdf file", type='pdf', accept_multiple_files=True)
-    for uploaded_file in uploaded_files:
-        bytes_data = uploaded_file.read()
-        st.write("filename:", uploaded_file.name)
-        st.write(bytes_data)
-
-
-
+    st.write("ASK works by analyzing documents that are the most current official policy that exists at a national level.")
+    st.write("")
+    st.write('''Each year, new documents are released that suspend old guidance. Outdated documents must be replaced with newer ones.
+             If you are aware of a document missing from the libary or a document in the library that has been cancelled, please let us know.
+             Send an email to uscgaux.drew@wks.us.''')
