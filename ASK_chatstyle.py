@@ -85,7 +85,7 @@ want_to_contribute = st.button("I want to contribute!")
 if want_to_contribute:
     switch_page('Library')
 
-    
+st.markdown("<a href='Library' target='_self'>Library</a>", unsafe_allow_html=True)
 
 user_feedback = " "
 #response = {}
