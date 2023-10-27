@@ -65,7 +65,7 @@ st.image("https://raw.githubusercontent.com/dvvilkins/ASK/main/images/ASK_logoty
 
 st.write(
     "#### Get answers to USCG Auxiliary questions from authoritative sources.")
-st.markdown("ASK uses Artificial Intelligence (AI) to search over <a href='Library' target='_self'>250</a> Coast Guard Auxiliary references to answer your questions.  Please note: ASK is offered on evaluation basis and has not been officially adopted by the USCG Auxiliary. For questions or feedback, contact <a href='mailto:uscgaux.drew@wks.us'>Drew Wilkins</a>", unsafe_allow_html=True)
+st.markdown("ASK uses Artificial Intelligence (AI) to search over <a href='Library' target='_self'>250</a> Coast Guard Auxiliary references to answer your questions.  Please note: ASK is offered on evaluation basis and has not been officially adopted by the USCG Auxiliary. For questions or feedback, contact <a href='mailto:uscgaux.drew@wks.us'>Drew Wilkins</a>.", unsafe_allow_html=True)
 examples = st.empty()
 
 examples.write("""  
@@ -106,16 +106,11 @@ if query:
         generation=response['result'],
     )
 
-
-st.write("")
-st.write("")
-st.write("")
-st.write("")
-st.write("")
-st.write("")
-st.write("")
-st.write("")
-st.write("")
+from streamlit_extras.add_vertical_space import add_vertical_space
+def example():
+    add_n_lines = st.slider("Add n vertical lines below this", 1, 5, 10, 20)
+    add_vertical_space(add_n_lines)
+    st.write("Here is text after the nth line!")
 
 with stylable_container(
     key="bottom_content",
