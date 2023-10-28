@@ -56,7 +56,7 @@ st.title("ASK Document Library")
 
 back = st.button("< Back to App", type="primary")
 if back:
-    switch_page('ASK_chatstyle')
+    switch_page("ASK_chatstyle")
 
 
 tab1, tab2, tab3 = st.tabs(["Library Overview", "Document List", "Suggest a Doc"])
