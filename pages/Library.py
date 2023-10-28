@@ -54,7 +54,7 @@ def get_pickle_file():
 
 st.title("ASK Document Library")
 
-back = st.button("< Back 8to App", type="primary")
+back = st.button("< Back to App", type="primary")
 if back:
     switch_page("ASK_chatstyle")
 
