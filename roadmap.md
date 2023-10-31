@@ -6,7 +6,7 @@ These are some of the the things I plan to do over the coming months to continue
     - [x] Direct export of Library List Report into UI
     - [x] Check duplicate PDFs
     - [ ] Modify metadata in payload via streamlit
-    - [ ] Remove PDFs- acheived via langchain.vectorstores.qdrant>Qdrant.delete([vector IDs])
+    - [ ] Remove PDFs- acheived via langchain.vectorstores.qdrant.Qdrant.delete([vector IDs])
 - [ ] Evaluate Ray for ASK
 
 ## Inference  
