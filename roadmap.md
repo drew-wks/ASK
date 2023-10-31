@@ -36,7 +36,7 @@ These are some of the the things I plan to do over the coming months to continue
 - [ ] Explore other chunking strategies
 - [ ] Get Strealit working faster via st.session_state and st.database
 
-## Leapfrogging
+## Leapfrogging everything with Game Changers
 - Enhance features and simplify backend through automation
     - [x] Evaluate Vectara
     - [ ] Utilize agents to replace programmatic work such as bringing metadata into chunks
