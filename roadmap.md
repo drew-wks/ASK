@@ -27,7 +27,7 @@ These are some of the the things I plan to do over the coming months to continue
 ## Speed and Accuracy  
 - Remove superfluous metadata from chunks
 - Explore other chunking strategies
-- st.session_state
+- Get Strealit working faster via st.session_state and st.database
 
 ## Process Automation  
 - Utilize agents to replace programmatic work such as bringing metadata into chunks
