@@ -20,9 +20,11 @@ These are some of the the things I plan to do over the coming months to continue
 - Incorporate better visual status into UI
 
 ## Instrumentation  
-- Add tokens used to truberics
-- Add parameters to trubrics feed
-- Explore IP address gathering on Streamlit cloud
+- Continue to build out on Truberics
+    - Add tokens usage to truberics
+    - Add parameters to trubrics feed
+    - Explore IP address gathering on Streamlit cloud
+- Explore Neptune platform
 
 ## Speed and Accuracy  
 - Remove superfluous metadata from chunks
