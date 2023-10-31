@@ -1,17 +1,19 @@
 # ASK Feature Roadmap
 
-## Library reporting and administration directly at  "source of truth"  (Qdrant database)  
-- Direct export of Library List Report into UI
-- Modify metadata directly
-- Check duplicate PDFs
-- Remove PDFs
+## Library (Corpus) Management 
+- Report and administrate directly at the vector db "source of truth"
+    - Direct export of Library List Report into UI
+    - Modify metadata in payload via streamlit
+    - Check duplicate PDFs
+    - Remove PDFs
+- Evaluate Ray for ASK
 
 ## Inference  
-- Ability to identify policy contractitions, notify user, and give more recent docunents greater weight in response
-- Explore better prompts throuugh prompt templates, esepcially 
+- Identify contraditions in policy, notify user, and give more recent docunents greater weight in response
+- Explore better prompts through prompt templates
 - Test other commercial and ([open-source embedding models](https://huggingface.co/spaces/mteb/leaderboard)
 
-## UI enhancements  
+## UI Enhancements  
 - Implement workaround chat input field on mobile devices (a bug with streamlit)
 - Bring feedback back into the UI
 - Incorporate better visual status into UI
@@ -21,9 +23,10 @@
 - Add parameters to trubrics feed
 - Explore IP address gathering on Streamlit cloud
 
-## Speed and accuracy improvements  
+## Speed and Accuracy  
 - Remove superfluous metadata from chunks
 - Explore other chunking strategies
+- st.session_state
 
 ## Process Automation  
 - Utilize agents to replace programmatic work such as bringing metadata into chunks
