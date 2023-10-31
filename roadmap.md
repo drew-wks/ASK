@@ -4,8 +4,8 @@ These are some of the the things I plan to do over the coming months to continue
 ## Library (Corpus) Management 
 - Report and administrate directly at the vector db "source of truth"
     - [x] Direct export of Library List Report into UI
-    - Modify metadata in payload via streamlit
     - [x] Check duplicate PDFs
+    - Modify metadata in payload via streamlit
     - Remove PDFs- acheived via langchain.vectorstores.qdrant>Qdrant.delete([vector IDs])
 - Evaluate Ray for ASK
 
