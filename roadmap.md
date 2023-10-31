@@ -5,7 +5,7 @@ These are some of the the things I plan to do over the coming months to continue
 - Report and administrate directly at the vector db "source of truth"
     - [x] Direct export of Library List Report into UI
     - Modify metadata in payload via streamlit
-    - Check duplicate PDFs
+    - [x] Check duplicate PDFs
     - Remove PDFs- acheived via langchain.vectorstores.qdrant>Qdrant.delete([vector IDs])
 - Evaluate Ray for ASK
 
