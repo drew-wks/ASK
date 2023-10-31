@@ -10,7 +10,10 @@ These are some of the the things I plan to do over the coming months to continue
 - Evaluate Ray for ASK
 
 ## Inference  
-- Identify contraditions in policy, notify user, and give more recent docunents greater weight in response
+- Reason through contractitions in corpus docs (e.g., conflicting policies)
+    -[x] Tag documents with effective date
+    - Include effective date in retrieval 
+    - Give greater to weight to more recent documents
 - Explore better prompts through prompt templates
 - Test other private and [open-source embedding models](https://huggingface.co/spaces/mteb/leaderboard)
 
