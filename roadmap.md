@@ -11,7 +11,8 @@ These are some of the the things I plan to do over the coming months to continue
 
 ## Inference  
 - [ ] Reason through contractitions in corpus docs (e.g., conflicting policies)
-    -[x] Tag documents with effective date
+    - [x] Tag documents with effective date
+    - [ ] Index additional metadata
     - [ ] Include effective date in retrieval 
     - [ ] Give greater to weight to more recent documents
 - [ ] Explore better prompts through prompt templates
@@ -35,10 +36,8 @@ These are some of the the things I plan to do over the coming months to continue
 - [ ] Explore other chunking strategies
 - [ ] Get Strealit working faster via st.session_state and st.database
 
-## Process Automation  
-- [ ] Utilize agents to replace programmatic work such as bringing metadata into chunks
-- [ ] Explore having agent extract doc purpose and incoporate as metadata
-
 ## Leapfrogging
-### Explore new frameworks and paltforms to simplify/improve our solution
-- [x] Evaluate Vectara
+- Enhance features and simplify backend through automation
+    - [x] Evaluate Vectara
+    - [ ] Utilize agents to replace programmatic work such as bringing metadata into chunks
+    - [ ] Explore having agent extract doc purpose and incoporate as metadata
