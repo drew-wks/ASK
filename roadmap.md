@@ -12,7 +12,7 @@ These are some of the the things I plan to do over the coming months to continue
 ## Inference  
 - Identify contraditions in policy, notify user, and give more recent docunents greater weight in response
 - Explore better prompts through prompt templates
-- Test other commercial and ([open-source embedding models](https://huggingface.co/spaces/mteb/leaderboard)
+- Test other private and [open-source embedding models](https://huggingface.co/spaces/mteb/leaderboard)
 
 ## UI Enhancements  
 - Implement workaround chat input field on mobile devices (a bug with streamlit)
