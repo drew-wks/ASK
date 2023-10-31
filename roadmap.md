@@ -1,5 +1,5 @@
 # ASK Feature Roadmap
-These are some of the the things I plan to do over the coming months
+These are some of the the things I plan to do over the coming months to continue to improve ASK
 
 ## Library (Corpus) Management 
 - Report and administrate directly at the vector db "source of truth"
