@@ -3,10 +3,10 @@ These are some of the the things I plan to do over the coming months to continue
 
 ## Library (Corpus) Management 
 - Report and administrate directly at the vector db "source of truth"
-    - Direct export of Library List Report into UI
+    - [x] Direct export of Library List Report into UI
     - Modify metadata in payload via streamlit
     - Check duplicate PDFs
-    - Remove PDFs
+    - Remove PDFs- acheived via langchain.vectorstores.qdrant>Qdrant.delete([vector IDs])
 - Evaluate Ray for ASK
 
 ## Inference  
@@ -20,6 +20,7 @@ These are some of the the things I plan to do over the coming months to continue
 - Incorporate better visual status into UI
 
 ## Instrumentation  
+- [x] Assess instrumentation providers: wandb, neptune, Trubrics
 - Continue to build out on Truberics
     - Add tokens usage to truberics
     - Add parameters to trubrics feed
@@ -37,4 +38,4 @@ These are some of the the things I plan to do over the coming months to continue
 
 ## Leapfrogging
 ### Explore new frameworks and paltforms to simplify/improve our solution
-- Evaluate Vectara
+- [x] Evaluate Vectara
