@@ -76,16 +76,14 @@ st.write("  ")
 st.write("  ")
 
 
-_rag = rag
 user_feedback = " "
 #response = {}
 query = st.chat_input("Type your question or task here", max_chars=200)
 if query:
     if query == "pledge":
-        _rag = rag_dummy
-    print(f"Response start {datetime.datetime.now().strftime('%H:%M:%S')}")
-    response = ASK._rag(query,retriever) # ASK.rag_dummy for UNIT TESTING
-    print(f"Response finish {datetime.datetime.now().strftime('%H:%M:%S')}")
+        response = ASK.rag_dummy(query,retriever) # ASK.rag_dummy for UNIT TESTING
+    else:
+        response = ASK.rag(query,retriever) 
     short_source_list = ASK.create_short_source_list(response)
     long_source_list = ASK.create_long_source_list(response)
     examples.empty()
