@@ -81,7 +81,7 @@ user_feedback = " "
 #response = {}
 query = st.chat_input("Type your question or task here", max_chars=200)
 if query:
-    if query == "pledge"
+    if query == "pledge":
         _rag = rag_dummy
     print(f"Response start {datetime.datetime.now().strftime('%H:%M:%S')}")
     response = ASK._rag(query,retriever) # ASK.rag_dummy for UNIT TESTING
