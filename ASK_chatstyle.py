@@ -12,7 +12,6 @@ st.set_page_config(page_title="ASK Auxiliary Source of Knowledge", initial_sideb
 
 st.markdown( """ <style> [data-testid="collapsedControl"] { display: none } </style> """, unsafe_allow_html=True, )
 
-
 hide_st_style = """
             <style>
             #MainMenu {visibility: hidden;}
@@ -77,7 +76,6 @@ st.write("  ")
 
 
 user_feedback = " "
-#response = {}
 query = st.chat_input("Type your question or task here", max_chars=200)
 if query:
     if query == "pledge":
@@ -89,7 +87,6 @@ if query:
     examples.empty()
     st.info(f"""##### Response:\n{response['result']}\n\n **Sources:**  \n {short_source_list}\n**Note:**  \nASK may contain inaccuracies. Please review the official documents. Also, ASK only searches natonal documents. Check with your district, division and flotilla leadership for official policy in your AOR.
     """)
-    #old results expander went here
 
     with st.status("Compiling references...", expanded=False) as status:
         time.sleep(1)
