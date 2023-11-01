@@ -6,7 +6,8 @@ from ASK_inference import config
 
 api_key=st.secrets.QDRANT_API_KEY
 
-
+import os
+os.write(1,b'This is a debugger which outputs to the streamlit console.\n') # 
 
 # Check if 'client' is not in locals() or 'client' is not in globals()
 #if not it runs qdrant_check_and_connect()
