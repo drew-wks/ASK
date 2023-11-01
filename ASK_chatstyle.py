@@ -57,15 +57,12 @@ collector = FeedbackCollector(
 # see feedback at https://trubrics.streamlit.app/?ref=blog.streamlit.io
 
 
-
-
-
-
 st.image("https://raw.githubusercontent.com/dvvilkins/ASK/main/images/ASK_logotype_color.png?raw=true", use_column_width="always")
 
 st.write(
     "#### Get answers to USCG Auxiliary questions from authoritative sources.")
 st.markdown("ASK uses Artificial Intelligence (AI) to search over <a href='Library' target='_self'>250</a> Coast Guard Auxiliary references to answer your questions.  Please note: ASK is offered on evaluation basis and has not been officially adopted by the USCG Auxiliary. For questions or feedback, contact <a href='mailto:uscgaux.drew@wks.us'>Drew Wilkins</a>.", unsafe_allow_html=True)
+
 examples = st.empty()
 
 examples.write("""  
@@ -93,13 +90,12 @@ if query:
     st.info(f"""##### Response:\n{response['result']}\n\n **Sources:**  \n {short_source_list}\n**Note:**  \nASK may contain inaccuracies. Please review the official documents. Also, ASK only searches natonal documents. Check with your district, division and flotilla leadership for official policy in your AOR.
     """)
     #old results expander went here
-###############
+
     with st.status("Compiling references...", expanded=False) as status:
         time.sleep(1)
         st.write(long_source_list)
         status.update(label=":blue[**Click for references**]", expanded=False)
 
-################
     collector.log_prompt(
         config_model={"model": "gpt-3.5-turbo"},
         prompt=query,
