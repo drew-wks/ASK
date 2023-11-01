@@ -37,7 +37,6 @@ from langchain.vectorstores import Qdrant
 from langchain.chains import RetrievalQA
 from langchain.chat_models import ChatOpenAI
 import tiktoken
-import pickle
 
 llm=ChatOpenAI(model=config["model"], temperature=config["temperature"]) #keep outside the function so it's accessible elsewhere in this notebook
 
@@ -86,13 +85,12 @@ def init_retriever_and_generator(qdrant):
         search_type=config["search_type"], 
         search_kwargs={'k': config["k"], "fetch_k": config["fetch_k"], "lambda_mult": config["lambda_mult"], "filter": None}, # filter documents by metadata
     )
-    return retriever
 
+    return retriever
 
 
 def rag(query, retriever):
     '''run a RAG completion'''
-
     rag_instance = RetrievalQA.from_chain_type(
         llm=llm,
         chain_type=config["chain_type"],
@@ -102,15 +100,6 @@ def rag(query, retriever):
     response = rag_instance({"query": query})
     return response
 
-
-
-def rag_dummy(query, retriever):
-    '''returns a dummy canned response'''
-
-    with open("test/dummy_response.pkl", "rb") as file:
-        dummy_response = pickle.load(file)
-    return dummy_response
-        
 
 
 def create_short_source_list(response):
