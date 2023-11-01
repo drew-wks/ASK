@@ -75,7 +75,7 @@ st.write("  ")
 st.write("  ")
 
 user_feedback = " "
-query = st.input("Type your question or task here", max_chars=200)
+query = st.text_input("Type your question or task here", max_chars=200)
 if query:
     if query == "pledge":
         response = ASK.rag_dummy(query,retriever) # ASK.rag_dummy for UNIT TESTING
