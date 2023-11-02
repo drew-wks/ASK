@@ -72,7 +72,6 @@ examples.write("""
     
 """)
 st.write("  ")
-st.write("  ")
 
 user_feedback = " "
 query = st.text_input("Type your question or task here", max_chars=200)
