@@ -9,6 +9,4 @@ query = st.text_input("Type your question or task here", max_chars=200, key=uniq
 
 if query:
     st.write(f"You typed: {query}")
-else:
-    st.write("nothing")
 
