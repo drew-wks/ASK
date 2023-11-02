@@ -78,7 +78,7 @@ user_feedback = " "
 query = st.text_input("Type your question or task here", value='', max_chars=200)
 
 if query:
-    with st.status("Checking documents...", expanded=False) as status:
+    with st.status(label=":blue[**Checking documents...**]", expanded=False) as status:
         if query == "pledge":
             response = ASK.rag_dummy(query, retriever)  # ASK.rag_dummy for UNIT TESTING
         else:
