@@ -2,7 +2,6 @@ import streamlit as st
 import uuid
 
 
-unique_key = "fiya"
 
 
 query = st.text_input("Type your question or task here", max_chars=200, key=unique_key)
