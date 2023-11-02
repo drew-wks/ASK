@@ -74,27 +74,15 @@ examples.write("""
 st.write("  ")
 
 user_feedback = " "
+# Define a key for your text input
 text_input_key = 'query_text'
 
 # Initialize the session state for the text input if it doesn't exist
 if text_input_key not in st.session_state:
     st.session_state[text_input_key] = ''
 
-# Function to handle the text input action
-def handle_text_input():
-    # Perform the query and other actions here
-    # ...
-
-    # After processing the query, schedule the text input to be cleared on the next run
-    st.session_state['clear_text_input'] = True
-
-# Check if we need to clear the text input on this run
-if st.session_state.get('clear_text_input'):
-    st.session_state[text_input_key] = ''  # Clear the text input
-    st.session_state['clear_text_input'] = False  # Reset the flag
-
 # Create a text input that uses the session state
-query = st.text_input("Type your question or task here", value=st.session_state[text_input_key], max_chars=200, key=text_input_key, on_change=handle_text_input)
+query = st.text_input("Type your question or task here", value='', max_chars=200, key=text_input_key)
 
 if query:
     with st.status("Checking documents...", expanded=False) as status:
@@ -117,7 +105,9 @@ if query:
     with st.status("Compiling references...", expanded=False) as status:
         time.sleep(1)
         st.write(long_source_list)
-        status.update(label=":blue[**Click for full references**]", expanded=False)
+        status.update(label=":blue[**Click for full references**]", expanded=False)        
+        # Clear the text input by setting its value in the session state to an empty string
+        st.session_state[text_input_key] = ''
 
     collector.log_prompt(
         config_model={"model": "gpt-3.5-turbo"},
