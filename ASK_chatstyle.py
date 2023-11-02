@@ -86,9 +86,9 @@ if query:
         short_source_list = ASK.create_short_source_list(response)
         long_source_list = ASK.create_long_source_list(response)
         examples.empty()
-        st.info(f"""##### Query:\n*{query}*\n\n ##### Response:\n{response['result']}\n\n **Sources:**  \n {short_source_list}\n**Note:**  \nASK can make mistakes. Verify with the sources. Also, ASK only searches natonal policies. Check with your district, division and flotilla leadership for official policy in your AOR.
+        st.info(f"""**Query:** *{query}*\n\n ##### Response:\n{response['result']}\n\n **Sources:**  \n {short_source_list}\n**Note:**  \nASK can make mistakes. Verify with the sources. Also, ASK is a national service. Check with your AOR for additional policies.
         """)
-    status.update(label=":blue[**Not sure whta to put here**]", expanded=True)
+    status.update(label=":blue[**Response**]", expanded=True)
 
     with st.status("Compiling references...", expanded=False) as status:
         time.sleep(1)
