@@ -9,6 +9,6 @@ unique_key = str(uuid.uuid4())
 
 user_feedback = " "
 query = st.text_input("Type your question or task here", max_chars=200, key=unique_key)
-)
+
 st.write(query)
 
