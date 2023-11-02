@@ -74,15 +74,8 @@ examples.write("""
 st.write("  ")
 
 user_feedback = " "
-# Define a key for your text input
-text_input_key = 'query_text'
 
-# Initialize the session state for the text input if it doesn't exist
-if text_input_key not in st.session_state:
-    st.session_state[text_input_key] = ''
-
-# Create a text input that uses the session state
-query = st.text_input("Type your question or task here", value='', max_chars=200, key=text_input_key)
+query = st.text_input("Type your question or task here", value='', max_chars=200)
 
 if query:
     with st.status("Checking documents...", expanded=False) as status:
@@ -96,9 +89,6 @@ if query:
         examples.empty()
         
         st.info(f"""**Question:** *{query}*\n\n ##### Response:\n{response['result']}\n\n **Sources:**  \n {short_source_list}\n**Note:**  \nASK can make mistakes. Verify with the sources. Also, ASK is a national service. Check with your AOR for additional policies.""")
-        
-        # Clear the text input by setting its value in the session state to an empty string
-        st.session_state[text_input_key] = ''
         
         status.update(label=":blue[**Response**]", expanded=True)
 
