@@ -82,7 +82,7 @@ def handle_text_input():
     # Increment the counter to reset the text input
     st.session_state['input_counter'] += 1
     # Trigger a rerun of the script
-    st.experimental_rerun()
+    st.rerun()
 
 # Create a text input that uses the session state and an incremented key
 query = st.text_input(
