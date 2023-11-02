@@ -77,7 +77,7 @@ text_input_placeholder = st.empty()
 query = text_input_placeholder.text_input("Type your question or task here", value='', max_chars=200)
 
 if query:
-    with st.status("Checking documents..."):
+    with st.status("Checking documents...") as status:
         if query == "pledge":
             response = ASK.rag_dummy(query, retriever)  # ASK.rag_dummy for UNIT TESTING
         else:
@@ -96,8 +96,8 @@ if query:
         st.write(long_source_list)
         status.update(label=":blue[**Click for full references**]", expanded=False)        
          # Clear the text input by replacing the placeholder with a new text input with an empty default value
-    text_input_placeholder.text_input("Type your question or task here", value='', max_chars=200)
-    
+        text_input_placeholder.text_input("Type your question or task here", value='', max_chars=200)
+
     collector.log_prompt(
         config_model={"model": "gpt-3.5-turbo"},
         prompt=query,
