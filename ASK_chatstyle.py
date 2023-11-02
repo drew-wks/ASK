@@ -75,27 +75,17 @@ st.write("  ")
 st.write("  ")
 
 user_feedback = " "
-
-if "my_text" not in st.session_state:
-    st.session_state.my_text = ""
-
-def submit():
-    st.session_state.my_text = st.session_state.widget
-    st.session_state.widget = ""
-
-
-st.text_input("Type your question or task here", max_chars=200, key="widget", on_change=submit)
-my_text = st.session_state.my_text
-if my_text:
+query = st.text_input("Type your question or task here", max_chars=200)
+if query:
     with st.status("Checking documents...", expanded=False) as status:
-        if my_text == "pledge":
-            response = ASK.rag_dummy(my_text,retriever) # ASK.rag_dummy for UNIT TESTING
+        if query == "pledge":
+            response = ASK.rag_dummy(query,retriever) # ASK.rag_dummy for UNIT TESTING
         else:
-            response = ASK.rag(my_text,retriever) 
+            response = ASK.rag(query,retriever) 
         short_source_list = ASK.create_short_source_list(response)
         long_source_list = ASK.create_long_source_list(response)
         examples.empty()
-        st.info(f"""*{my_text}*\n\n ##### Response:\n{response['result']}\n\n **Sources:**  \n {short_source_list}\n**Note:**  \nASK can make mistakes. Verify with the sources. Also, ASK is a national service. Check with your AOR for additional policies.
+        st.info(f"""*{query}*\n\n ##### Response:\n{response['result']}\n\n **Sources:**  \n {short_source_list}\n**Note:**  \nASK can make mistakes. Verify with the sources. Also, ASK is a national service. Check with your AOR for additional policies.
         """)
     status.update(label=":blue[**Response**]", expanded=True)
 
@@ -106,7 +96,7 @@ if my_text:
 
     collector.log_prompt(
         config_model={"model": "gpt-3.5-turbo"},
-        prompt=my_text,
+        prompt=query,
         generation=response['result'],
     )
 
