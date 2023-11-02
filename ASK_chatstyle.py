@@ -73,6 +73,7 @@ examples.write("""
 """)
 
 user_feedback = " "
+# Initialize a counter in the session state if it doesn't exist
 if 'input_counter' not in st.session_state:
     st.session_state['input_counter'] = 0
 
@@ -80,6 +81,8 @@ if 'input_counter' not in st.session_state:
 def handle_text_input():
     # Increment the counter to reset the text input
     st.session_state['input_counter'] += 1
+    # Trigger a rerun of the script
+    st.experimental_rerun()
 
 # Create a text input that uses the session state and an incremented key
 query = st.text_input(
@@ -89,7 +92,9 @@ query = st.text_input(
     on_change=handle_text_input  # Reset the input when the text changes
 )
 
-if query:
+# Check if a query was submitted
+if query and 'last_query' not in st.session_state:
+    # Process the query here
     with st.status("Checking documents...") as status:
         if query == "pledge":
             response = ASK.rag_dummy(query, retriever)  # ASK.rag_dummy for UNIT TESTING
@@ -115,6 +120,11 @@ if query:
         prompt=query,
         generation=response['result'],
     )
+
+    st.session_state['last_query'] = query
+elif 'last_query' in st.session_state and query != st.session_state['last_query']:
+    # Clear the last query if a new one is submitted
+    del st.session_state['last_query']
 
 
 with stylable_container(
