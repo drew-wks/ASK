@@ -3,7 +3,6 @@ import datetime
 import pandas as pd
 from trubrics.integrations.streamlit import FeedbackCollector
 import ASK_inference as ASK
-
 from ASK_inference import config
 from streamlit_extras.stylable_container import stylable_container
 import time
@@ -70,15 +69,15 @@ examples.write("""
     *How do I stay current as a member?*   
     *Make a 10 question quiz on boat crewmember tasks, with answers.*   
     
+               
 """)
-st.write("  ")
 
 user_feedback = " "
-
-query = st.text_input("Type your question or task here", value='', max_chars=200)
+text_input_placeholder = st.empty()
+query = text_input_placeholder.text_input("Type your question or task here", value='', max_chars=200)
 
 if query:
-    with st.status(label=":blue[**Checking documents...**]", expanded=False) as status:
+    with st.status("Checking documents..."):
         if query == "pledge":
             response = ASK.rag_dummy(query, retriever)  # ASK.rag_dummy for UNIT TESTING
         else:
@@ -96,7 +95,8 @@ if query:
         time.sleep(1)
         st.write(long_source_list)
         status.update(label=":blue[**Click for full references**]", expanded=False)        
-        # Clear the text input by setting its value in the session state to an empty string
+         # Clear the text input by replacing the placeholder with a new text input with an empty default value
+        text_input_placeholder.text_input("Type your question or task here", value='', max_chars=200)
 
     collector.log_prompt(
         config_model={"model": "gpt-3.5-turbo"},
