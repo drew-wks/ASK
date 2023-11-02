@@ -67,7 +67,7 @@ examples = st.empty()
 examples.write("""  
     **ASK can answer questions such as:**   
     *What are the requirements to run for FC?*  
-    *How do I stay current as a vessel examiner?*   
+    *How do I stay current as a member?*   
     *Make a 10 question quiz on boat crewmember tasks, with answers.*   
     
 """)
