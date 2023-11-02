@@ -88,7 +88,7 @@ if query:
         long_source_list = ASK.create_long_source_list(response)
         examples.empty()
         
-        st.info(f"""**Question:** *{query}*\n\n ##### Response:\n{response['result']}\n\n **Sources:**  \n {short_source_list}\n**Note:**  \nASK can make mistakes. Verify with the sources. Also, ASK is a national service. Check with your AOR for additional policies.""")
+        st.info(f"""**Question:** *{query}* \n\n ##### Response:\n{response['result']}\n\n **Sources:**  \n {short_source_list}\n**Note:**  \nASK can make mistakes. Verify with the sources. Also, ASK is a national service. Check with your AOR for additional policies.""")
         
         status.update(label=":blue[**Response**]", expanded=True)
 
@@ -97,7 +97,6 @@ if query:
         st.write(long_source_list)
         status.update(label=":blue[**Click for full references**]", expanded=False)        
         # Clear the text input by setting its value in the session state to an empty string
-        st.session_state[text_input_key] = ''
 
     collector.log_prompt(
         config_model={"model": "gpt-3.5-turbo"},
