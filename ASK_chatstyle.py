@@ -7,6 +7,7 @@ import ASK_inference as ASK
 from ASK_inference import config
 from streamlit_extras.stylable_container import stylable_container
 import time
+import uuid
 st.set_page_config(page_title="ASK Auxiliary Source of Knowledge", initial_sidebar_state="collapsed")
 
 
@@ -73,8 +74,11 @@ examples.write("""
 """)
 st.write("  ")
 
+# Generate a random UUID
+unique_key = str(uuid.uuid4())
+
 user_feedback = " "
-query = st.text_input("Type your question or task here", max_chars=200)
+query = st.text_input("Type your question or task here", max_chars=200, key=unique_key)
 if query:
     with st.status("Checking documents...", expanded=False) as status:
         if query == "pledge":
