@@ -4,9 +4,11 @@ import uuid
 
 unique_key = str(uuid.uuid4())
 
-query = " "
+
 query = st.text_input("Type your question or task here", max_chars=200, key=unique_key)
 
 if query:
     st.write(f"You typed: {query}")
+else:
+    st.write("nothing")
 
