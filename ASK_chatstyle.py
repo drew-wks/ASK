@@ -79,15 +79,15 @@ query = st.empty
 query = st.text_input("Type your question or task here", max_chars=200)
 if query:
     with st.status("Checking documents...", expanded=False) as status:
-    if query == "pledge":
-        response = ASK.rag_dummy(query,retriever) # ASK.rag_dummy for UNIT TESTING
-    else:
-        response = ASK.rag(query,retriever) 
-    short_source_list = ASK.create_short_source_list(response)
-    long_source_list = ASK.create_long_source_list(response)
-    examples.empty()
-    st.info(f"""##### Query:\n*{query}*\n\n ##### Response:\n{response['result']}\n\n **Sources:**  \n {short_source_list}\n**Note:**  \nASK can make mistakes. Verify with the sources. Also, ASK only searches natonal policies. Check with your district, division and flotilla leadership for official policy in your AOR.
-    """)
+        if query == "pledge":
+            response = ASK.rag_dummy(query,retriever) # ASK.rag_dummy for UNIT TESTING
+        else:
+            response = ASK.rag(query,retriever) 
+        short_source_list = ASK.create_short_source_list(response)
+        long_source_list = ASK.create_long_source_list(response)
+        examples.empty()
+        st.info(f"""##### Query:\n*{query}*\n\n ##### Response:\n{response['result']}\n\n **Sources:**  \n {short_source_list}\n**Note:**  \nASK can make mistakes. Verify with the sources. Also, ASK only searches natonal policies. Check with your district, division and flotilla leadership for official policy in your AOR.
+        """)
     status.update(label=":blue[**Not sure whta to put here**]", expanded=True)
 
     with st.status("Compiling references...", expanded=False) as status:
