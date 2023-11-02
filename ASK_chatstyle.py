@@ -73,8 +73,21 @@ examples.write("""
 """)
 
 user_feedback = " "
-text_input_placeholder = st.empty()
-query = text_input_placeholder.text_input("Type your question or task here", value='', max_chars=200)
+if 'input_counter' not in st.session_state:
+    st.session_state['input_counter'] = 0
+
+# Function to handle the text input action
+def handle_text_input():
+    # Increment the counter to reset the text input
+    st.session_state['input_counter'] += 1
+
+# Create a text input that uses the session state and an incremented key
+query = st.text_input(
+    "Type your question or task here",
+    value='',  # Start with an empty value
+    key=f"query_text_{st.session_state['input_counter']}",  # Unique key
+    on_change=handle_text_input  # Reset the input when the text changes
+)
 
 if query:
     with st.status("Checking documents...") as status:
@@ -96,7 +109,6 @@ if query:
         st.write(long_source_list)
         status.update(label=":blue[**Click for full references**]", expanded=False)        
          # Clear the text input by replacing the placeholder with a new text input with an empty default value
-        text_input_placeholder.text_input("Type your question or task here", value='', max_chars=200)
 
     collector.log_prompt(
         config_model={"model": "gpt-3.5-turbo"},
