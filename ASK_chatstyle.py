@@ -3,6 +3,7 @@ import datetime
 import pandas as pd
 from trubrics.integrations.streamlit import FeedbackCollector
 import ASK_inference as ASK
+
 from ASK_inference import config
 from streamlit_extras.stylable_container import stylable_container
 import time
@@ -69,62 +70,34 @@ examples.write("""
     *How do I stay current as a member?*   
     *Make a 10 question quiz on boat crewmember tasks, with answers.*   
     
-               
 """)
+st.write("  ")
 
 user_feedback = " "
-# Initialize a counter in the session state if it doesn't exist
-if 'input_counter' not in st.session_state:
-    st.session_state['input_counter'] = 0
-
-# Function to handle the text input action
-def handle_text_input():
-    # Increment the counter to reset the text input
-    st.session_state['input_counter'] += 1
-    # Trigger a rerun of the script
-    st.rerun()
-
-# Create a text input that uses the session state and an incremented key
-query = st.text_input(
-    "Type your question or task here",
-    value='',  # Start with an empty value
-    key=f"query_text_{st.session_state['input_counter']}",  # Unique key
-    on_change=handle_text_input  # Reset the input when the text changes
-)
-
-# Check if a query was submitted
-if query and 'last_query' not in st.session_state:
-    # Process the query here
-    with st.status("Checking documents...") as status:
+query = st.text_input("Type your question or task here", max_chars=200)
+if query:
+    with st.status("Checking documents...", expanded=False) as status:
         if query == "pledge":
-            response = ASK.rag_dummy(query, retriever)  # ASK.rag_dummy for UNIT TESTING
+            response = ASK.rag_dummy(query,retriever) # ASK.rag_dummy for UNIT TESTING
         else:
-            response = ASK.rag(query, retriever)
-        
+            response = ASK.rag(query,retriever) 
         short_source_list = ASK.create_short_source_list(response)
         long_source_list = ASK.create_long_source_list(response)
         examples.empty()
-        
-        st.info(f"""**Question:** *{query}* \n\n ##### Response:\n{response['result']}\n\n **Sources:**  \n {short_source_list}\n**Note:**  \nASK can make mistakes. Verify with the sources. Also, ASK is a national service. Check with your AOR for additional policies.""")
-        
-        status.update(label=":blue[**Response**]", expanded=True)
+        st.info(f"""**Question:** *{query}*\n\n ##### Response:\n{response['result']}\n\n **Sources:**  \n {short_source_list}\n**Note:**  \nASK can make mistakes. Verify with the sources. Also, ASK is a national service. Check with your AOR for additional policies.
+        """)
+    status.update(label=":blue[**Response**]", expanded=True)
 
     with st.status("Compiling references...", expanded=False) as status:
         time.sleep(1)
         st.write(long_source_list)
-        status.update(label=":blue[**Click for full references**]", expanded=False)        
-         # Clear the text input by replacing the placeholder with a new text input with an empty default value
+        status.update(label=":blue[**Click for full references**]", expanded=False)
 
     collector.log_prompt(
         config_model={"model": "gpt-3.5-turbo"},
         prompt=query,
         generation=response['result'],
     )
-
-    st.session_state['last_query'] = query
-elif 'last_query' in st.session_state and query != st.session_state['last_query']:
-    # Clear the last query if a new one is submitted
-    del st.session_state['last_query']
 
 
 with stylable_container(
