@@ -16,7 +16,7 @@ hide_st_style = """
             <style>
             #MainMenu {visibility: hidden;}
             footer {visibility: hidden;}
-            header {visibility: visible;}
+            header {visibility: hidden;}
             </style>
             """
 st.markdown(hide_st_style, unsafe_allow_html=True)
@@ -24,10 +24,10 @@ st.markdown(hide_st_style, unsafe_allow_html=True)
 st.markdown("""
         <style>
                .block-container {
-                    padding-top: 1rem;
+                    padding-top: 0rem;
                     padding-bottom: 1rem;
-                    padding-left: 3rem;
-                    padding-right: 3rem;
+                    padding-left: 2rem;
+                    padding-right: 2rem;
                 }
         </style>
         """, unsafe_allow_html=True)
@@ -60,37 +60,38 @@ st.image("https://raw.githubusercontent.com/dvvilkins/ASK/main/images/ASK_logoty
 
 st.write(
     "#### Get answers to USCG Auxiliary questions from authoritative sources.")
-st.markdown("ASK uses Artificial Intelligence (AI) to search over <a href='Library' target='_self'>250</a> Coast Guard Auxiliary references to answer your questions.  Please note: ASK is offered on evaluation basis and has not been officially adopted by the USCG Auxiliary. For questions or feedback, contact <a href='mailto:uscgaux.drew@wks.us'>Drew Wilkins</a>.", unsafe_allow_html=True)
+st.markdown("ASK uses Artificial Intelligence (AI) to search over <a href='Library' target='_self'>250</a> Coast Guard Auxiliary references for answers. For evaluation only. Not officially adopted by the USCG Auxiliary. For questions or feedback, contact <a href='mailto:uscgaux.drew@wks.us'>Drew Wilkins</a>.", unsafe_allow_html=True)
 
 examples = st.empty()
 
 examples.write("""  
-    **ASK can answer questions such as:**   
+    **ASK answers questions such as:**   
     *What are the requirements to run for FC?*  
-    *How do I stay current as a vessel examiner?*   
+    *How do I stay current as a member?*   
     *Make a 10 question quiz on boat crewmember tasks, with answers.*   
     
 """)
 st.write("  ")
-st.write("  ")
 
 user_feedback = " "
-query = st.chat_input("Type your question or task here", max_chars=200)
+query = st.text_input("Type your question or task here", max_chars=200)
 if query:
-    if query == "pledge":
-        response = ASK.rag_dummy(query,retriever) # ASK.rag_dummy for UNIT TESTING
-    else:
-        response = ASK.rag(query,retriever) 
-    short_source_list = ASK.create_short_source_list(response)
-    long_source_list = ASK.create_long_source_list(response)
-    examples.empty()
-    st.info(f"""##### Response:\n{response['result']}\n\n **Sources:**  \n {short_source_list}\n**Note:**  \nASK may contain inaccuracies. Please review the official documents. Also, ASK only searches natonal documents. Check with your district, division and flotilla leadership for official policy in your AOR.
-    """)
+    with st.status("Checking documents...", expanded=False) as status:
+        if query == "pledge":
+            response = ASK.rag_dummy(query,retriever) # ASK.rag_dummy for UNIT TESTING
+        else:
+            response = ASK.rag(query,retriever) 
+        short_source_list = ASK.create_short_source_list(response)
+        long_source_list = ASK.create_long_source_list(response)
+        examples.empty()
+        st.info(f"""**Question:** *{query}*\n\n ##### Response:\n{response['result']}\n\n **Sources:**  \n {short_source_list}\n**Note:**  \nASK can make mistakes. Verify with the sources. Also, ASK is a national service. Check with your AOR for additional policies.
+        """)
+    status.update(label=":blue[**Response**]", expanded=True)
 
     with st.status("Compiling references...", expanded=False) as status:
         time.sleep(1)
         st.write(long_source_list)
-        status.update(label=":blue[**Click for references**]", expanded=False)
+        status.update(label=":blue[**Click for full references**]", expanded=False)
 
     collector.log_prompt(
         config_model={"model": "gpt-3.5-turbo"},
