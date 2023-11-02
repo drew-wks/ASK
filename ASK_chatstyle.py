@@ -89,13 +89,13 @@ my_text = st.session_state.my_text
 if my_text:
     with st.status("Checking documents...", expanded=False) as status:
         if my_text == "pledge":
-            response = ASK.rag_dummy(query,retriever) # ASK.rag_dummy for UNIT TESTING
+            response = ASK.rag_dummy(my_text,retriever) # ASK.rag_dummy for UNIT TESTING
         else:
-            response = ASK.rag(query,retriever) 
+            response = ASK.rag(my_text,retriever) 
         short_source_list = ASK.create_short_source_list(response)
         long_source_list = ASK.create_long_source_list(response)
         examples.empty()
-        st.info(f"""*{query}*\n\n ##### Response:\n{response['result']}\n\n **Sources:**  \n {short_source_list}\n**Note:**  \nASK can make mistakes. Verify with the sources. Also, ASK is a national service. Check with your AOR for additional policies.
+        st.info(f"""*{my_text}*\n\n ##### Response:\n{response['result']}\n\n **Sources:**  \n {short_source_list}\n**Note:**  \nASK can make mistakes. Verify with the sources. Also, ASK is a national service. Check with your AOR for additional policies.
         """)
     status.update(label=":blue[**Response**]", expanded=True)
 
@@ -106,7 +106,7 @@ if my_text:
 
     collector.log_prompt(
         config_model={"model": "gpt-3.5-turbo"},
-        prompt=query,
+        prompt=my_text,
         generation=response['result'],
     )
 
