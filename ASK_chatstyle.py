@@ -88,7 +88,7 @@ st.text_input("Type your question or task here", max_chars=200, key="widget", on
 my_text = st.session_state.my_text
 if my_text:
     with st.status("Checking documents...", expanded=False) as status:
-        if query == "pledge":
+        if my_text == "pledge":
             response = ASK.rag_dummy(query,retriever) # ASK.rag_dummy for UNIT TESTING
         else:
             response = ASK.rag(query,retriever) 
