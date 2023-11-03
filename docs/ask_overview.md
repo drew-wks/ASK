@@ -13,4 +13,5 @@ However, that bulk of that information is stowed away in PDFs scattered across v
 
 ASK is different. It examines the documents themselves, and then uses AI to answer them in natural language. Its library contains over 250 policy documents— from Commandant Instructions to ALAUXs to national workshops—managed in a central location. Scope is limited to publicly-available, national documents, so it doesn’t include information behind firewall or specific to individual districts, sectors, divisions, etc. That way, even applicants can use it without authentication.
 
+#### Uses
 ASK has many uses. Use it to look up programs and competency requirements. For new members, it’s a safe and educational space for questions they may be hesitant to ask in person. Trainees can learn concepts, compare and contrast terms-- even take a quiz with ASK. With an easy-to-use interface, ASK is field-ready. Finally, ASK’s foreign language translation abilities supports language access.
