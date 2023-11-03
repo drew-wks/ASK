@@ -107,7 +107,7 @@ if query:
     with col1:
         col1.write("How was the response?")
     with col2:
-        user_feedback = col2.collector.st_feedback(
+        user_feedback = collector.st_feedback(
             component="default",
             feedback_type="thumbs",
             open_feedback_label="[Optional] Provide additional feedback",
