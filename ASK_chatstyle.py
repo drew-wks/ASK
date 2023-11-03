@@ -49,7 +49,7 @@ qdrant = ASK.create_langchain_qdrant(st.session_state.clientkey)
 retriever = ASK.init_retriever_and_generator(qdrant)
 
 collector = FeedbackCollector(
-    project="ASK Test on St CC",
+    project="default",
     email=st.secrets.TRUBRICS_EMAIL,
     password=st.secrets.TRUBRICS_PASSWORD,
 )
@@ -101,7 +101,18 @@ if query:
         config_model={"model": "gpt-3.5-turbo"},
         prompt=query,
         generation=response['result'],
-    )
+        )
+    
+
+    user_feedback = collector.st_feedback(
+        component="default",
+        feedback_type="thumbs",
+        open_feedback_label="[Optional] Provide additional feedback",
+        model="gpt-3.5-turbo",
+        prompt_id=None,  # checkout collector.log_prompt() to log your user prompts
+        )
+    if user_feedback:
+        st.write("Thanks!")
 
 
 with stylable_container(
