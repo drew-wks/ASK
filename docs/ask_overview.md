@@ -1,8 +1,6 @@
 ﻿
 #### ASK Overview   
-
 ASK stands for Auxiliary Source of Knowledge.  ASK works by analyzing documents that are the most current official policy that exists at a national level.
-
 
 #### Background
 ASK was developed by Auxiliarist Drew Wilkins as a proof of concept to make it easier for Auxiliarists and prospective members to find Auxiliary-related information. Powered by Artificial Intelligence (AI), ASK searches over 300 Coast Guard Auxiliary references to find answers directly from authoritative sources.

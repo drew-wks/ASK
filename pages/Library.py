@@ -84,6 +84,5 @@ with tab3:
     st.markdown("#### Feedback")
     st.write("ASK works by analyzing documents that are the most current official policy that exists at a national level.")
     st.write("")
-    st.write('''Each year, new documents are released that suspend old guidance. Outdated documents must be replaced with newer ones.
-             If you know of a document missing from the libary or or one in the library that has been cancelled, please let us know.
+    st.write('''If you know of a document missing from the libary or or one in the library that has been cancelled, please let us know.
              Send an email to uscgaux.drew@wks.us.''')
