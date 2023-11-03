@@ -62,8 +62,6 @@ if back:
 tab1, tab2, tab3 = st.tabs(["ASK Overview", "Document Library", "Suggest a Doc"])
 
 with tab1:
-    st.markdown("#### Overview")
-    st.write("ASK works by analyzing documents that are the most current official policy that exists at a national level.")
     overview = read_markdown_file("docs/ask_overview.md")
     st.markdown(overview, unsafe_allow_html=True)
 
