@@ -103,7 +103,7 @@ if query:
         generation=response['result'],
     )
     
-    col1, col2 = st.columns([2,1])
+    col1, col2 = st.columns([2])
     with col1:
         col1.write("How was the response?")
     with col2:
