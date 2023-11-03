@@ -104,14 +104,16 @@ if query:
     )
     
     col1, col2 = st.columns([2,1])
-    col1.write("How was the response?")
-    user_feedback = col2.collector.st_feedback(
-        component="default",
-        feedback_type="thumbs",
-        open_feedback_label="[Optional] Provide additional feedback",
-        model="gpt-3.5-turbo",
-        prompt_id=None,  # checkout collector.log_prompt() to log your user prompts
-    )
+    with col1:
+        col1.write("How was the response?")
+    with col2:
+        user_feedback = col2.collector.st_feedback(
+            component="default",
+            feedback_type="thumbs",
+            open_feedback_label="[Optional] Provide additional feedback",
+            model="gpt-3.5-turbo",
+            prompt_id=None,  # checkout collector.log_prompt() to log your user prompts
+        )
 
     if user_feedback:
         st.write("Thanks!")
