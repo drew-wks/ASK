@@ -59,7 +59,7 @@ if back:
     switch_page("ASK_chatstyle")
 
 
-tab1, tab2, tab3, tab4 = st.tabs(["ASK Overview", "Document Library", "FAQs", "Feedback"])
+tab1, tab2, tab3, tab4 = st.tabs(["ASK Overview", "Library", "FAQs", "Feedback"])
 
 with tab1:
     overview = read_markdown_file("docs/ask_overview.md")
