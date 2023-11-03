@@ -60,7 +60,7 @@ st.image("https://raw.githubusercontent.com/dvvilkins/ASK/main/images/ASK_logoty
 
 st.write(
     "#### Get answers to USCG Auxiliary questions from authoritative sources.")
-st.markdown("ASK uses Artificial Intelligence (AI) to search over <a href='Library' target='_self'>250</a> Coast Guard Auxiliary references for answers. For evaluation only. Not officially adopted by the USCG Auxiliary. For questions or feedback, contact <a href='mailto:uscgaux.drew@wks.us'>Drew Wilkins</a>.", unsafe_allow_html=True)
+st.markdown("ASK uses Artificial Intelligence (AI) to search over 250 Coast Guard Auxiliary references for answers. ASK was created by Drew Wilkins for evaluation only. Not officially adopted by the USCG Auxiliary. learn more about ASK <a href='Library' target='_self'>here.</a>", unsafe_allow_html=True)
 
 examples = st.empty()
 
