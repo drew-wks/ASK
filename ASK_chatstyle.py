@@ -60,7 +60,8 @@ st.image("https://raw.githubusercontent.com/dvvilkins/ASK/main/images/ASK_logoty
 
 st.write(
     "#### Get answers to USCG Auxiliary questions from authoritative sources.")
-st.markdown("ASK uses Artificial Intelligence (AI) to search over <a href='Library' target='_self'>250</a> Coast Guard Auxiliary references for answers. For evaluation only. Not officially adopted by the USCG Auxiliary. For questions or feedback, contact <a href='mailto:uscgaux.drew@wks.us'>Drew Wilkins</a>.", unsafe_allow_html=True)
+
+st.markdown("ASK uses Artificial Intelligence (AI) to search over 250 Coast Guard Auxiliary references for answers. Created for evaluation by Drew Wilkins. Not an official USCG Auxiliary service. Learn more <a href='Library' target='_self'>here.</a>", unsafe_allow_html=True)
 
 examples = st.empty()
 
@@ -84,7 +85,9 @@ if query:
         short_source_list = ASK.create_short_source_list(response)
         long_source_list = ASK.create_long_source_list(response)
         examples.empty()
-        st.info(f"""**Question:** *{query}*\n\n ##### Response:\n{response['result']}\n\n **Sources:**  \n {short_source_list}\n**Note:**  \nASK can make mistakes. Verify with the sources. Also, ASK is a national service. Check with your AOR for additional policies.
+        st.info(f"""**Question:** *{query}*\n\n ##### Response:\n{response['result']}\n\n **Sources:**  \n
+                 {short_source_list}\n**Note:**  \n
+                 ASK can make mistakes. Verify the sources and check for local policy. Learn more about ASK <a href='Library' target='_self'>here.</a>
         """)
     status.update(label=":blue[**Response**]", expanded=True)
 
