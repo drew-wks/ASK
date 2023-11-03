@@ -101,22 +101,19 @@ if query:
         config_model={"model": "gpt-3.5-turbo"},
         prompt=query,
         generation=response['result'],
-    )
-    
-    col1, col2 = st.columns([1, 2.5])
-    with col1:
-        col1.write("How was the response?")
-    with col2:
-        user_feedback = collector.st_feedback(
-            component="default",
-            feedback_type="thumbs",
-            open_feedback_label="[Optional] Provide additional feedback",
-            model="gpt-3.5-turbo",
-            prompt_id=None,  # checkout collector.log_prompt() to log your user prompts
         )
+    
 
+    user_feedback = collector.st_feedback(
+        component="default",
+        feedback_type="thumbs",
+        open_feedback_label="[Optional] Provide additional feedback",
+        model="gpt-3.5-turbo",
+        prompt_id=None,  # checkout collector.log_prompt() to log your user prompts
+        )
     if user_feedback:
         st.write("Thanks!")
+
 
 with stylable_container(
     key="bottom_content",
