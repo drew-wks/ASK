@@ -103,8 +103,9 @@ if query:
         generation=response['result'],
     )
     
-    st.write("How was the response?")
-    user_feedback = collector.st_feedback(
+    col1, col2 = st.columns([2,1])
+    col1.st.write("How was the response?")
+    user_feedback = col2.collector.st_feedback(
         component="default",
         feedback_type="thumbs",
         open_feedback_label="[Optional] Provide additional feedback",
@@ -113,7 +114,7 @@ if query:
     )
 
     if user_feedback:
-        st.write(user_feedback)
+        st.write("Thanks!")
 
 with stylable_container(
     key="bottom_content",
