@@ -52,7 +52,7 @@ def get_pickle_file():
 
 
 
-st.title("ASK Document Library")
+st.image("https://raw.githubusercontent.com/dvvilkins/ASK/main/images/ASK_logotype_color.png?raw=true", use_column_width="always")
 
 back = st.button("< Back to App", type="primary")
 if back:
@@ -62,27 +62,17 @@ if back:
 tab1, tab2, tab3 = st.tabs(["Library Overview", "Document List", "Suggest a Doc"])
 
 with tab1:
+    st.markdown("#### Overview")
+    st.write("ASK works by analyzing documents that are the most current official policy that exists at a national level.")
+
+
+with tab2:
     overview = read_markdown_file("docs/library_overview.md")
     st.markdown(overview, unsafe_allow_html=True)
 
     df = get_pickle_file()
     display_df = df[['source_short']]
     edited_df = st.data_editor(display_df, use_container_width=True, hide_index=False, disabled=True)
-    # favorite_command = edited_df.loc[edited_df["rating"].idxmax()]["command"]
-    #downloader
-    isim= 'ASK_library.csv'
-    indir = edited_df.to_csv(index=False)
-    b64 = base64.b64encode(indir.encode(encoding='ISO-8859-1')).decode(encoding='ISO-8859-1')  
-    linko_final= f'<a href="data:file/csv;base64,{b64}" download={isim}>Click to download</a>'
-    st.markdown(linko_final, unsafe_allow_html=True)
-
-with tab2:
-    st.markdown("#### Document List")
-    df = get_pickle_file()
-    display_df = df[['source_short']]
-    edited_df = st.data_editor(display_df, use_container_width=True, hide_index=False, disabled=True)
-    # favorite_command = edited_df.loc[edited_df["rating"].idxmax()]["command"]
-    #downloader
     isim= 'ASK_library.csv'
     indir = edited_df.to_csv(index=False)
     b64 = base64.b64encode(indir.encode(encoding='ISO-8859-1')).decode(encoding='ISO-8859-1')  
