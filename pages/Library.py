@@ -59,7 +59,7 @@ if back:
     switch_page("ASK_chatstyle")
 
 
-tab1, tab2, tab3 = st.tabs(["ASK Overview", "Document Library", "Feedback"])
+tab1, tab2, tab3 = st.tabs(["ASK Overview", "Document Library", "FAQs", "Feedback"])
 
 with tab1:
     overview = read_markdown_file("docs/ask_overview.md")
@@ -79,10 +79,13 @@ with tab2:
     linko_final= f'<a href="data:file/csv;base64,{b64}" download={isim}>Click to download</a>'
     st.markdown(linko_final, unsafe_allow_html=True)
 
+with tab3:
+    overview = read_markdown_file("docs/faqs.md")
+    st.markdown(overview, unsafe_allow_html=True)
 
 with tab3:
     st.markdown("#### Feedback")
     st.write("ASK works by analyzing documents that are the most current official policy that exists at a national level.")
     st.write("")
-    st.write('''If you know of a document missing from the libary or or one in the library that has been cancelled, please let us know.
+    st.write(''''''If you know of a document missing from the libary or or one in the library that has been cancelled, please let us know.
              Send an email to uscgaux.drew@wks.us.''')
