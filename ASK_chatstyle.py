@@ -86,8 +86,7 @@ if query:
         long_source_list = ASK.create_long_source_list(response)
         examples.empty()
 
-        st.info(f"**Question:** *{query}*\n\n ##### Response:\n{response['result']}\n\n **Sources:**  \n{short_source_list}\n**Note:**  \n ASK can make mistakes. Verify the sources and check for local policy. Learn more about ASK <a href='Library' target='_self'>here.</a>", unsafe_allow_html=True)
-
+        st.info(f"**Question:** *{query}*\n\n ##### Response:\n{response['result']}\n\n **Sources:**  \n{short_source_list}\n**Note:**  \n ASK can make mistakes. Verify the sources and check for local policy. Learn more about ASK<a href='Library' target='_self'>here.</a>", unsafe_allow_html=True)
     status.update(label=":blue[**Response**]", expanded=True)
 
     with st.status("Compiling references...", expanded=False) as status:
