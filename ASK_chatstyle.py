@@ -104,7 +104,7 @@ if query:
     )
     
     col1, col2 = st.columns([2,1])
-    col1.st.write("How was the response?")
+    col1.write("How was the response?")
     user_feedback = col2.collector.st_feedback(
         component="default",
         feedback_type="thumbs",
