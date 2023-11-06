@@ -111,8 +111,6 @@ if query:
         model="gpt-3.5-turbo",
         prompt_id=None,  # checkout collector.log_prompt() to log your user prompts
         )
-    if user_feedback:
-        st.write("Thanks!")
 
 
 with stylable_container(
