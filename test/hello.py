@@ -1,6 +1,6 @@
 import streamlit as st
 
-import uuid
+st.set_page_config(page_title="Toy")
 
 
 
