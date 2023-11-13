@@ -1,6 +1,6 @@
 import streamlit as st
 
-import uuid
+st.set_page_config(page_title="Toy running Python 3.11")
 
 
 
@@ -9,7 +9,6 @@ query = st.text_input("Type your question or task here", max_chars=200, key=uniq
 
 if query:
     st.write(f"You typed: {query}")
-    unique_key = str(uuid.uuid4())
 
 from streamlit_extras.stylable_container import stylable_container
 
