@@ -5,7 +5,7 @@ st.set_page_config(page_title="Toy running Python 3.11")
 
 
 
-query = st.text_input("Type your question or task here", max_chars=200, key=unique_key)
+query = st.text_input("Type your question or task here", max_chars=200)
 
 if query:
     st.write(f"You typed: {query}")
