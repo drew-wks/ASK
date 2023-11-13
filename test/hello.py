@@ -1,6 +1,6 @@
 import streamlit as st
 
-st.set_page_config(page_title="Toy")
+st.set_page_config(page_title="Toy running Python 3.11")
 
 
 
