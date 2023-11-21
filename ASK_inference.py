@@ -18,7 +18,7 @@ config = {
     "search_type": "mmr",
     "k": 4,
     'fetch_k': 10,   # fetch 30 docs then select 4
-    'lambda_mult': .3,    # 0= max diversity, 1 is min. default is 0.5
+    'lambda_mult': .7,    # 0= max diversity, 1 is min. default is 0.5
     "score_threshold": 0.5,
     "model": "gpt-3.5-turbo-16k",
     "temperature": 0.7,
@@ -34,8 +34,9 @@ qdrant_path = "/tmp/local_qdrant" # Only required for local instance /private/tm
     #-----------------------------------
 from qdrant_client import QdrantClient
 from langchain.vectorstores import Qdrant
-from langchain.chains import RetrievalQA
+from langchain.chains import RetrievalQA, StuffDocumentsChain, LLMChain
 from langchain.chat_models import ChatOpenAI
+from langchain.prompts import PromptTemplate, ChatPromptTemplate, SystemMessagePromptTemplate, HumanMessagePromptTemplate
 import tiktoken
 import pickle
 
@@ -89,8 +90,33 @@ def init_retriever_and_generator(qdrant):
     return retriever
 
 
+system_message_prompt_template = SystemMessagePromptTemplate(
+    prompt=PromptTemplate(
+        input_variables=['context'],
+        template="Use the following pieces of context to answer the users question. Be sure to include all the requirements and tasks in your response. If the question is about qualification, certification or currency, then follow these steps: 1.Determine the name of the qualifiction or certification. 2. Determine whether the question is about initial qualificaiton or currency maintenance. Each have different requirements. 3. Determine what program the qualification or certification belongs, such as Boat Crew program or Aviation program. 4. Determine any requirements that apply to all positions and certifications in that program as well as the specific requirements for the certification. For example, a Coxswain is a certification in the boat crew program. The Boat Crew program has requirements such as annual surface operations workshop. Additionally, coxswain has the requirement to complete a navigation test. Likewise, A Co-Pilot is a certification in the Aviation program. The Aviation program has requirements for all flight crewmembers that apply to Co-Pilot and First Pilot. First Pilot and Co-Pilot are Pilot flight crew positions, so they have Pilot requirements apply to First Pilot and Co-Pilot. Co-Pilot and First Pilot may have additional requirements specific to their certification.  \nIf you don't know the answer, just say I don't know, don't try to make up an answer.\n----------------\n{context}"
+    )
+)
+
 
 def rag(query, retriever):
+    '''run a RAG completion'''
+
+    llm_chain = LLMChain(
+        prompt=ChatPromptTemplate(input_variables=['context', 'question'], messages=[system_message_prompt_template, HumanMessagePromptTemplate(prompt=PromptTemplate(input_variables=['question'], template='{question}'))]),
+        llm=llm,
+        )
+
+    rag_instance = RetrievalQA(
+        combine_documents_chain=StuffDocumentsChain(
+            llm_chain=llm_chain, document_variable_name='context'),
+        return_source_documents=True,
+        retriever=retriever
+    )
+    response = rag_instance({"query": query})
+    return response
+
+
+def rag_old1(query, retriever):
     '''run a RAG completion'''
 
     rag_instance = RetrievalQA.from_chain_type(

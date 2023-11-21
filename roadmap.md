@@ -16,7 +16,7 @@ These are some of the the things I plan to do over the coming months to continue
     - [ ] Include effective date in retrieval 
     - [ ] Give greater to weight to more recent documents
 - [ ] Explore better prompts through prompt templates
-- vTest other private and [open-source embedding models](https://huggingface.co/spaces/mteb/leaderboard)
+- Test other private and [open-source embedding models](https://huggingface.co/spaces/mteb/leaderboard) incl. cohere, anarchy
 
 ## UI Enhancements  
 - [ ] Implement workaround chat input field on mobile devices (a bug with streamlit)
