@@ -83,7 +83,7 @@ with tab3:
     st.markdown(overview, unsafe_allow_html=True)
 
 with tab4:
-    product roadmap = read_markdown_file("pages/roadmap.md")
+    roadmap = read_markdown_file("pages/roadmap.md")
     st.markdown(roadmap, unsafe_allow_html=True)
     
     with tab5:
