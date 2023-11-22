@@ -37,6 +37,18 @@ def read_markdown_file(markdown_file):
    return Path(markdown_file).read_text()
 
 
+def get_excel_file():
+    directory_path = 'pages/library/'  
+    files_in_directory = os.listdir(directory_path)
+    excel_files = [file for file in files_in_directory if re.match(r'library_document_list.*\.xlsx$', file)]
+
+    if len(excel_files) == 1:
+        df = pd.read_excel(os.path.join(directory_path, excel_files[0]))
+        return df
+    else:
+        st.error("There's either no Excel file or more than one in the directory.")
+        return None
+
 
 def get_pickle_file(): 
     directory_path = 'reports/library_pkl/'
@@ -70,7 +82,7 @@ with tab2:
     overview = read_markdown_file("docs/library_overview.md")
     st.markdown(overview, unsafe_allow_html=True)
 
-    df = get_pickle_file()
+    df = get_excel_file()
     display_df = df[['source_short']]
     edited_df = st.data_editor(display_df, use_container_width=True, hide_index=False, disabled=True)
     isim= 'ASK_library.csv'
