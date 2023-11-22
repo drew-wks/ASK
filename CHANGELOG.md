@@ -6,8 +6,10 @@ All notable changes to this project will be documented in this file.
 - Add additional metadata keys and values into library data, including effective date
 - Developed code to delete docs from library
 
+
 ## [0.5.0] - 2023-11-20
 ### Features
+-Notifies of OpenAI status if it's compromised
 
 ### Bug fixes
 - Modifications to the prompt and hyperparameters for improved doc retrieval
