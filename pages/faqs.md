@@ -16,6 +16,7 @@ No. Though ASK uses Generative AI, it is not a chatbot like ChatGPT. Commercial 
 
 **What is ASK used for?**  
 ASK has many uses. Members can look up programs and competency requirements. For new members, it’s a safe and educational space for questions they may be hesitant to ask in person. Trainees can learn concepts, compare and contrast terms-- even take a quiz with ASK. With an easy-to-use interface, ASK is field-ready. Finally, ASK’s foreign language translation abilities supports language access.  
+ 
 Specific use cases for ASK include:   
 - Policy Compliance: ASK can assist members fulfill their responsibilities to understand and adhere to policy, and help the organization transition to new policies. For example, a member can find the policy changes affecting their competency.  
 - New Member Onboarding: ASK can help new members integrate into the Auxiliary. For example, a new member can ask questions that might make them “feel stupid” to ask in person. A supportive and informative “first ninety days” sets the foundation for a productive and engaged member.  
