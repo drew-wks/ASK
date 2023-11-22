@@ -48,7 +48,6 @@ if 'clientkey' not in st.session_state:
 api_status_message = ASK.get_openai_api_status()
 if "operational" not in api_status_message:
     st.write(f":red [**OpenAI API Status: {api_status_message}**]")
-    st.write(f"temprature: :blue[{temperature}]")
 
 
 qdrant = ASK.create_langchain_qdrant(st.session_state.clientkey)
