@@ -45,11 +45,6 @@ if 'clientkey' not in st.session_state:
     print(st.session_state.clientkey)
 
 
-api_status_message = ASK.get_openai_api_status()
-if "operational" not in api_status_message:
-    st.write(f":red [**OpenAI API Status: {api_status_message}**]")
-
-
 qdrant = ASK.create_langchain_qdrant(st.session_state.clientkey)
 retriever = ASK.init_retriever_and_generator(qdrant)
 
@@ -63,6 +58,10 @@ collector = FeedbackCollector(
 
 st.image("https://raw.githubusercontent.com/dvvilkins/ASK/main/images/ASK_logotype_color.png?raw=true", use_column_width="always")
 
+api_status_message = ASK.get_openai_api_status()
+if "operational" not in api_status_message:
+    st.markdown(f":red [**OpenAI API Status: {api_status_message}**]")
+    
 st.write(
     "#### Get answers to USCG Auxiliary questions from authoritative sources.")
 
