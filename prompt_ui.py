@@ -1,5 +1,6 @@
 import streamlit as st 
 import datetime
+import os
 import pandas as pd
 from trubrics.integrations.streamlit import FeedbackCollector
 import ASK_inference as ASK
@@ -37,6 +38,7 @@ st.markdown("""
 
 @st.cache_resource
 def qdrant_connect_cloud():
+    os.write(1,b'QdrantClient start.\n')
     if 'client' in globals():
         return globals()['client']  # Return the existing client
     client = QdrantClient(
@@ -44,12 +46,16 @@ def qdrant_connect_cloud():
     prefer_grpc=True,
     api_key=st.secrets.QDRANT_API_KEY,
     )
+    os.write(1,b'QdrantClient complete.\n')
     return client
 
 client = qdrant_connect_cloud()
-
+os.write(1,b'langchain_qdrant start.\n')
 qdrant = ASK.create_langchain_qdrant(client)
+os.write(1,b'langchain_qdrant complete.\n')
+os.write(1,b'init_retriever start.\n')
 retriever = ASK.init_retriever_and_generator(qdrant)
+os.write(1,b'init_retriever complete.\n')
 
 collector = FeedbackCollector(
     project="default",
