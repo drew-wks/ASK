@@ -45,7 +45,7 @@ if 'clientkey' not in st.session_state:
     print(st.session_state.clientkey)
 
 
-api_status_message = get_openai_api_status()
+api_status_message = ASK.get_openai_api_status()
 if "operational" not in api_status_message:
     st.write(f":red [**OpenAI API Status: {api_status_message}**]")
     st.write(f"temprature: :blue[{temperature}]")
