@@ -91,7 +91,7 @@ if query:
             response = ASK.rag(query,retriever) 
         short_source_list = ASK.create_short_source_list(response)
         long_source_list = ASK.create_long_source_list(response)
-        os.write(1, f"query complete: {datetime.datetime.now().strftime('%H:%M:%S')}\n".encode())
+        os.write(1, f"complete:    {datetime.datetime.now().strftime('%H:%M:%S')}\n".encode())
         examples.empty()
 
         st.info(f"**Question:** *{query}*\n\n ##### Response:\n{response['result']}\n\n **Sources:**  \n{short_source_list}\n **Note:** \n ASK can make mistakes. Verify the sources and check for local policy.")
