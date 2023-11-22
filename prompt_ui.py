@@ -60,8 +60,7 @@ st.image("https://raw.githubusercontent.com/dvvilkins/ASK/main/images/ASK_logoty
 
 api_status_message = ASK.get_openai_api_status()
 if "operational" not in api_status_message:
-    st.header(f"ASK is currently down due to OpenAI {api_status_message}.")
-    st.markdown(f"<h1 style='color:red;'>ASK is currently down due to OpenAI {api_status_message}.</h1>", unsafe_allow_html=True)
+    st.markdown(f"<h2 style='color:red;'>ASK is currently down due to OpenAI {api_status_message}.</h2>", unsafe_allow_html=True)
 
 st.write(
     "#### Get answers to USCG Auxiliary questions from authoritative sources.")
