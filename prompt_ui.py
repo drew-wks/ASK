@@ -50,12 +50,8 @@ def qdrant_connect_cloud():
     return client
 
 client = qdrant_connect_cloud()
-os.write(1,b'langchain_qdrant start.\n')
 qdrant = ASK.create_langchain_qdrant(client)
-os.write(1,b'langchain_qdrant complete.\n')
-os.write(1,b'init_retriever start.\n')
 retriever = ASK.init_retriever_and_generator(qdrant)
-os.write(1,b'init_retriever complete.\n')
 
 collector = FeedbackCollector(
     project="default",
@@ -89,6 +85,7 @@ st.write("  ")
 user_feedback = " "
 query = st.text_input("Type your question or task here", max_chars=200)
 if query:
+    os.write(1,b'start query.\n')
     with st.status("Checking documents...", expanded=False) as status:
         if query == "pledge":
             response = ASK.rag_dummy(query,retriever) # ASK.rag_dummy for UNIT TESTING
@@ -96,6 +93,7 @@ if query:
             response = ASK.rag(query,retriever) 
         short_source_list = ASK.create_short_source_list(response)
         long_source_list = ASK.create_long_source_list(response)
+        os.write(1,b'complete query.\n')
         examples.empty()
 
         st.info(f"**Question:** *{query}*\n\n ##### Response:\n{response['result']}\n\n **Sources:**  \n{short_source_list}\n **Note:** \n ASK can make mistakes. Verify the sources and check for local policy.")
