@@ -6,7 +6,7 @@ Each year, The Coast Guard suspends policies and replaces policies with new ones
 
 **How does ASK work?**
 ASK works by taking a user’s question from a search bar, retrieving related information from a pre-defined library of USCG reference documents, and then generating a detailed response back to the user that includes the source citations. ASK relies on Generative Artificial Intelligence (GenAI). Gen AI brings together the powerful information retrieval of a search engine with text generation ability of a Generative AI operating within a controlled organizational environment.
-![Alt text](assets/rag.png)
+![Alt text](images/rag.png)
 
 **Is ASK a chatbot like ChatGPT?**
 No. Though ASK uses Generative AI, it is not a chatbot like ChatGPT. Commercial chatbots such as ChatGPT area versatile, but as a result, they are not naturally suited to all applications. Chatbots suffer from several significant drawbacks that limit their application in organizations. For instance, they aren’t trained on Auxiliary information. They do not understand that common words such as “task”, “division”, or even “auxiliary” have specific meanings in the Auxiliary. They don’t understand authority and answer questions at all costs, whether they “know” the answer or not. In contrast, ASK is designed to do one thing: retrieve and summarize information.  As a result, it does not suffer from these drawbacks because it is based on the Auxiliary’s own internal information. That allows it to respond with a high level of accuracy and quality. If it doesn't know an answer, it will just say it doesn't know.
