@@ -197,6 +197,40 @@ def count_tokens(response):
     return query_length, source_length, result_length, tot_tokens
 
 
+import requests
+
+
+def get_openai_api_status():
+    components_url = 'https://status.openai.com/api/v2/components.json'
+    status_message = ''
+
+    try:
+        response = requests.get(components_url)
+        # Raises an HTTPError if the HTTP request returned an unsuccessful status code
+        response.raise_for_status()
+
+        # Parse the JSON response
+        components_info = response.json()
+        components = components_info.get('components', [])
+
+        # Find the component that represents the API
+        api_component = next(
+            (component for component in components if component.get('name', '').lower() == 'api'), None)
+
+        if api_component:
+            # Set the status message to the status of the API component
+            status_message = api_component.get('status', '')
+        else:
+            status_message = 'API component not found'
+
+    except requests.exceptions.HTTPError as http_err:
+        status_message = f'HTTP error occurred: {repr(http_err)}'
+    except Exception as err:
+        status_message = f'Other error occurred: {repr(err)}'
+
+    return status_message
+
+
 
 # Example usage in another script
 if __name__ == "__main__":

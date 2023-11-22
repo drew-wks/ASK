@@ -3,7 +3,7 @@ import streamlit as st
 st.set_page_config(page_title="Toy running Python 3.11")
 
 
-
+st.write(f":red [**OpenAI API Status: dsds**]")
 
 query = st.text_input("Type your question or task here", max_chars=200)
 
