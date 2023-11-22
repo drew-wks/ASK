@@ -58,7 +58,7 @@ if back:
     switch_page("prompt_ui")
 
 
-tab1, tab2, tab3, tab4 = st.tabs(["Overview", "Library", "FAQs", "Feedback"])
+tab1, tab2, tab3, tab4 = st.tabs(["Overview", "Library", "FAQs", "Product Roadmap", "Feedback"])
 
 with tab1:
     overview = read_markdown_file("pages/ask_overview.md")
@@ -83,8 +83,14 @@ with tab3:
     st.markdown(overview, unsafe_allow_html=True)
 
 with tab4:
+    product roadmap = read_markdown_file("pages/roadmap.md")
+    st.markdown(roadmap, unsafe_allow_html=True)
+    
+    with tab5:
     st.markdown("#### Feedback")
     st.write("ASK works by analyzing documents that are the most current official policy that exists at a national level.")
     st.write("")
-    st.write('''If you see a document missing from the libary or should be removed, please let us know.
+    st.write('''If you see a document missing from the libary or should be removed, please let us know. 
+             If you find an error or ommision in a response, please let me know. Be sure to include the exact question asked
+             and a reference to the applicable policy (doc and page).
              Send an email to uscgaux.drew@wks.us.''')
