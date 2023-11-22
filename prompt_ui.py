@@ -83,7 +83,7 @@ st.write("  ")
 user_feedback = " "
 query = st.text_input("Type your question or task here", max_chars=200)
 if query:
-    os.write(1, f"start query: {datetime.datetime.now().strftime('%H:%M:%S')}\n".encode())
+    os.write(1, f"query start: {datetime.datetime.now().strftime('%H:%M:%S')}\n".encode())
     with st.status("Checking documents...", expanded=False) as status:
         if query == "pledge":
             response = ASK.rag_dummy(query,retriever) # ASK.rag_dummy for UNIT TESTING

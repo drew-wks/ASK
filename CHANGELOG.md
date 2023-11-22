@@ -9,7 +9,9 @@ All notable changes to this project will be documented in this file.
 
 ## [0.5.0] - 2023-11-20
 ### Features
--Notifies of OpenAI status if it's compromised
+- Notifies of OpenAI status if it's compromised
+- Significant increase in speed (2-3x faster) 
+- Additional page in library outlining product roadmap
 
 ### Bug fixes
 - Modifications to the prompt and hyperparameters for improved doc retrieval
