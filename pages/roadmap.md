@@ -1,6 +1,7 @@
 #### ASK Feature Roadmap
-**Things I plan to do over the coming months to continue to improve ASK**  
-
+Things I plan to do over the coming months to continue to improve ASK  
+  
+  
 ##### Library Management: the documents ASK uses to provide responses 
 [x] Enable direct export of Library List Report from Qdrant into UI via xlsx  
 [x] Check duplicate PDFs feature directly at the vector db "source of truth" 
