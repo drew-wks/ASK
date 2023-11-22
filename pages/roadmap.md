@@ -1,5 +1,5 @@
 #### ASK Feature Roadmap
-These are some of the the things I plan to do over the coming months to continue to improve ASK  
+**Things I plan to do over the coming months to continue to improve ASK**  
 
 ##### Library Management: the documents ASK uses to provide responses 
 [x] Enable direct export of Library List Report from Qdrant into UI via xlsx  
@@ -11,7 +11,7 @@ These are some of the the things I plan to do over the coming months to continue
 ##### Speed and Accuracy: continue to improve the results
 [x] Explore better prompts through prompt templates  
 [x] Tune retrieval hyperparamters such as lambda, k-means 
-[x] Tag documents with effective date 
+[x] Tag documents with effective date  
 [ ] Reason through contractitions in corpus docs (e.g., conflicting policies)
 [ ] Index additional metadata  
 [ ] Include effective date in retrieval   
