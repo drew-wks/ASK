@@ -1,16 +1,14 @@
 import streamlit as st 
-import datetime
+import datetime, time
 import os
-import pandas as pd
 from trubrics.integrations.streamlit import FeedbackCollector
 import ASK_inference as ASK
 from qdrant_client import QdrantClient
-
 from ASK_inference import config
 from streamlit_extras.stylable_container import stylable_container
-import time
-st.set_page_config(page_title="ASK Auxiliary Source of Knowledge", initial_sidebar_state="collapsed")
 
+
+st.set_page_config(page_title="ASK Auxiliary Source of Knowledge", initial_sidebar_state="collapsed")
 
 st.markdown( """ <style> [data-testid="collapsedControl"] { display: none } </style> """, unsafe_allow_html=True, )
 
@@ -85,7 +83,7 @@ st.write("  ")
 user_feedback = " "
 query = st.text_input("Type your question or task here", max_chars=200)
 if query:
-    os.write(1,b'start query.\n')
+    os.write(1, f"start query. Date and Time: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n".encode())
     with st.status("Checking documents...", expanded=False) as status:
         if query == "pledge":
             response = ASK.rag_dummy(query,retriever) # ASK.rag_dummy for UNIT TESTING
@@ -93,7 +91,7 @@ if query:
             response = ASK.rag(query,retriever) 
         short_source_list = ASK.create_short_source_list(response)
         long_source_list = ASK.create_long_source_list(response)
-        os.write(1,b'complete query.\n')
+        os.write(1, f"query complete: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n".encode())
         examples.empty()
 
         st.info(f"**Question:** *{query}*\n\n ##### Response:\n{response['result']}\n\n **Sources:**  \n{short_source_list}\n **Note:** \n ASK can make mistakes. Verify the sources and check for local policy.")
