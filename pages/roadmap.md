@@ -1,7 +1,7 @@
 #### ASK Feature Roadmap
 Things I plan to do over the coming months to continue to improve ASK  
   
-  
+
 ##### Library Management: the documents ASK uses to provide responses 
 [x] Enable direct export of Library List Report from Qdrant into UI via xlsx  
 [x] Check duplicate PDFs feature directly at the vector db "source of truth" 
@@ -21,7 +21,7 @@ Things I plan to do over the coming months to continue to improve ASK
 [ ] Get Streamlit working faster via st.session_state and st.database  
 [ ] Test other private and [open-source embedding models](https://huggingface.co/spaces/mteb/leaderboard) incl. cohere, anarchy  
 
-###### UI Enhancements: making ASK easier to use  
+##### UI Enhancements: making ASK easier to use  
 [x] Implement workaround chat input field on mobile devices (a bug with streamlit)  
 [x] Bring feedback back into the UI  
 [x] Incorporate better visual status into UI  

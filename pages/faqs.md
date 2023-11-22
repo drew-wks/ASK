@@ -4,13 +4,13 @@
  **How does ASK stay up to date?**  
 Each year, The Coast Guard suspends policies and replaces policies with new ones. ASK keeps all documents in a central repository that is managed by an Auxiliarst. This person is responsible for tracking new policy and updating the library to ensure it has the most recent national policy available. If you see a document missing from the libary or should be removed, please send an email to uscgaux.drew@wks.us.
 
-**How does ASK work?**
+**How does ASK work?**  
 ASK works by taking a user’s question from a search bar, retrieving related information from a pre-defined library of USCG reference documents, and then generating a detailed response back to the user that includes the source citations. ASK relies on Generative Artificial Intelligence (GenAI). Gen AI brings together the powerful information retrieval of a search engine with text generation ability of a Generative AI operating within a controlled organizational environment [see detail image](images/rag_flow.png)
 
-**Is ASK a chatbot like ChatGPT?**
+**Is ASK a chatbot like ChatGPT?**  
 No. Though ASK uses Generative AI, it is not a chatbot like ChatGPT. Commercial chatbots such as ChatGPT area versatile, but as a result, they are not naturally suited to all applications. Chatbots suffer from several significant drawbacks that limit their application in organizations. For instance, they aren’t trained on Auxiliary information. They do not understand that common words such as “task”, “division”, or even “auxiliary” have specific meanings in the Auxiliary. They don’t understand authority and answer questions at all costs, whether they “know” the answer or not. In contrast, ASK is designed to do one thing: retrieve and summarize information.  As a result, it does not suffer from these drawbacks because it is based on the Auxiliary’s own internal information. That allows it to respond with a high level of accuracy and quality. If it doesn't know an answer, it will just say it doesn't know.
 
-**What is ASK used for?***
+**What is ASK used for?***  
 Use cases for ASK include:   
 - Policy Compliance: ASK can assist members fulfill their responsibilities to understand and adhere to policy, and help the organization transition to new policies. For example, a member can find the policy changes affecting their competency.
 New Member Onboarding: ASK can help new members integrate into the Auxiliary. For example, a new member can ask questions that might make them “feel stupid” to ask in person. A supportive and informative “first ninety days” sets the foundation for a productive and engaged member. 
