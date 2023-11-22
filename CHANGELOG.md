@@ -4,7 +4,24 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 - Add additional metadata keys and values into library data, including effective date
+- Developed code to delete docs from library
 
+
+## [0.5.0] - 2023-11-20
+### Features
+-Notifies of OpenAI status if it's compromised
+
+### Bug fixes
+- Modifications to the prompt and hyperparameters for improved doc retrieval
+- Removed two outdated policy documents
+
+### Breaking changes
+- Moved code to new github repository and relaunched user app
+
+## [0.4.0] - 2023-11-14
+### Features
+- Customized the prompt to explicitly seek all requirements and to distinguish between initial and currency maintenance
+- Improved naming conventions in the github repo
 
 ## [0.3.0] - 2023-11-03
 ### Features

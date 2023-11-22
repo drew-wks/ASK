@@ -1,6 +1,7 @@
 import datetime
 import streamlit as st
 import pandas as pd
+import re
 from streamlit_extras.switch_page_button import switch_page
 from pathlib import Path
 import os
@@ -37,19 +38,17 @@ def read_markdown_file(markdown_file):
    return Path(markdown_file).read_text()
 
 
-
-def get_pickle_file(): 
-    directory_path = 'reports/library_pkl/'
+def get_excel_file():
+    directory_path = 'pages/library/'  
     files_in_directory = os.listdir(directory_path)
-    pickle_files = [file for file in files_in_directory if file.endswith('.pkl')]
+    excel_files = [file for file in files_in_directory if re.match(r'library_document_list.*\.xlsx$', file)]
 
-    if len(pickle_files) == 1:
-        df = pd.read_pickle(os.path.join(directory_path, pickle_files[0]))
+    if len(excel_files) == 1:
+        df = pd.read_excel(os.path.join(directory_path, excel_files[0]))
         return df
     else:
-        st.error("There's either no pickle file or more than one in the directory.")
+        st.error("There's either no Excel file or more than one in the directory.")
         return None
-
 
 
 st.image("https://raw.githubusercontent.com/dvvilkins/ASK/main/images/ASK_logotype_color.png?raw=true", use_column_width="always")
@@ -59,18 +58,18 @@ if back:
     switch_page("prompt_ui")
 
 
-tab1, tab2, tab3, tab4 = st.tabs(["Overview", "Library", "FAQs", "Feedback"])
+tab1, tab2, tab3, tab4, tab5 = st.tabs(["Overview", "Library", "FAQs", "Product Roadmap", "Feedback"])
 
 with tab1:
-    overview = read_markdown_file("docs/ask_overview.md")
+    overview = read_markdown_file("pages/ask_overview.md")
     st.markdown(overview, unsafe_allow_html=True)
 
 
 with tab2:
-    overview = read_markdown_file("docs/library_overview.md")
+    overview = read_markdown_file("pages/library_overview.md")
     st.markdown(overview, unsafe_allow_html=True)
 
-    df = get_pickle_file()
+    df = get_excel_file()
     display_df = df[['source_short']]
     edited_df = st.data_editor(display_df, use_container_width=True, hide_index=False, disabled=True)
     isim= 'ASK_library.csv'
@@ -80,12 +79,22 @@ with tab2:
     st.markdown(linko_final, unsafe_allow_html=True)
 
 with tab3:
-    overview = read_markdown_file("docs/faqs.md")
+    overview = read_markdown_file("pages/faqs.md")
     st.markdown(overview, unsafe_allow_html=True)
 
 with tab4:
+    roadmap = read_markdown_file("pages/roadmap.md")
+    st.markdown(roadmap, unsafe_allow_html=True)
+    
+with tab5:
     st.markdown("#### Feedback")
-    st.write("ASK works by analyzing documents that are the most current official policy that exists at a national level.")
-    st.write("")
-    st.write('''If you see a document missing from the libary or should be removed, please let us know.
-             Send an email to uscgaux.drew@wks.us.''')
+    st.markdown("ASK's mission is to provide USCG Auxiliary members efficient, accuracete and easy access to the authoritative source of knowledge on any topic in the Auxiliary.")
+    st.markdown('If you would like to help ASK acheive this mission, **please reach out!**')
+                
+    st.markdown('''Presently, ASK works by analyzing documents that are the most current official policy that exists at a national level. 
+             If you see a document missing from the libary or should be removed, please let us know.''')  
+    
+    st.markdown('''If you find an error or ommision in a response, please let me know. Be sure to include the exact question asked
+             and a reference to the applicable policy (doc and page).''')  
+                
+    st.markdown('Send an email to uscgaux.drew@wks.us.''')

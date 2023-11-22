@@ -58,12 +58,13 @@ collector = FeedbackCollector(
 
 st.image("https://raw.githubusercontent.com/dvvilkins/ASK/main/images/ASK_logotype_color.png?raw=true", use_column_width="always")
 
-st.write(
-    "#### Get answers to USCG Auxiliary questions from authoritative sources.")
+
+api_status_message = ASK.get_openai_api_status()
+if "operational" not in api_status_message:
+    st.error(f"ASK is currently down due to OpenAI {api_status_message}.")
+else: st.write("#### Get answers to USCG Auxiliary questions from authoritative sources.")
 
 st.markdown("ASK uses Artificial Intelligence (AI) to search over 250 Coast Guard Auxiliary references for answers. Created for evaluation by Drew Wilkins. Not an official USCG Auxiliary service. Learn more <a href='Library' target='_self'><b>here</b>.</a>", unsafe_allow_html=True)
-
-
 
 examples = st.empty()
 
@@ -95,7 +96,7 @@ if query:
     with st.status("Compiling references...", expanded=False) as status:
         time.sleep(1)
         st.write(long_source_list)
-        status.update(label=":blue[**Click for full references**]", expanded=False)
+        status.update(label=":blue[CLICK HERE FOR SOURCE DETAILS]", expanded=False)
 
     collector.log_prompt(
         config_model={"model": "gpt-3.5-turbo"},
