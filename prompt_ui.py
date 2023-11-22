@@ -61,7 +61,7 @@ st.image("https://raw.githubusercontent.com/dvvilkins/ASK/main/images/ASK_logoty
 api_status_message = ASK.get_openai_api_status()
 if "operational" not in api_status_message:
     st.write(f"**OpenAI API Status: {api_status_message}**")
-    st.markdown("[red]**OpenAI API Status: {api_status_message}**")
+    st.write(f"[red]**OpenAI API Status: {api_status_message}**")
 
 st.write(
     "#### Get answers to USCG Auxiliary questions from authoritative sources.")
