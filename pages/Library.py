@@ -75,12 +75,12 @@ if back:
 tab1, tab2, tab3, tab4 = st.tabs(["Overview", "Library", "FAQs", "Feedback"])
 
 with tab1:
-    overview = read_markdown_file("docs/ask_overview.md")
+    overview = read_markdown_file("ask_overview.md")
     st.markdown(overview, unsafe_allow_html=True)
 
 
 with tab2:
-    overview = read_markdown_file("docs/library_overview.md")
+    overview = read_markdown_file("library_overview.md")
     st.markdown(overview, unsafe_allow_html=True)
 
     df = get_excel_file()
@@ -93,7 +93,7 @@ with tab2:
     st.markdown(linko_final, unsafe_allow_html=True)
 
 with tab3:
-    overview = read_markdown_file("docs/faqs.md")
+    overview = read_markdown_file("faqs.md")
     st.markdown(overview, unsafe_allow_html=True)
 
 with tab4:

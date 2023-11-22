@@ -6,8 +6,8 @@ These are some of the the things I plan to do over the coming months to continue
     - [x] Direct export of Library List Report into UI
     - [x] Check duplicate PDFs
     - [ ] Modify metadata in payload via streamlit
-    - [ ] Remove PDFs- acheived via langchain.vectorstores.qdrant.Qdrant.delete([vector IDs])
-- [ ] Evaluate Ray for ASK
+    - [x] Remove PDFs- acheived via langchain.vectorstores.qdrant.Qdrant.delete([vector IDs])
+- [x] Evaluate Ray for ASK
 
 ## Inference  
 - [ ] Reason through contractitions in corpus docs (e.g., conflicting policies)
@@ -15,13 +15,13 @@ These are some of the the things I plan to do over the coming months to continue
     - [ ] Index additional metadata
     - [ ] Include effective date in retrieval 
     - [ ] Give greater to weight to more recent documents
-- [ ] Explore better prompts through prompt templates
+- [x] Explore better prompts through prompt templates
 - Test other private and [open-source embedding models](https://huggingface.co/spaces/mteb/leaderboard) incl. cohere, anarchy
 
 ## UI Enhancements  
-- [ ] Implement workaround chat input field on mobile devices (a bug with streamlit)
-- [ ] Bring feedback back into the UI
-- [ ] Incorporate better visual status into UI
+- [x] Implement workaround chat input field on mobile devices (a bug with streamlit)
+- [x] Bring feedback back into the UI
+- [x] Incorporate better visual status into UI
 
 ## Instrumentation  
 - [x] Assess instrumentation providers: wandb, neptune, Trubrics

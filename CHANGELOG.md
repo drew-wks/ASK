@@ -13,6 +13,7 @@ All notable changes to this project will be documented in this file.
 
 ### Bug fixes
 - Modifications to the prompt and hyperparameters for improved doc retrieval
+- Removed two outdated policy documents
 
 ### Breaking changes
 - Moved code to new github repository and relaunched user app
