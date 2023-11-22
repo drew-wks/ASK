@@ -32,20 +32,22 @@ st.markdown("""
         </style>
         """, unsafe_allow_html=True)
 
-api_key=st.secrets.QDRANT_API_KEY
 
 
-# Check if 'client' is not in locals() or 'client' is not in globals()
-#if not it runs qdrant_check_and_connect()
-#and places the client object into st.session_state
-if 'clientkey' not in st.session_state:
-    st.session_state.clientkey = []
-    client = ASK.qdrant_connect_cloud(api_key)
-    st.session_state.clientkey = client
-    print(st.session_state.clientkey)
+@st.cache_resource
+def qdrant_connect_cloud():
+    if 'client' in globals():
+        return globals()['client']  # Return the existing client
+    client = QdrantClient(
+    "https://0c82e035-1105-40f2-a0bd-ecc44a016f15.us-east4-0.gcp.cloud.qdrant.io", 
+    prefer_grpc=True,
+    api_key=st.secrets.QDRANT_API_KEY,
+    )
+    return client
 
+client = qdrant_connect_cloud()
 
-qdrant = ASK.create_langchain_qdrant(st.session_state.clientkey)
+qdrant = ASK.create_langchain_qdrant(client)
 retriever = ASK.init_retriever_and_generator(qdrant)
 
 collector = FeedbackCollector(
