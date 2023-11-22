@@ -58,7 +58,7 @@ if back:
     switch_page("prompt_ui")
 
 
-tab1, tab2, tab3, tab4 = st.tabs(["Overview", "Library", "FAQs", "Product Roadmap", "Feedback"])
+tab1, tab2, tab3, tab4, tab5 = st.tabs(["Overview", "Library", "FAQs", "Product Roadmap", "Feedback"])
 
 with tab1:
     overview = read_markdown_file("pages/ask_overview.md")
