@@ -95,6 +95,6 @@ with tab5:
     st.markdown('''Presently, ASK works by analyzing documents that are the most current official policy that exists at a national level. 
              If you see a document missing from the libary or should be removed, please let us know.  
              If you find an error or ommision in a response, please let me know. Be sure to include the exact question asked
-             and a reference to the applicable policy (doc and page).  
+             and a reference to the applicable policy (doc and page).''')  
                 
-             Send an email to uscgaux.drew@wks.us.''')
+    st.markdown('Send an email to uscgaux.drew@wks.us.''')
