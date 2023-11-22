@@ -51,20 +51,6 @@ def get_excel_file():
         return None
 
 
-def get_pickle_file(): 
-    directory_path = 'reports/library_pkl/'
-    files_in_directory = os.listdir(directory_path)
-    pickle_files = [file for file in files_in_directory if file.endswith('.pkl')]
-
-    if len(pickle_files) == 1:
-        df = pd.read_pickle(os.path.join(directory_path, pickle_files[0]))
-        return df
-    else:
-        st.error("There's either no pickle file or more than one in the directory.")
-        return None
-
-
-
 st.image("https://raw.githubusercontent.com/dvvilkins/ASK/main/images/ASK_logotype_color.png?raw=true", use_column_width="always")
 
 back = st.button("< Back to App", type="primary")
@@ -75,12 +61,12 @@ if back:
 tab1, tab2, tab3, tab4 = st.tabs(["Overview", "Library", "FAQs", "Feedback"])
 
 with tab1:
-    overview = read_markdown_file("ask_overview.md")
+    overview = read_markdown_file("pages/ask_overview.md")
     st.markdown(overview, unsafe_allow_html=True)
 
 
 with tab2:
-    overview = read_markdown_file("library_overview.md")
+    overview = read_markdown_file("pages/library_overview.md")
     st.markdown(overview, unsafe_allow_html=True)
 
     df = get_excel_file()
@@ -93,7 +79,7 @@ with tab2:
     st.markdown(linko_final, unsafe_allow_html=True)
 
 with tab3:
-    overview = read_markdown_file("faqs.md")
+    overview = read_markdown_file("pages/faqs.md")
     st.markdown(overview, unsafe_allow_html=True)
 
 with tab4:
