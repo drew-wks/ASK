@@ -10,7 +10,7 @@ However, that bulk of that information is stowed away in PDFs scattered across v
 ASK is different. It examines the documents themselves, and then uses AI to answer them in natural language. ASK works by analyzing documents that are the most current official policy that exists at a national level. Its library contains over 238 policy documents (over 8000 pages)— from Commandant Instructions to ALAUXs to national workshops—managed in a central location. Scope is limited to publicly-available, national documents, so it doesn’t include information behind firewall or specific to individual districts, sectors, divisions, etc. That way, even applicants can use it without authentication.
 
 ## Mission 
-Provide members efficient, accurate, and easy access  to the authoritative source of knowledge on any topic in the Auxiliary.
+ASK's mission is to provide members efficient, accurate, and easy access  to the authoritative source of knowledge on any topic in the Auxiliary.
 
 ## Access
 ASK is available to try [here](https://uscg-auxiliary-ask.streamlit.app/)
@@ -19,15 +19,15 @@ ASK is available to try [here](https://uscg-auxiliary-ask.streamlit.app/)
 
 ## Uses
 
-**Policy Compliance:** ASK can assist members fulfill their responsibilities to understand and adhere to policy, and help the organization transition to new policies. For example, a member can find the policy changes affecting their competency.
+  - **Policy Compliance:** ASK can assist members fulfill their responsibilities to understand and adhere to policy, and help the organization transition to new policies. For example, a member can find the policy changes affecting their competency.
 
-**New Member Onboarding:** ASK can help new members integrate into the Auxiliary. For example, a new member can ask questions that might make them “feel stupid” to ask in person. A supportive and informative “first ninety days” sets the foundation for a productive and engaged member.
+ - **New Member Onboarding:** ASK can help new members integrate into the Auxiliary. For example, a new member can ask questions that might make them “feel stupid” to ask in person. A supportive and informative “first ninety days” sets the foundation for a productive and engaged member.
 
-**Training Support:** ASK provides personalized learning for trainees. It can compare and contrast terms or create custom quizzes, with ASK grading the results
+ - **Training Support:** ASK provides personalized learning for trainees. It can compare and contrast terms or create custom quizzes, with ASK grading the results
 
-**In-the-Field Mission Support:** ASK facilitates instant, on-the-go access to crucial documents during mission execution, enhancing Auxiliarist performance efficiency and decision-making. It can create checklists and provide Quick information retrieval. For example, an AUX Culinary Assistant could immediately determine all the currency requirements for the competency.
+ - **In-the-Field Mission Support:** ASK facilitates instant, on-the-go access to crucial documents during mission execution, enhancing Auxiliarist performance efficiency and decision-making. It can create checklists and provide Quick information retrieval. For example, an AUX Culinary Assistant could immediately determine all the currency requirements for the competency.
 
-**Language Access:** ASK can assist the US Coast Guard in fulfilling its requirements under Executive Order 13166, _“Improving Access to Services for Persons with Limited English Proficiency”_ by detecting language automatically and translate both question and responses in real time
+ - **Language Access:** ASK can assist the US Coast Guard in fulfilling its requirements under Executive Order 13166, _“Improving Access to Services for Persons with Limited English Proficiency”_ by detecting language automatically and translate both question and responses in real time
 
 
 ## How it Works
@@ -39,7 +39,7 @@ It works by taking a user’s question from a search bar, retrieving related inf
 ![process detail](https://raw.githubusercontent.com/dvvilkins/ASK/main/images/rag_flow_detail.png?raw=true)
 
 ## Data Flow
-![data flow diagram](https://raw.githubusercontent.com/dvvilkins/ASK/main/images/data_flow_diagram.pngl.png?raw=true)
+![data flow diagram](https://raw.githubusercontent.com/dvvilkins/ASK/main/images/data_flow_diagram.png?raw=true)
 
 ## Technology Components
 
@@ -64,7 +64,7 @@ Two additional components simplify system development and management:
 - **AI Ops:** Trubrics monitoring and optimization for machine learning models. It collects the queries and responses, parameters and token usage , and direct user feedback and provides an administrative dashboard for monitoring performance.
 
 ## Configuration
-This following configuration was specified for the proof of concept. This proposal recommends using it for the first-year launch of ASK. 
+The following configuration was specified for the proof of concept. This proposal recommends using it for the first-year launch of ASK. 
 
 ![configuration](https://raw.githubusercontent.com/dvvilkins/ASK/main/images/configuration_table.png?raw=true)
 
