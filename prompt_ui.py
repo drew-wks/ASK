@@ -101,7 +101,7 @@ if query:
     with st.status("Compiling references...", expanded=False) as status:
         time.sleep(1)
         st.write(long_source_list)
-        status.update(label=":blue[CLICK HERE FOR SOURCE DETAILS]", expanded=False)
+        status.update(label=":blue[CLICK HERE FOR FULL SOURCE DETAILS]", expanded=False)
 
     collector.log_prompt(
         config_model={"model": "gpt-3.5-turbo"},
