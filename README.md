@@ -72,3 +72,17 @@ The following configuration was specified for the proof of concept. This proposa
 Estimated year one costs are given below based on the recommended configuration. Primary cost drivers are usage and storage. All costs are monthly subscriptions. There is no deployment cost since the prototype has already been built and can be moved to production using volunteers.
 
 ![configuration](https://raw.githubusercontent.com/dvvilkins/ASK/main/images/costs.png?raw=true)
+
+## Github Repo Contents
+The streamlit app is a multi-page app with the TOC hidden. 
+Streamlit runs off of prompt_ui.py. A few notable features
+Efforts were taken to free up as much screen real estate as possible for small mobile screens. This includes:
+  - Creating a rich info area located on a separate page of a multipage app and hiding the TOC
+  - Linking to other pages with a hyperlink rather than a button that takes up vertical space
+  - Adjustments to page header and footer
+  - Replacing Streamlit header with st.status
+  - Removing instructional text after query is submitted to make room for response (using st.empty)
+Other features
+  - OpenAI down triggers a user warning
+  - Warning is displayed if OpenAI quota is exceeded and I need to pay for more credits
+ASK_inference.py contains most of the retrieval and inference code

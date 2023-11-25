@@ -1,14 +1,13 @@
 import streamlit as st 
-import datetime
-import pandas as pd
+import datetime, time, os 
 from trubrics.integrations.streamlit import FeedbackCollector
 import ASK_inference as ASK
-
+from qdrant_client import QdrantClient
 from ASK_inference import config
 from streamlit_extras.stylable_container import stylable_container
-import time
-st.set_page_config(page_title="ASK Auxiliary Source of Knowledge", initial_sidebar_state="collapsed")
 
+
+st.set_page_config(page_title="ASK Auxiliary Source of Knowledge", initial_sidebar_state="collapsed")
 
 st.markdown( """ <style> [data-testid="collapsedControl"] { display: none } </style> """, unsafe_allow_html=True, )
 
@@ -32,20 +31,23 @@ st.markdown("""
         </style>
         """, unsafe_allow_html=True)
 
-api_key=st.secrets.QDRANT_API_KEY
 
 
-# Check if 'client' is not in locals() or 'client' is not in globals()
-#if not it runs qdrant_check_and_connect()
-#and places the client object into st.session_state
-if 'clientkey' not in st.session_state:
-    st.session_state.clientkey = []
-    client = ASK.qdrant_connect_cloud(api_key)
-    st.session_state.clientkey = client
-    print(st.session_state.clientkey)
+@st.cache_resource
+def qdrant_connect_cloud():
+    os.write(1,b'QdrantClient start.\n')
+    if 'client' in globals():
+        return globals()['client']  # Return the existing client
+    client = QdrantClient(
+    "https://0c82e035-1105-40f2-a0bd-ecc44a016f15.us-east4-0.gcp.cloud.qdrant.io", 
+    prefer_grpc=True,
+    api_key=st.secrets.QDRANT_API_KEY,
+    )
+    os.write(1,b'QdrantClient complete.\n')
+    return client
 
-
-qdrant = ASK.create_langchain_qdrant(st.session_state.clientkey)
+client = qdrant_connect_cloud()
+qdrant = ASK.create_langchain_qdrant(client)
 retriever = ASK.init_retriever_and_generator(qdrant)
 
 collector = FeedbackCollector(
@@ -80,14 +82,28 @@ st.write("  ")
 user_feedback = " "
 query = st.text_input("Type your question or task here", max_chars=200)
 if query:
+    os.write(1, f"query start: {datetime.datetime.now().strftime('%H:%M:%S')}\n".encode())
     with st.status("Checking documents...", expanded=False) as status:
-        if query == "pledge":
-            response = ASK.rag_dummy(query,retriever) # ASK.rag_dummy for UNIT TESTING
-        else:
-            response = ASK.rag(query,retriever) 
-        short_source_list = ASK.create_short_source_list(response)
-        long_source_list = ASK.create_long_source_list(response)
-        examples.empty()
+        try:
+            if query == "pledge":
+                response = ASK.rag_dummy(query, retriever)  # ASK.rag_dummy for UNIT TESTING
+            else:
+                response = ASK.rag(query, retriever)
+
+            short_source_list = ASK.create_short_source_list(response)
+            long_source_list = ASK.create_long_source_list(response)
+
+        except openai.error.RateLimitError:
+            print("ASK has run out of Open AI credits. Tell Drew to go fund his account!")
+            response = None  
+
+        except Exception as e:
+            print(f"An error occurred: {e} Please try ASK again later")
+            response = None  
+
+        os.write(1, f"complete:    {datetime.datetime.now().strftime('%H:%M:%S')}\n".encode())
+        examples.empty()  # Uncomment and use this line if it's part of your original code
+
 
         st.info(f"**Question:** *{query}*\n\n ##### Response:\n{response['result']}\n\n **Sources:**  \n{short_source_list}\n **Note:** \n ASK can make mistakes. Verify the sources and check for local policy.")
 

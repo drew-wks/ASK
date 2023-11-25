@@ -6,12 +6,20 @@ All notable changes to this project will be documented in this file.
 - Add additional metadata keys and values into library data, including effective date
 - Developed code to delete docs from library
 
+## [0.5.1] - 2023-11-24
+### Features
+-Extensive readme file added to git repo
+
+### Bug fixes
+- Error message if Open AI credits are exceeded
 
 ## [0.5.0] - 2023-11-20
 ### Features
--Notifies of OpenAI status if it's compromised
+- Significant increase in speed (2-3x faster) 
+- Additional page in library outlining product roadmap
 
 ### Bug fixes
+- User warning if OpenAI service is down 
 - Modifications to the prompt and hyperparameters for improved doc retrieval
 - Removed two outdated policy documents
 
@@ -34,16 +42,12 @@ All notable changes to this project will be documented in this file.
 ### Bug fixes
 - Deployed as standard form so fully accesible via mobile 
 
-### Breaking changes
-
 ## [0.2.1] - 2023-10-26
 ### Features
 - Add this changelog to repo. Format based on [Keep a Changelog](http://keepachangelog.com/)
 
 ### Bug fixes
 - Added ASK-chat_dummy.py and a streamlit app off of it to test streamlit mobile device issues
-
-### Breaking changes
 
 ## [0.2.0] - 2023-10-22
 Lots of changes to the user interface to better explain the service and use the screen real estate  
@@ -53,10 +57,7 @@ Lots of changes to the user interface to better explain the service and use the 
 ### Bug fixes
 - Eliminated formatting errors within the detailed sources  
 
-### Breaking changes
-
 ## [0.1.1] - 2023-10-17
-
 ### Feature adds
 - Reorganized repo  
 - Updated logo 
