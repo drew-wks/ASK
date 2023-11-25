@@ -52,7 +52,6 @@ if query:
             response = None  
 
         os.write(1, f"complete:    {datetime.datetime.now().strftime('%H:%M:%S')}\n".encode())
-        examples.empty()  # Uncomment and use this line if it's part of your original code
 
 
         st.info(f"**Question:** *{query}*\n\n ##### Response:\n{response['result']}\n\n **Sources:**  \n{short_source_list}\n **Note:** \n ASK can make mistakes. Verify the sources and check for local policy.")
