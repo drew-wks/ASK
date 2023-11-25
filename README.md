@@ -75,14 +75,17 @@ Estimated year one costs are given below based on the recommended configuration.
 
 ## Github Repo Contents
 The streamlit app is a multi-page app with the TOC hidden. 
-Streamlit runs off of prompt_ui.py. A few notable features
+Streamlit runs off of prompt_ui.py. A few notable features  
 Efforts were taken to free up as much screen real estate as possible for small mobile screens. This includes:
   - Creating a rich info area located on a separate page of a multipage app and hiding the TOC
   - Linking to other pages with a hyperlink rather than a button that takes up vertical space
   - Adjustments to page header and footer
   - Replacing Streamlit header with st.status
   - Removing instructional text after query is submitted to make room for response (using st.empty)
-Other features
+Other features  
   - OpenAI down triggers a user warning
   - Warning is displayed if OpenAI quota is exceeded and I need to pay for more credits
-ASK_inference.py contains most of the retrieval and inference code
+ASK_inference.py contains most of the retrieval and inference code  
+Testing  
+  - Primarily conducted through a separate streamlit app that accesses github.com/drew-wks/ASK/tree/test.  
+  - Additional testing is conducted using /test, test.py, just_streamlit_text.py
