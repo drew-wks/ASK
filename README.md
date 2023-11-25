@@ -39,7 +39,7 @@ It works by taking a user’s question from a search bar, retrieving related inf
 ![process detail](https://raw.githubusercontent.com/dvvilkins/ASK/main/images/rag_flow_detail.png?raw=true)
 
 ## Document Library
-ASK is loaded with over 250 national documents (over 8000 pages). The app includes a searchable list of documents in its information section. 
+ASK is loaded with over 250 national documents (over 8000 pages). The app includes a searchable list of documents in its information section. <br>
  <a href="https://uscg-auxiliary-ask.streamlit.app/Library#library-overview"><img src="https://raw.githubusercontent.com/dvvilkins/ASK/main/images/library_ui.png" alt="library ui" width="60%"/></a>
 
 
@@ -69,7 +69,7 @@ Two additional components simplify system development and management:
 - **AI Ops:** Trubrics monitoring and optimization for machine learning models. It collects the queries and responses, parameters and token usage , and direct user feedback and provides an administrative dashboard for monitoring performance.
 
 ## Configuration
-The following configuration was specified for the proof of concept. This proposal recommends using it for the first-year launch of ASK. 
+The following configuration was specified for the proof of concept. This proposal recommends using it for the first-year launch of ASK. <br>
  <img src="https://raw.githubusercontent.com/dvvilkins/ASK/main/images/configuration_table.png" alt="configuration table" width="60%"/>
 
 ## Administration
