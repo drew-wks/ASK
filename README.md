@@ -74,9 +74,9 @@ Estimated year one costs are given below based on the recommended configuration.
 ![configuration](https://raw.githubusercontent.com/dvvilkins/ASK/main/images/costs.png?raw=true)
 
 ## Github Repo Contents
-The streamlit app is a multi-page app with the TOC hidden.  
+The streamlit app is a multi-page app with the TOC hidden. 
 Streamlit runs off of prompt_ui.py. A few notable features  
-Efforts were taken to free up as much screen real estate as possible for small mobile screens. This includes:  
+Efforts were taken to free up as much screen real estate as possible for small mobile screens. This includes:
   - Creating a rich info area located on a separate page of a multipage app and hiding the TOC
   - Linking to other pages with a hyperlink rather than a button that takes up vertical space
   - Adjustments to page header and footer
