@@ -13,9 +13,8 @@ ASK is different. It examines the documents themselves, and then uses AI to answ
 ASK's mission is to provide members efficient, accurate, and easy access  to the authoritative source of knowledge on any topic in the Auxiliary.
 
 ## Access
-ASK is available to try [here](https://uscg-auxiliary-ask.streamlit.app/)
-
-![screenshot](https://raw.githubusercontent.com/dvvilkins/ASK/main/images/what_is_the_aux_screenshot.png?raw=true)
+ASK is available to try [here](https://uscg-auxiliary-ask.streamlit.app/) <br>
+<a href="https://uscg-auxiliary-ask.streamlit.app/"><img align="center" src="https://raw.githubusercontent.com/dvvilkins/ASK/main/images/what_is_the_aux_screenshot.png" alt="library ui" width="80%" align="center"/></a>
 
 ## Uses
 
@@ -32,19 +31,18 @@ ASK is available to try [here](https://uscg-auxiliary-ask.streamlit.app/)
 
 ## How it Works
 ### Generative AI Document Search
-Generative AI Document Search brings together two capabilities of Artificial Intelligence (AI): the powerful information **retrieval** of a search engine with **text generation** ability of a Generative AI operating within a controlled organizational environment.  
-Generative AI Document Search overcomes limitations of both by utilizing retrieved information from existing data, ensuring that the answers provided are not only contextually appropriate but also substantiated by credible sources.  
-It works by taking a user’s question from a search bar, retrieving related information from a pre-defined library of USCG reference documents, and then generating a detailed response back to the user that includes the source citations.
-
-![process detail](https://raw.githubusercontent.com/dvvilkins/ASK/main/images/rag_flow_detail.png?raw=true)
+Generative AI Document Search brings together two capabilities of Artificial Intelligence (AI): the powerful information **retrieval** of a search engine with **text generation** ability of a Generative AI operating within a controlled organizational environment. Generative AI Document Search overcomes limitations of both by utilizing retrieved information from existing data, ensuring that the answers provided are not only contextually appropriate but also substantiated by credible sources. It works by taking a user’s question from a search bar, retrieving related information from a pre-defined library of USCG reference documents, and then generating a detailed response back to the user that includes the source citations.
+<br><br>
+<a href="https://uscg-auxiliary-ask.streamlit.app/"><img align="center" src="https://raw.githubusercontent.com/dvvilkins/ASK/main/images/rag_flow_detail.png" alt="low" width="90%" align="center"/></a>
 
 ## Document Library
-ASK is loaded with over 250 national documents (over 8000 pages). The app includes a searchable list of documents in its information section. CLick image to visit.<br>
- <a href="https://uscg-auxiliary-ask.streamlit.app/Library#library-overview"><img src="https://raw.githubusercontent.com/dvvilkins/ASK/main/images/library_ui.png" alt="library ui" width="60%"/></a>
+ASK is loaded with over 250 national documents (over 8000 pages). The app includes a searchable list of documents in its information section. Click image to visit.<br><br>
+<a href="https://uscg-auxiliary-ask.streamlit.app/Library#library-overview"><img align="center" src="https://raw.githubusercontent.com/dvvilkins/ASK/main/images/library_ui.png" alt="library ui" width="60%"/></a>
 
 
 ## Data Flow
-The data flow model is below. ![data flow diagram](https://raw.githubusercontent.com/dvvilkins/ASK/main/images/data_flow_diagram.png?raw=true)
+The data flow model is below. <br>
+<img align="center" src="https://raw.githubusercontent.com/dvvilkins/ASK/main/images/data_flow_diagram.png" alt="low" width="90%" align="center"/></a>  
 
 ## Technology Components
 
@@ -77,22 +75,22 @@ Process details for the first several stages are located [here.](https://cdn-0.p
 
 ## Costs
 Estimated year one costs are given below based on the recommended configuration. Primary cost drivers are usage and storage. All costs are monthly subscriptions. There is no deployment cost since the prototype has already been built and can be moved to production using volunteers.
-
-![configuration](https://raw.githubusercontent.com/dvvilkins/ASK/main/images/costs.png?raw=true)
+ <br><img align="center" src="[https://raw.githubusercontent.com/dvvilkins/ASK/main/images/what_is_the_aux_screenshot.png](https://raw.githubusercontent.com/dvvilkins/ASK/main/images/costs.png)" alt="library ui" width="80%" align="center"/></a>
 
 ## Github Repo Contents
-The streamlit app is a multi-page app with the TOC hidden. 
-Streamlit runs off of prompt_ui.py. A few notable features  
+The streamlit app is a multi-page app with the TOC hidden. Streamlit runs off of prompt_ui.py. ASK_inference.py contains most of the retrieval and inference code.  
+ 
 Efforts were taken to free up as much screen real estate as possible for small mobile screens. This includes:
   - Creating a rich info area located on a separate page of a multipage app and hiding the TOC
   - Linking to other pages with a hyperlink rather than a button that takes up vertical space
   - Adjustments to page header and footer
   - Replacing Streamlit header with st.status
   - Removing instructional text after query is submitted to make room for response (using st.empty)
+    
 Other features  
   - OpenAI down triggers a user warning
   - Warning is displayed if OpenAI quota is exceeded and I need to pay for more credits
-ASK_inference.py contains most of the retrieval and inference code  
+
 Testing  
   - Primarily conducted through a separate streamlit app that accesses github.com/drew-wks/ASK/tree/test.  
   - Additional testing is conducted using /test, test.py, just_streamlit_text.py
