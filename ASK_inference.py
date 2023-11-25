@@ -57,15 +57,15 @@ def qdrant_connect_local():
 
 
 
-def qdrant_connect_cloud(api_key):
+def qdrant_connect_cloud(api_key, url):
     print("attempting to assign client")
     
     if 'client' in globals():
         return globals()['client']  # Return the existing client
     client = QdrantClient(
-    "https://0c82e035-1105-40f2-a0bd-ecc44a016f15.us-east4-0.gcp.cloud.qdrant.io", 
-    prefer_grpc=True,
-    api_key=api_key,
+        url=url, 
+        prefer_grpc=True,
+        api_key=api_key,
     )
     return client
 

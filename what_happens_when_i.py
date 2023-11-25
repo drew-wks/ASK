@@ -13,8 +13,9 @@ st.set_page_config(
 )
 
 qdrant_connect_cloud_cached = st.cache_resource(ASK.qdrant_connect_cloud)
-api_key=st.secrets.QDRANT_API_KEY
-client = qdrant_connect_cloud_cached(api_key)
+api_key = st.secrets.QDRANT_API_KEY
+url = st.secrets.QDRANT_URL
+client = qdrant_connect_cloud_cached(api_key, url)
 qdrant = ASK.create_langchain_qdrant(client)
 retriever = ASK.init_retriever_and_generator(qdrant)
 
