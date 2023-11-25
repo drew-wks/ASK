@@ -39,7 +39,7 @@ It works by taking a user’s question from a search bar, retrieving related inf
 ![process detail](https://raw.githubusercontent.com/dvvilkins/ASK/main/images/rag_flow_detail.png?raw=true)
 
 ## Document Library
-ASK is loaded with over 250 national documents (over 8000 pages). The app includes a searchable list of documents in its information section. <br>
+ASK is loaded with over 250 national documents (over 8000 pages). The app includes a searchable list of documents in its information section. CLick image to visit.<br>
  <a href="https://uscg-auxiliary-ask.streamlit.app/Library#library-overview"><img src="https://raw.githubusercontent.com/dvvilkins/ASK/main/images/library_ui.png" alt="library ui" width="60%"/></a>
 
 
