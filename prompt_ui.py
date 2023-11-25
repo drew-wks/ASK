@@ -32,23 +32,13 @@ st.markdown("""
         """, unsafe_allow_html=True)
 
 
-
-@st.cache_resource
-def qdrant_connect_cloud():
-    os.write(1,b'QdrantClient start.\n')
-    if 'client' in globals():
-        return globals()['client']  # Return the existing client
-    client = QdrantClient(
-    "https://0c82e035-1105-40f2-a0bd-ecc44a016f15.us-east4-0.gcp.cloud.qdrant.io", 
-    prefer_grpc=True,
-    api_key=st.secrets.QDRANT_API_KEY,
-    )
-    os.write(1,b'QdrantClient complete.\n')
-    return client
-
-client = qdrant_connect_cloud()
+qdrant_connect_cloud_cached = st.cache_resource(ASK.qdrant_connect_cloud)
+api_key = st.secrets.QDRANT_API_KEY
+url = st.secrets.QDRANT_URL
+client = qdrant_connect_cloud_cached(api_key, url)
 qdrant = ASK.create_langchain_qdrant(client)
 retriever = ASK.init_retriever_and_generator(qdrant)
+
 
 collector = FeedbackCollector(
     project="default",
