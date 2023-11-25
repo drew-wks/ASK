@@ -41,8 +41,8 @@ ASK is loaded with over 250 national documents (over 8000 pages). The app includ
 
 
 ## Data Flow
-The data flow model is below. <br>
-<img align="center" src="https://raw.githubusercontent.com/dvvilkins/ASK/main/images/data_flow_diagram.png" alt="low" width="90%" align="center"/></a>  
+The data flow model is below. <br><br>
+<img align="center" src="https://raw.githubusercontent.com/dvvilkins/ASK/main/images/data_flow_diagram.png" alt="low" width="80%" align="center"/></a>  
 
 ## Technology Components
 
