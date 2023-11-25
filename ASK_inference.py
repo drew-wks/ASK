@@ -70,18 +70,6 @@ def qdrant_connect_cloud(api_key):
     return client
 
 
-def qdrant_connect_and_cache_cloud():
-    os.write(1,b'QdrantClient start.\n')
-    if 'client' in globals():
-        return globals()['client']  # Return the existing client
-    client = QdrantClient(
-    "https://0c82e035-1105-40f2-a0bd-ecc44a016f15.us-east4-0.gcp.cloud.qdrant.io", 
-    prefer_grpc=True,
-    api_key=st.secrets.QDRANT_API_KEY,
-    )
-    os.write(1,b'QdrantClient complete.\n')
-    return client
-
 
 def create_langchain_qdrant(client):
     '''create a langchain vectorstore object'''
