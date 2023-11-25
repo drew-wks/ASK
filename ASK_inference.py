@@ -133,7 +133,7 @@ def rag_old1(query, retriever):
 def rag_dummy(query, retriever):
     '''returns a dummy canned response'''
 
-    with open("test/dummy_response.pkl", "rb") as file:
+    with open("dummy_response.pkl", "rb") as file:
         dummy_response = pickle.load(file)
     return dummy_response
         

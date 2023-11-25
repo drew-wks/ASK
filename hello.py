@@ -1,9 +1,6 @@
 import streamlit as st 
-import datetime, time, os, sys 
+import datetime, time, os, sys
 from trubrics.integrations.streamlit import FeedbackCollector
-
-sys.path.insert(0, '..') # allows access to modules in parent dir, if needed
-
 import ASK_inference as ASK
 from qdrant_client import QdrantClient
 from ASK_inference import config
