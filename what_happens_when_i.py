@@ -12,9 +12,9 @@ st.set_page_config(
     page_icon="👋",
 )
 
-@st.cache_resource
-client = ASK.qdrant_connect_cloud()
-
+qdrant_connect_cloud_cached = st.cache_resource(ASK.qdrant_connect_cloud)
+api_key=st.secrets.QDRANT_API_KEY
+client = qdrant_connect_cloud_cached(api_key)
 qdrant = ASK.create_langchain_qdrant(client)
 retriever = ASK.init_retriever_and_generator(qdrant)
 
