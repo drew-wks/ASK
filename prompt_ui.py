@@ -80,19 +80,29 @@ examples.write("""
 """)
 st.write("  ")
 
-user_feedback = " "
-query = st.text_input("Type your question or task here", max_chars=200)
 if query:
     os.write(1, f"query start: {datetime.datetime.now().strftime('%H:%M:%S')}\n".encode())
     with st.status("Checking documents...", expanded=False) as status:
-        if query == "pledge":
-            response = ASK.rag_dummy(query,retriever) # ASK.rag_dummy for UNIT TESTING
-        else:
-            response = ASK.rag(query,retriever) 
-        short_source_list = ASK.create_short_source_list(response)
-        long_source_list = ASK.create_long_source_list(response)
+        try:
+            if query == "pledge":
+                response = ASK.rag_dummy(query, retriever)  # ASK.rag_dummy for UNIT TESTING
+            else:
+                response = ASK.rag(query, retriever)
+
+            short_source_list = ASK.create_short_source_list(response)
+            long_source_list = ASK.create_long_source_list(response)
+
+        except openai.error.RateLimitError:
+            print("ASK has run out of Open AI credits. Tell Drew to go fund his account!")
+            response = None  
+
+        except Exception as e:
+            print(f"An error occurred: {e} Please try ASK again later")
+            response = None  
+
         os.write(1, f"complete:    {datetime.datetime.now().strftime('%H:%M:%S')}\n".encode())
-        examples.empty()
+        examples.empty()  # Uncomment and use this line if it's part of your original code
+
 
         st.info(f"**Question:** *{query}*\n\n ##### Response:\n{response['result']}\n\n **Sources:**  \n{short_source_list}\n **Note:** \n ASK can make mistakes. Verify the sources and check for local policy.")
 
