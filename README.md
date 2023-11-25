@@ -77,7 +77,7 @@ Process details for the first several stages are located [here.](https://cdn-0.p
 ## Costs
 Estimated year one costs are given below based on the recommended configuration. Primary cost drivers are usage and storage. All costs are monthly subscriptions. There is no deployment cost since the prototype has already been built and can be moved to production using volunteers.
  <br> <br> 
- <img align="center" src="[https://raw.githubusercontent.com/dvvilkins/ASK/main/images/what_is_the_aux_screenshot.png](https://raw.githubusercontent.com/dvvilkins/ASK/main/images/costs.png)" alt="library ui" width="80%" align="center"/></a>
+ <img align="center" src="https://raw.githubusercontent.com/dvvilkins/ASK/main/images/costs.png" alt="costs" width="80%" align="center"/></a>
 
 ## Github Repo Contents
 The streamlit app is a multi-page app with the TOC hidden. Streamlit runs off of prompt_ui.py. ASK_inference.py contains most of the retrieval and inference code.  
