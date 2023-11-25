@@ -38,8 +38,12 @@ It works by taking a user’s question from a search bar, retrieving related inf
 
 ![process detail](https://raw.githubusercontent.com/dvvilkins/ASK/main/images/rag_flow_detail.png?raw=true)
 
+## Document Library
+ASK is loaded with over 250 national documents (over 8000 pages). The app includes a searchable list of documents in its information section.![library search](https://raw.githubusercontent.com/dvvilkins/ASK/main/images/library_ui.png?raw=true)
+
+
 ## Data Flow
-![data flow diagram](https://raw.githubusercontent.com/dvvilkins/ASK/main/images/data_flow_diagram.png?raw=true)
+The data flow model is below. ![data flow diagram](https://raw.githubusercontent.com/dvvilkins/ASK/main/images/data_flow_diagram.png?raw=true)
 
 ## Technology Components
 
@@ -67,6 +71,9 @@ Two additional components simplify system development and management:
 The following configuration was specified for the proof of concept. This proposal recommends using it for the first-year launch of ASK. 
 
 ![configuration](https://raw.githubusercontent.com/dvvilkins/ASK/main/images/configuration_table.png?raw=true)
+
+## Administration
+Process details for the first several stages are located [here.](https://cdn-0.plantuml.com/plantuml/png/ZLF1Qjj04BtxAuRaPcXA3xtKbpHnGmEXf2JGenZlZkL5gnrbPcH7rFttHbgbLOrTSX9evhsPUU_jfHgAjNMSQHLIWu8rhD1LfN2R_3L75Z31f2ybIZRfKdfgAJdwBCAxnqrmLI9L-73nSTBaQOrjj1jEzWrhWgyKjsJ1uMosF_-n2KOFDLUq1u3hLj1O060_6vQQDIWMB722yxjGRkoXwgvYIt1slxo1Uw5tZR0ZrP3AC_Wv0m3u53mb2-iE-XxbLXn1P8SzZIx-7VhGgL6zpq1rWWs1HqDO2zSZM24aOqYqAtB7nNFKvqN6t2xxGZzAOTM1uxf12QayR8TTi0rmz4Sui6ae-SDYHepamr9Zk-TTYep-x-39ils1NvwD964SpvhFNvgAa885ZCMBOoszdyypsMant8PSDTAp08cmw6Ai2Q4H6AuY0Q-71HFMf839Gqs6atKpKL-8N2hujed1eT70FL5WWeIAkYE7D7wjXLyNv8CLzLJ2m_1aKZzXt69iIS4OCkf_tEIdr5DL3XSTpbBS4g0ETlGqfnnu1HLzI29PTk7N9EFPZ1pksrIIzdzVStrW3pTTTiTu-1PX09mQdgjlyhrDrTGRgbVaOKlEM7Jq4Nr-4qzUC1aihuvf5RcSmlwav8X0tpDFLbU11OHoo1GSnqYkLsBn1XsAkx0IbEwK3Z6Nto34yEg230Tqu29XQXjul5hsdgbnCxkavDiw_WO0)
 
 ## Costs
 Estimated year one costs are given below based on the recommended configuration. Primary cost drivers are usage and storage. All costs are monthly subscriptions. There is no deployment cost since the prototype has already been built and can be moved to production using volunteers.
