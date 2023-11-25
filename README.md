@@ -40,9 +40,14 @@ ASK is loaded with over 250 national documents (over 8000 pages). The app includ
 <a href="https://uscg-auxiliary-ask.streamlit.app/Library#library-overview"><img align="center" src="https://raw.githubusercontent.com/dvvilkins/ASK/main/images/library_ui.png" alt="library ui" width="60%"/></a>
 
 
+## Document Library
+ASK is loaded with over 250 national documents (over 8000 pages). The app includes a searchable list of documents in its information section.![library search](https://raw.githubusercontent.com/dvvilkins/ASK/main/images/library_ui.png?raw=true)
+
+
 ## Data Flow
 The data flow model is below. <br><br>
 <img align="center" src="https://raw.githubusercontent.com/dvvilkins/ASK/main/images/data_flow_diagram.png" alt="low" width="80%" align="center"/></a>  
+
 
 ## Technology Components
 
@@ -74,6 +79,9 @@ The following configuration was specified for the proof of concept. This proposa
 ## Administration
 Process details for the first several stages are located [here.](https://cdn-0.plantuml.com/plantuml/png/ZLF1Qjj04BtxAuRaPcXA3xtKbpHnGmEXf2JGenZlZkL5gnrbPcH7rFttHbgbLOrTSX9evhsPUU_jfHgAjNMSQHLIWu8rhD1LfN2R_3L75Z31f2ybIZRfKdfgAJdwBCAxnqrmLI9L-73nSTBaQOrjj1jEzWrhWgyKjsJ1uMosF_-n2KOFDLUq1u3hLj1O060_6vQQDIWMB722yxjGRkoXwgvYIt1slxo1Uw5tZR0ZrP3AC_Wv0m3u53mb2-iE-XxbLXn1P8SzZIx-7VhGgL6zpq1rWWs1HqDO2zSZM24aOqYqAtB7nNFKvqN6t2xxGZzAOTM1uxf12QayR8TTi0rmz4Sui6ae-SDYHepamr9Zk-TTYep-x-39ils1NvwD964SpvhFNvgAa885ZCMBOoszdyypsMant8PSDTAp08cmw6Ai2Q4H6AuY0Q-71HFMf839Gqs6atKpKL-8N2hujed1eT70FL5WWeIAkYE7D7wjXLyNv8CLzLJ2m_1aKZzXt69iIS4OCkf_tEIdr5DL3XSTpbBS4g0ETlGqfnnu1HLzI29PTk7N9EFPZ1pksrIIzdzVStrW3pTTTiTu-1PX09mQdgjlyhrDrTGRgbVaOKlEM7Jq4Nr-4qzUC1aihuvf5RcSmlwav8X0tpDFLbU11OHoo1GSnqYkLsBn1XsAkx0IbEwK3Z6Nto34yEg230Tqu29XQXjul5hsdgbnCxkavDiw_WO0) Process details for database auditing and deleting are [here.](https://cdn-0.plantuml.com/plantuml/png/ZP5FRzD04CNl_XIZzW3aq8e3b-JIAg5mg12ebH12A9hiJkoLrpjcTZP_HFZkxCOkAYL5v13BC-_dVVlULLGKJPslOkj2Zu8ThD2qjN0ATiwU1LGmnBoYe8zKaRud2eQkHNXxtpZJ1eeHNb-yUIIojCRazOQ3Vi2Eu3tv3QapM5NLuVnpuvJkEcxf003p9AWi072eZgwggi__JXq7EBzrTQDVo7lUmjbridaSQj26O86AAunq1ZygoB-dtogpwRsukYQ9W0MT3SAxVLJgHiKxqhpr7dfsGIEiXJluP0L3bX_UxfGae1_5mno4D4auOiiHUzdZtZFQ2Bo6ZXGjAhuwTQ1foBIP3HOyrn5eusm9j80szTuPL8AFYviu6m6XF8cGWilHBoCdCPINqwsuh5I6jVCqY9yQzcubAFkbPPCw2hhqBkfNYqgNwZhwTj6tVlQVqfsFkrdrCrSObVlgkRBcBEZXR46UIbVb9cEgjyC9_ooiPA5klH-nl1BgU8F-L9IZs54iyXSHDcIKvI4uMopGE1myZ2zWLy-MEr3nJyomzsJABK_vA3qEt6_1D9iUMWJbyboYcCPjwEzpCtri47HbHtWokIpe0pEPbDolADZK-Ly0)
 
+## Administration
+Process details for the first several stages are located [here.](https://cdn-0.plantuml.com/plantuml/png/ZLF1Qjj04BtxAuRaPcXA3xtKbpHnGmEXf2JGenZlZkL5gnrbPcH7rFttHbgbLOrTSX9evhsPUU_jfHgAjNMSQHLIWu8rhD1LfN2R_3L75Z31f2ybIZRfKdfgAJdwBCAxnqrmLI9L-73nSTBaQOrjj1jEzWrhWgyKjsJ1uMosF_-n2KOFDLUq1u3hLj1O060_6vQQDIWMB722yxjGRkoXwgvYIt1slxo1Uw5tZR0ZrP3AC_Wv0m3u53mb2-iE-XxbLXn1P8SzZIx-7VhGgL6zpq1rWWs1HqDO2zSZM24aOqYqAtB7nNFKvqN6t2xxGZzAOTM1uxf12QayR8TTi0rmz4Sui6ae-SDYHepamr9Zk-TTYep-x-39ils1NvwD964SpvhFNvgAa885ZCMBOoszdyypsMant8PSDTAp08cmw6Ai2Q4H6AuY0Q-71HFMf839Gqs6atKpKL-8N2hujed1eT70FL5WWeIAkYE7D7wjXLyNv8CLzLJ2m_1aKZzXt69iIS4OCkf_tEIdr5DL3XSTpbBS4g0ETlGqfnnu1HLzI29PTk7N9EFPZ1pksrIIzdzVStrW3pTTTiTu-1PX09mQdgjlyhrDrTGRgbVaOKlEM7Jq4Nr-4qzUC1aihuvf5RcSmlwav8X0tpDFLbU11OHoo1GSnqYkLsBn1XsAkx0IbEwK3Z6Nto34yEg230Tqu29XQXjul5hsdgbnCxkavDiw_WO0) Process details for database auditing and deleting are [here.](https://cdn-0.plantuml.com/plantuml/png/ZP5FRzD04CNl_XIZzW3aq8e3b-JIAg5mg12ebH12A9hiJkoLrpjcTZP_HFZkxCOkAYL5v13BC-_dVVlULLGKJPslOkj2Zu8ThD2qjN0ATiwU1LGmnBoYe8zKaRud2eQkHNXxtpZJ1eeHNb-yUIIojCRazOQ3Vi2Eu3tv3QapM5NLuVnpuvJkEcxf003p9AWi072eZgwggi__JXq7EBzrTQDVo7lUmjbridaSQj26O86AAunq1ZygoB-dtogpwRsukYQ9W0MT3SAxVLJgHiKxqhpr7dfsGIEiXJluP0L3bX_UxfGae1_5mno4D4auOiiHUzdZtZFQ2Bo6ZXGjAhuwTQ1foBIP3HOyrn5eusm9j80szTuPL8AFYviu6m6XF8cGWilHBoCdCPINqwsuh5I6jVCqY9yQzcubAFkbPPCw2hhqBkfNYqgNwZhwTj6tVlQVqfsFkrdrCrSObVlgkRBcBEZXR46UIbVb9cEgjyC9_ooiPA5klH-nl1BgU8F-L9IZs54iyXSHDcIKvI4uMopGE1myZ2zWLy-MEr3nJyomzsJABK_vA3qEt6_1D9iUMWJbyboYcCPjwEzpCtri47HbHtWokIpe0pEPbDolADZK-Ly0)
+
 ## Costs
 Estimated year one costs are given below based on the recommended configuration. Primary cost drivers are usage and storage. All costs are monthly subscriptions. There is no deployment cost since the prototype has already been built and can be moved to production using volunteers.
  <br> <br> 
@@ -81,7 +89,6 @@ Estimated year one costs are given below based on the recommended configuration.
 
 ## Github Repo Contents
 The streamlit app is a multi-page app with the TOC hidden. Streamlit runs off of prompt_ui.py. ASK_inference.py contains most of the retrieval and inference code.  
- 
 Efforts were taken to free up as much screen real estate as possible for small mobile screens. This includes:
   - Creating a rich info area located on a separate page of a multipage app and hiding the TOC
   - Linking to other pages with a hyperlink rather than a button that takes up vertical space
