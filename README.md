@@ -67,7 +67,8 @@ Two additional components simplify system development and management:
 - **AI Ops:** Trubrics monitoring and optimization for machine learning models. It collects the queries and responses, parameters and token usage , and direct user feedback and provides an administrative dashboard for monitoring performance.
 
 ## Configuration
-The following configuration was specified for the proof of concept. This proposal recommends using it for the first-year launch of ASK. <br>
+The following configuration was specified for the proof of concept. This proposal recommends using it for the first-year launch of ASK. 
+<br> <br>
  <img src="https://raw.githubusercontent.com/dvvilkins/ASK/main/images/configuration_table.png" alt="configuration table" width="60%"/>
 
 ## Administration
@@ -75,7 +76,8 @@ Process details for the first several stages are located [here.](https://cdn-0.p
 
 ## Costs
 Estimated year one costs are given below based on the recommended configuration. Primary cost drivers are usage and storage. All costs are monthly subscriptions. There is no deployment cost since the prototype has already been built and can be moved to production using volunteers.
- <br><br><img align="center" src="[https://raw.githubusercontent.com/dvvilkins/ASK/main/images/what_is_the_aux_screenshot.png](https://raw.githubusercontent.com/dvvilkins/ASK/main/images/costs.png)" alt="library ui" width="80%" align="center"/></a>
+ <br> <br> 
+ <img align="center" src="[https://raw.githubusercontent.com/dvvilkins/ASK/main/images/what_is_the_aux_screenshot.png](https://raw.githubusercontent.com/dvvilkins/ASK/main/images/costs.png)" alt="library ui" width="80%" align="center"/></a>
 
 ## Github Repo Contents
 The streamlit app is a multi-page app with the TOC hidden. Streamlit runs off of prompt_ui.py. ASK_inference.py contains most of the retrieval and inference code.  
