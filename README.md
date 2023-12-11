@@ -35,14 +35,10 @@ Generative AI Document Search brings together two capabilities of Artificial Int
 <br><br>
 <a href="https://uscg-auxiliary-ask.streamlit.app/"><img align="center" src="https://raw.githubusercontent.com/dvvilkins/ASK/main/images/rag_flow_detail.png" alt="low" width="90%" align="center"/></a>
 
+
 ## Document Library
 ASK is loaded with over 250 national documents (over 8000 pages). The app includes a searchable list of documents in its information section. Click image to visit.<br><br>
 <a href="https://uscg-auxiliary-ask.streamlit.app/Library#library-overview"><img align="center" src="https://raw.githubusercontent.com/dvvilkins/ASK/main/images/library_ui.png" alt="library ui" width="60%"/></a>
-
-
-## Document Library
-ASK is loaded with over 250 national documents (over 8000 pages). The app includes a searchable list of documents in its information section.![library search](https://raw.githubusercontent.com/dvvilkins/ASK/main/images/library_ui.png?raw=true)
-
 
 ## Data Flow
 The data flow model is below. <br><br>

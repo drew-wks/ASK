@@ -32,23 +32,13 @@ st.markdown("""
         """, unsafe_allow_html=True)
 
 
-
-@st.cache_resource
-def qdrant_connect_cloud():
-    os.write(1,b'QdrantClient start.\n')
-    if 'client' in globals():
-        return globals()['client']  # Return the existing client
-    client = QdrantClient(
-    "https://0c82e035-1105-40f2-a0bd-ecc44a016f15.us-east4-0.gcp.cloud.qdrant.io", 
-    prefer_grpc=True,
-    api_key=st.secrets.QDRANT_API_KEY,
-    )
-    os.write(1,b'QdrantClient complete.\n')
-    return client
-
-client = qdrant_connect_cloud()
+qdrant_connect_cloud_cached = st.cache_resource(ASK.qdrant_connect_cloud)
+api_key = st.secrets.QDRANT_API_KEY
+url = st.secrets.QDRANT_URL
+client = qdrant_connect_cloud_cached(api_key, url)
 qdrant = ASK.create_langchain_qdrant(client)
 retriever = ASK.init_retriever_and_generator(qdrant)
+
 
 collector = FeedbackCollector(
     project="default",
@@ -74,7 +64,7 @@ examples.write("""
     **ASK answers questions such as:**   
     *What are the requirements to run for FC?*  
     *How do I stay current as a member?*   
-    *Make a 10 question quiz on boat crewmember tasks, with answers.*   
+    *¿En que ocasiones es necesario un saludo militar?*   
     
 """)
 st.write("  ")
@@ -105,7 +95,7 @@ if query:
         examples.empty()  # Uncomment and use this line if it's part of your original code
 
 
-        st.info(f"**Question:** *{query}*\n\n ##### Response:\n{response['result']}\n\n **Sources:**  \n{short_source_list}\n **Note:** \n ASK can make mistakes. Verify the sources and check for local policy.")
+        st.info(f"**Question:** *{query}*\n\n ##### Response:\n{response['result']}\n\n **Sources:**  \n{short_source_list}\n **Note:** \n ASK can make mistakes. Verify the sources and check your local policies.")
 
     status.update(label=":blue[**Response**]", expanded=True)
 

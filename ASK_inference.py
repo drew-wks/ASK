@@ -39,6 +39,7 @@ from langchain.chat_models import ChatOpenAI
 from langchain.prompts import PromptTemplate, ChatPromptTemplate, SystemMessagePromptTemplate, HumanMessagePromptTemplate
 import tiktoken
 import pickle
+import streamlit as st
 
 llm=ChatOpenAI(model=config["model"], temperature=config["temperature"]) #keep outside the function so it's accessible elsewhere in this notebook
 
@@ -56,15 +57,15 @@ def qdrant_connect_local():
 
 
 
-def qdrant_connect_cloud(api_key):
+def qdrant_connect_cloud(api_key, url):
     print("attempting to assign client")
     
     if 'client' in globals():
         return globals()['client']  # Return the existing client
     client = QdrantClient(
-    "https://0c82e035-1105-40f2-a0bd-ecc44a016f15.us-east4-0.gcp.cloud.qdrant.io", 
-    prefer_grpc=True,
-    api_key=api_key,
+        url=url, 
+        prefer_grpc=True,
+        api_key=api_key,
     )
     return client
 
@@ -133,7 +134,7 @@ def rag_old1(query, retriever):
 def rag_dummy(query, retriever):
     '''returns a dummy canned response'''
 
-    with open("test/dummy_response.pkl", "rb") as file:
+    with open("dummy_response.pkl", "rb") as file:
         dummy_response = pickle.load(file)
     return dummy_response
         
