@@ -64,7 +64,7 @@ examples.write("""
     **ASK answers questions such as:**   
     *What are the requirements to run for FC?*  
     *How do I stay current as a member?*   
-    *Make a 10 question quiz on boat crewmember tasks, with answers.*   
+    *¿En que ocasiones es necesario un saludo militar?*   
     
 """)
 st.write("  ")
