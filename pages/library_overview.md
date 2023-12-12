@@ -15,6 +15,7 @@ ASK does NOT contain:
 - ALAUX messages specific to past calendar years
 - ALAUX messages commemorating/recognizing people or events
 - Biographies or points of contact lists
+- Event schedules or calendars (e.g., C-School Calendar, NACON schedule)
 
 #### Document List
 Last update: 22 November 2023  
