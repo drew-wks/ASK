@@ -8,9 +8,13 @@ ASK contains:
 - Documents issued by the USCG Auxiliary and the Coast Guard 
 
 ASK does NOT contain:
-- Non-public documents
+- Non-public documents, including L2 Messages and most National Workshops
 - Regional or local documents
 - AUXDATA information
+- AUXOFFICER information
+- ALAUX messages specific to past calendar years
+- ALAUX messages commemorating/recognizing people or events
+- Biographies or points of contact lists
 
 #### Document List
 Last update: 22 November 2023  
