@@ -20,7 +20,7 @@ config = {
     'fetch_k': 20,   # fetch 30 docs then select 4
     'lambda_mult': .7,    # 0= max diversity, 1 is min. default is 0.5
     "score_threshold": 0.5,
-    "model": "gpt-3.5-turbo-16k",
+    "model": "gpt-4",
     "temperature": 0.7,
     "chain_type": "stuff",
 }
