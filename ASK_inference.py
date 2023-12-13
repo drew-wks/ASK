@@ -16,7 +16,7 @@ config = {
     "embedding": OpenAIEmbeddings(), #  includes a pull of the open api key
     "embedding_dims": 1536,
     "search_type": "mmr",
-    "k": 4,
+    "k": 5,
     'fetch_k': 20,   # fetch 30 docs then select 4
     'lambda_mult': .7,    # 0= max diversity, 1 is min. default is 0.5
     "score_threshold": 0.5,
@@ -32,10 +32,10 @@ qdrant_path = "/tmp/local_qdrant" # Only required for local instance /private/tm
 
 
     #-----------------------------------
+from langchain.chat_models import ChatOpenAI
 from qdrant_client import QdrantClient
 from langchain.vectorstores import Qdrant
 from langchain.chains import RetrievalQA, StuffDocumentsChain, LLMChain
-from langchain.chat_models import ChatOpenAI
 from langchain.prompts import PromptTemplate, ChatPromptTemplate, SystemMessagePromptTemplate, HumanMessagePromptTemplate
 import tiktoken
 import pickle
@@ -94,7 +94,7 @@ def init_retriever_and_generator(qdrant):
 system_message_prompt_template = SystemMessagePromptTemplate(
     prompt=PromptTemplate(
         input_variables=['context'],
-        template="Use the following pieces of context to answer the users question. If the question is about qualification, certification or currency, then follow these steps: 1.Determine the name of qualifiction or certification. 2. Determine whether the question is about initial qualificaiton or currency maintenance becuase they have different requirements. 3. Determine the program tow which the qualification or certification belongs, such as boat crew program or Aviation program. 4. Determine any requirements that apply to all positions and certifications in that program. 5. Find the specific requirements for the certification. For example, a Coxswain is a certification in the Boat Crew Program. The Boat Crew Program has requirements such as annual surface operations workshop. Additionally, coxswain has the requirement to complete a navigation test. Likewise, A co-pilot is a certification in the Aviation program. The Aviation program has requirements for all flight crewmembers that apply to Co-Pilot and First Pilot. First Pilot and CoPilot are qualified for Pilot flight crew position, so they have requirements for Pilots. Co-Pilot and First Pilot may have additional requirements specific to their certification.  \nIf you don't know the answer, just say I don't know, don't try to make up an answer.\n----------------\n{context}"
+        template="Use the following pieces of context to answer the users question. If the question is about qualification, certification or currency, then follow these steps: 1. Determine the name of qualifiction or certification. 2. Determine whether the question is about initial qualificaiton or currency maintenance becuase they have different requirements. 3. Determine the program tow which the qualification or certification belongs, such as boat crew program or Aviation program. 4. Determine any requirements that apply to all positions and certifications in that program. 5. Find the specific requirements for the certification. For example, a Coxswain is a certification in the Boat Crew Program. The Boat Crew Program has requirements such as annual surface operations workshop. Additionally, coxswain has the requirement to complete a navigation test. Likewise, A co-pilot is a certification in the Aviation program. The Aviation program has requirements for all flight crewmembers that apply to Co-Pilot and First Pilot. First Pilot and CoPilot are qualified for Pilot flight crew position, so they have requirements for Pilots. Co-Pilot and First Pilot may have additional requirements specific to their certification.  \nIf you don't know the answer, just say I don't know, don't try to make up an answer.\n----------------\n{context}"
     )
 )
 
