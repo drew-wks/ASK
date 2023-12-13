@@ -35,7 +35,7 @@ st.markdown("""
 qdrant_connect_cloud_cached = st.cache_resource(ASK.qdrant_connect_cloud)
 api_key = st.secrets.QDRANT_API_KEY
 url = st.secrets.QDRANT_URL
-client = qdrant_connect_cloud(api_key, url) # use this for ask-test so you can see the changes
+client = ASK.qdrant_connect_cloud(api_key, url) # use this for ask-test so you can see the changes
 # client = qdrant_connect_cloud_cached(api_key, url) # use this version for ask-main for speed
 qdrant = ASK.create_langchain_qdrant(client)
 retriever = ASK.init_retriever_and_generator(qdrant)
