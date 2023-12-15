@@ -13,7 +13,8 @@ Things I plan to do over the coming months to continue to improve ASK
 [x] Explore better prompts through prompt templates  
 [x] Tune retrieval hyperparamters such as lambda, k-means 
 [x] Tag documents with effective date  
-[ ] Reason through contractitions in corpus docs (e.g., conflicting policies)
+[ ] Insert a pre-prompting/inference step to ensure all relevant dos are retrieved
+[ ] Reason through contradictions in corpus docs (e.g., conflicting policies)
 [ ] Index additional metadata  
 [ ] Include effective date in retrieval   
 [ ] Give greater to weight to more recent documents: currently assessing   
