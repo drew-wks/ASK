@@ -6,6 +6,13 @@ All notable changes to this project will be documented in this file.
 - Add additional metadata keys and values into library data, including effective date
 - Developed code to delete docs from library
 
+## [0.5.2] - 2023-12-13
+### Features
+-Added a Spanish language example
+
+### Bug fixes
+- Added missing 2023 ALAUXes and removed outdated ones
+
 ## [0.5.1] - 2023-11-24
 ### Features
 -Extensive readme file added to git repo
