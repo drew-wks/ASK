@@ -35,7 +35,8 @@ st.markdown("""
 qdrant_connect_cloud_cached = st.cache_resource(ASK.qdrant_connect_cloud)
 api_key = st.secrets.QDRANT_API_KEY
 url = st.secrets.QDRANT_URL
-client = qdrant_connect_cloud_cached(api_key, url)
+client = ASK.qdrant_connect_cloud(api_key, url) # use this for ask-test so you can see the changes
+# client = qdrant_connect_cloud_cached(api_key, url) # use this version for ask-main for speed
 qdrant = ASK.create_langchain_qdrant(client)
 retriever = ASK.init_retriever_and_generator(qdrant)
 
@@ -56,7 +57,7 @@ if "operational" not in api_status_message:
     st.error(f"ASK is currently down due to OpenAI {api_status_message}.")
 else: st.write("#### Get answers to USCG Auxiliary questions from authoritative sources.")
 
-st.markdown("ASK uses Artificial Intelligence (AI) to search over 250 Coast Guard Auxiliary references for answers. Created for evaluation by Drew Wilkins. Not an official USCG Auxiliary service. Learn more <a href='Library' target='_self'><b>here</b>.</a>", unsafe_allow_html=True)
+st.markdown("ASK uses Artificial Intelligence (AI) to search over 250 Coast Guard Auxiliary references for answers. This is a working prototype for evaluation. Not an official USCG Auxiliary service. Learn more <a href='Library' target='_self'><b>here</b>.</a>", unsafe_allow_html=True)
 
 examples = st.empty()
 
@@ -84,7 +85,7 @@ if query:
             long_source_list = ASK.create_long_source_list(response)
 
         except openai.error.RateLimitError:
-            print("ASK has run out of Open AI credits. Tell Drew to go fund his account!")
+            print("ASK has run out of Open AI credits. Tell Drew to go fund his account! uscgaux.drew@wks.us")
             response = None  
 
         except Exception as e:
