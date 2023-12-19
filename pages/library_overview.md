@@ -17,6 +17,3 @@ ASK does NOT contain:
 - ALAUX promulgation announcements (which interfere with retrival of the policies themselves)
 - Biographies or points of contact lists
 - Event schedules or calendars (e.g., C-School Calendar, NACON schedule)
-
-#### Document List
-Last update: 19 December 2023  

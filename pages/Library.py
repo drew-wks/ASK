@@ -69,23 +69,24 @@ with tab1:
 with tab2:
     df = get_excel_file()
     overview = read_markdown_file("pages/library_overview.md")
-    b64 = base64.b64encode(indir.encode(encoding='ISO-8859-1')).decode(encoding='ISO-8859-1')  
-    link_to_final = f'<a href="data:file/csv;base64,{b64}" download={isim}>here</a>'
 
     if df is not None:
         num_items = len(df)
         st.markdown("#### Library Overview")
         st.markdown(f"ASK is loaded with **{num_items}** national documents (almost 9000 pages) including USCG Directives, CHDIRAUX documents and documents issued by the USCG Auxiliary National leadership. All these documents are located in public sections of the USCG and USCG Auxiliary websites (cgaux.org uscg.mil).  No secure content is included (i.e., content requiring Member Zone or CAC access. All documents are national. Regional requirements may vary, so check with your local AOR leadership for the final word. ")
         st.markdown(f"{overview}")
-        st.markdown(f"Scroll below or click {link_to_final} to download", unsafe_allow_html=True)
+        st.markdown("#### Document List")
+        st.markdown("{num_items} items. Last update: 19 December 2023")  
+        st.markdown("Scroll or use download link below")
 
         # Display the DataFrame
         display_df = df[['source_short']]
         edited_df = st.data_editor(display_df, use_container_width=True, hide_index=False, disabled=True)
         isim = 'ASK_library.csv'
         indir = edited_df.to_csv(index=False)
-        
-        
+        b64 = base64.b64encode(indir.encode(encoding='ISO-8859-1')).decode(encoding='ISO-8859-1')  
+        linko_final = f'<a href="data:file/csv;base64,{b64}" download={isim}>Click to download</a>'
+        st.markdown(linko_final, unsafe_allow_html=True)
 
     else:
         # Display the original markdown file content if df is None
