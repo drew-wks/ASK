@@ -69,6 +69,7 @@ with tab1:
 with tab2:
     df = get_excel_file()
     overview = read_markdown_file("pages/library_overview.md")
+    b64 = base64.b64encode(indir.encode(encoding='ISO-8859-1')).decode(encoding='ISO-8859-1')  
     link_to_final = f'<a href="data:file/csv;base64,{b64}" download={isim}>here</a>'
 
     if df is not None:
@@ -83,7 +84,7 @@ with tab2:
         edited_df = st.data_editor(display_df, use_container_width=True, hide_index=False, disabled=True)
         isim = 'ASK_library.csv'
         indir = edited_df.to_csv(index=False)
-        b64 = base64.b64encode(indir.encode(encoding='ISO-8859-1')).decode(encoding='ISO-8859-1')  
+        
         
 
     else:
