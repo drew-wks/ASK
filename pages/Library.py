@@ -68,14 +68,13 @@ with tab1:
 
 with tab2:
     df = get_excel_file()
+    overview = read_markdown_file("pages/library_overview.md")
 
     if df is not None:
-        # Create and present the dynamic markdown file
         num_items = len(df)
-        library_overview = read_markdown_file("pages/library_overview.md")
-        dynamic_markdown = f"### Library Overview\n\nThere are currently {num_items} items in the ASK Library.\n\n"
-        combined_markdown = dynamic_markdown + library_overview
-        st.markdown(combined_markdown, unsafe_allow_html=True)
+        st.markdown("#### Library Overview")
+        st.markdown(f"There are currently {num_items} items in the ASK Library.")
+        st.markdown(overview, unsafe_allow_html=True)
 
         # Display the DataFrame
         display_df = df[['source_short']]
