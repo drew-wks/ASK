@@ -71,9 +71,9 @@ examples.write("""
 st.write("  ")
 
 user_feedback = " "
-query = st.text_input("Type your question or task here", max_chars=200)
+user_question = st.text_input("Type your question or task here", max_chars=200)
+query = ASK.query_maker(user_question)
 if query:
-    os.write(1, f"query start: {datetime.datetime.now().strftime('%H:%M:%S')}\n".encode())
     with st.status("Checking documents...", expanded=False) as status:
         try:
             if query == "pledge":
@@ -96,7 +96,7 @@ if query:
         examples.empty()  # Uncomment and use this line if it's part of your original code
 
 
-        st.info(f"**Question:** *{query}*\n\n ##### Response:\n{response['result']}\n\n **Sources:**  \n{short_source_list}\n **Note:** \n ASK can make mistakes. Verify the sources and check your local policies.")
+        st.info(f"**Question:** *{user_question}*\n\n ##### Response:\n{response['result']}\n\n **Sources:**  \n{short_source_list}\n **Note:** \n ASK can make mistakes. Verify the sources and check your local policies.")
 
     status.update(label=":blue[**Response**]", expanded=True)
 

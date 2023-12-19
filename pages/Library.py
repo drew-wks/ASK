@@ -38,17 +38,24 @@ def read_markdown_file(markdown_file):
    return Path(markdown_file).read_text()
 
 
-def get_excel_file():
-    directory_path = 'pages/library/'  
+def get_library_list_excel_and_date():
+    directory_path = 'pages/library/'
     files_in_directory = os.listdir(directory_path)
     excel_files = [file for file in files_in_directory if re.match(r'library_document_list.*\.xlsx$', file)]
 
-    if len(excel_files) == 1:
-        df = pd.read_excel(os.path.join(directory_path, excel_files[0]))
-        return df
-    else:
-        st.error("There's either no Excel file or more than one in the directory.")
-        return None
+    if not excel_files:
+        st.error("There's no Excel file in the directory.")
+        return None, None
+
+    excel_files_with_time = [(file, os.path.getmtime(os.path.join(directory_path, file))) for file in excel_files]
+    excel_files_with_time.sort(key=lambda x: x[1], reverse=True)
+    most_recent_file, modification_time = excel_files_with_time[0]
+    df = pd.read_excel(os.path.join(directory_path, most_recent_file))
+
+    last_update_date = datetime.datetime.fromtimestamp(modification_time).strftime('%d %B %Y')
+    
+    return df, last_update_date
+
 
 
 st.image("https://raw.githubusercontent.com/dvvilkins/ASK/main/images/ASK_logotype_color.png?raw=true", use_column_width="always")
@@ -65,18 +72,33 @@ with tab1:
     st.markdown(overview, unsafe_allow_html=True)
 
 
-with tab2:
-    overview = read_markdown_file("pages/library_overview.md")
-    st.markdown(overview, unsafe_allow_html=True)
 
-    df = get_excel_file()
-    display_df = df[['source_short']]
-    edited_df = st.data_editor(display_df, use_container_width=True, hide_index=False, disabled=True)
-    isim= 'ASK_library.csv'
-    indir = edited_df.to_csv(index=False)
-    b64 = base64.b64encode(indir.encode(encoding='ISO-8859-1')).decode(encoding='ISO-8859-1')  
-    linko_final= f'<a href="data:file/csv;base64,{b64}" download={isim}>Click to download</a>'
-    st.markdown(linko_final, unsafe_allow_html=True)
+with tab2:
+    df, last_update_date = get_library_list_excel_and_date()
+    overview = read_markdown_file("pages/library_overview.md")
+
+    if df is not None:
+        num_items = len(df)
+        st.markdown("#### Library Overview")
+        st.markdown(f"ASK is loaded with **{num_items}** national documents (almost 9000 pages) including USCG Directives, CHDIRAUX documents and documents issued by the USCG Auxiliary National leadership. All these documents are located in public sections of the USCG and USCG Auxiliary websites (cgaux.org uscg.mil).  No secure content is included (i.e., content requiring Member Zone or CAC access. All documents are national. Regional requirements may vary, so check with your local AOR leadership for the final word. ")
+        st.markdown(f"{overview}")
+        st.markdown("#### Document List")
+        st.markdown(f"{num_items} items. Last update: {last_update_date}")  
+
+        # Display the DataFrame
+        display_df = df[['source_short']]
+        edited_df = st.data_editor(display_df, use_container_width=True, hide_index=False, disabled=True)
+        isim = 'ASK_library.csv'
+        indir = edited_df.to_csv(index=False)
+        b64 = base64.b64encode(indir.encode(encoding='ISO-8859-1')).decode(encoding='ISO-8859-1')  
+        linko_final = f'<a href="data:file/csv;base64,{b64}" download={isim}>Click to download</a>'
+        st.markdown(linko_final, unsafe_allow_html=True)
+
+    else:
+        # Display the original markdown file content if df is None
+        overview = read_markdown_file("pages/library_overview.md")
+        st.markdown(overview, unsafe_allow_html=True)
+
 
 with tab3:
     overview = read_markdown_file("pages/faqs.md")

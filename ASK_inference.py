@@ -40,6 +40,8 @@ from langchain.prompts import PromptTemplate, ChatPromptTemplate, SystemMessageP
 import tiktoken
 import pickle
 import streamlit as st
+import os
+import openai
 
 llm=ChatOpenAI(model=config["model"], temperature=config["temperature"]) #keep outside the function so it's accessible elsewhere in this notebook
 
@@ -89,6 +91,71 @@ def init_retriever_and_generator(qdrant):
         search_kwargs={'k': config["k"], "fetch_k": config["fetch_k"], "lambda_mult": config["lambda_mult"], "filter": None}, # filter documents by metadata
     )
     return retriever
+
+
+
+# openai.api_key = os.environ['OPENAI_API_KEY']
+openai.api_key = st.secrets["OPENAI_API_KEY"] # Use this version for streamlit
+
+
+def query_maker(user_question):
+    # Define the system message
+    system_message = "Each time a term in the json list appears in the question, add the additional info to the end of the question. DO NOT ANSWER THE QUESTION. Return the new question as your response. DO NOT REMOVE ANY PART OF THE ORIGINAL QUESTION. DO NOT ANSWER THE QUESTION.\n here's an example. \nQuestion: how do I get a vessel examiner certification? \nYour response: how do I get a vessel examiner certification? Certification includes information about initial qualification."
+
+    json_list = """[
+    {
+        "term": "Certification",
+        "additional info": "Certification includes information about initial qualification."
+    },
+    {
+        "term": "Currency",
+        "additional info": "See ALAUX 002/23  2023 National Workshops, AUX-PL-001(A) RISK MANAGEMENT TRAINING REQUIREMENTS FOR THE COAST GUARD AUXILIARY, CG-BSX Policy Letter 19-02  CHANGES TO AUXILIARY INCIDENT COMMAND SYSTEM (ICS) CORE TRAINING."
+    },
+    {
+        "term": "Current",
+        "additional info": "See ALAUX 002/23  2023 National Workshops, AUX-PL-001(A) RISK MANAGEMENT TRAINING REQUIREMENTS FOR THE COAST GUARD AUXILIARY, CG-BSX Policy Letter 19-02  CHANGES TO AUXILIARY INCIDENT COMMAND SYSTEM (ICS) CORE TRAINING."
+    },
+    {
+        "term": "Boat crew currency, current in boat crew",
+        "additional info": "See ALAUX 048/22, ALAUX 002/23  2023 National Workshops, CG-BSX Policy Letter 19-02  CHANGES TO AUXILIARY INCIDENT COMMAND SYSTEM (ICS) CORE TRAINING."
+    },
+    {
+        "term": "Air crew",
+        "additional info": "Air crew is a position in the aviation program."
+    },
+    {
+        "term": "Pilot",
+        "additional info": "Pilot is a position in the aviation program."
+    },
+    {
+        "term": "Coxswain",
+        "additional info": "Coxswain is a position in the boat crew program. It is a type of Surface Operations."
+    },
+    {
+        "term": "Co-pilot",
+        "additional info": "Co-pilot is a type of pilot in the aviation program."
+    }
+]
+"""
+
+    # Construct the user message
+    user_message = f"User question: {user_question}```list: {json_list}```"
+
+    # Construct the messages for the API call
+    messages = [
+        {'role': 'system', 'content': system_message},
+        {'role': 'user', 'content': user_message},
+    ]
+
+    response = openai.ChatCompletion.create(
+        model=config["model"],
+        messages=messages,
+        temperature=config["temperature"],
+        max_tokens=2000,
+    )
+
+    return response.choices[0].message['content'] if response.choices else None
+
 
 
 system_message_prompt_template = SystemMessagePromptTemplate(

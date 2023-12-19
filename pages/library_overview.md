@@ -1,22 +1,19 @@
 
- #### Library Overview
- ASK is loaded with over 250 national documents (over 8000 pages) including USCG Directives, CHDIRAUX documents and documents issued by the USCG Auxiliary National leadership. All these documents are located in public sections of the USCG and USCG Auxiliary websites (cgaux.org uscg.mil).  No secure content is included (i.e., content requiring Member Zone or CAC access. All documents are national. Regional requirements may vary, so check with your local AOR leadership for the final word. 
-
 ASK contains:
-- Publicly available documents
-- National documents
+- PDF documents only. Information must have been distributed as a PDF to be included
+- Publicly-available documents only
+- National documents sourced thorugh cgaux.org
 - Documents issued by the USCG Auxiliary and the Coast Guard 
+- Policy documents
 
 ASK does NOT contain:
-- Non-public documents, including L2 Messages and most National Workshops
+- Non-public documents. It does not include L2 Messages or most National Workshops
+- Cancelled or superceded documents
 - Regional or local documents
 - AUXDATA information
 - AUXOFFICER information
-- ALAUX messages specific to past calendar years
-- ALAUX messages commemorating/recognizing people or events
+- ALAUX messages specific to past calendar years only
+- ALAUX messages designated informational from past years, such as those commemorating/recognizing people or events
+- ALAUX promulgation announcements (which interfere with retrival of the policies themselves)
 - Biographies or points of contact lists
 - Event schedules or calendars (e.g., C-School Calendar, NACON schedule)
-
-#### Document List
-Last update: 22 November 2023  
-Scroll or click to download  
