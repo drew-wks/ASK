@@ -72,8 +72,8 @@ st.write("  ")
 
 user_feedback = " "
 user_question = st.text_input("Type your question or task here", max_chars=200)
-query = ASK.query_maker(user_question)
-if query:
+if user_question:
+    query = ASK.query_maker(user_question)
     with st.status("Checking documents...", expanded=False) as status:
         try:
             if query == "pledge":
