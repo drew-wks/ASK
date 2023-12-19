@@ -65,18 +65,32 @@ with tab1:
     st.markdown(overview, unsafe_allow_html=True)
 
 
-with tab2:
-    overview = read_markdown_file("pages/library_overview.md")
-    st.markdown(overview, unsafe_allow_html=True)
 
+with tab2:
     df = get_excel_file()
-    display_df = df[['source_short']]
-    edited_df = st.data_editor(display_df, use_container_width=True, hide_index=False, disabled=True)
-    isim= 'ASK_library.csv'
-    indir = edited_df.to_csv(index=False)
-    b64 = base64.b64encode(indir.encode(encoding='ISO-8859-1')).decode(encoding='ISO-8859-1')  
-    linko_final= f'<a href="data:file/csv;base64,{b64}" download={isim}>Click to download</a>'
-    st.markdown(linko_final, unsafe_allow_html=True)
+
+    if df is not None:
+        # Create and present the dynamic markdown file
+        num_items = len(df)
+        library_overview = read_markdown_file("pages/library_overview.md")
+        dynamic_markdown = f"### Library Overview\n\nThere are currently {num_items} items in the ASK Library.\n\n"
+        combined_markdown = dynamic_markdown + library_overview
+        st.markdown(combined_markdown, unsafe_allow_html=True)
+
+        # Display the DataFrame
+        display_df = df[['source_short']]
+        edited_df = st.data_editor(display_df, use_container_width=True, hide_index=False, disabled=True)
+        isim = 'ASK_library.csv'
+        indir = edited_df.to_csv(index=False)
+        b64 = base64.b64encode(indir.encode(encoding='ISO-8859-1')).decode(encoding='ISO-8859-1')  
+        linko_final = f'<a href="data:file/csv;base64,{b64}" download={isim}>Click to download</a>'
+        st.markdown(linko_final, unsafe_allow_html=True)
+
+    else:
+        # Display the original markdown file content if df is None
+        overview = read_markdown_file("pages/library_overview.md")
+        st.markdown(overview, unsafe_allow_html=True)
+
 
 with tab3:
     overview = read_markdown_file("pages/faqs.md")
