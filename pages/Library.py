@@ -73,7 +73,7 @@ with tab2:
     if df is not None:
         num_items = len(df)
         st.markdown("#### Library Overview")
-        st.markdown(f"{overview} There are currently {num_items} items in the ASK Library.  \n")
+        st.markdown(f"{overview} \n There are currently {num_items} items in the ASK Library.")
         #st.markdown(overview, unsafe_allow_html=True)
 
         # Display the DataFrame
