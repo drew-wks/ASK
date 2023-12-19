@@ -7,14 +7,14 @@ ASK contains:
 - Policy documents
 
 ASK does NOT contain:
-- Non-public documents. SO, does not include L2 Messages or most National Workshops
+- Non-public documents. It does not include L2 Messages or most National Workshops
 - Cancelled or superceded documents
 - Regional or local documents
 - AUXDATA information
 - AUXOFFICER information
 - ALAUX messages specific to past calendar years only
 - ALAUX messages designated informational from past years, such as those commemorating/recognizing people or events
-- ALAUX promulgation announcements (they can interfere with retrival of the policies they reference)
+- ALAUX promulgation announcements (which interfere with retrival of the policies themselves)
 - Biographies or points of contact lists
 - Event schedules or calendars (e.g., C-School Calendar, NACON schedule)
 
