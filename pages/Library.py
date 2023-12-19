@@ -38,7 +38,7 @@ def read_markdown_file(markdown_file):
    return Path(markdown_file).read_text()
 
 
-def get_excel_file():
+def get_library_list_excel_and_date():
     directory_path = 'pages/library/'
     files_in_directory = os.listdir(directory_path)
     excel_files = [file for file in files_in_directory if re.match(r'library_document_list.*\.xlsx$', file)]
@@ -52,7 +52,7 @@ def get_excel_file():
     most_recent_file, modification_time = excel_files_with_time[0]
     df = pd.read_excel(os.path.join(directory_path, most_recent_file))
 
-    last_update_date = datetime.fromtimestamp(modification_time).strftime('%d %B %Y')
+    last_update_date = datetime.datetime.fromtimestamp(modification_time).strftime('%d %B %Y')
     
     return df, last_update_date
 
@@ -74,7 +74,7 @@ with tab1:
 
 
 with tab2:
-    df, last_update_date = get_excel_file()
+    df, last_update_date = get_library_list_excel_and_date()
     overview = read_markdown_file("pages/library_overview.md")
 
     if df is not None:
@@ -84,7 +84,7 @@ with tab2:
         st.markdown(f"{overview}")
         st.markdown("#### Document List")
         st.markdown(f"{num_items} items. Last update: {last_update_date}")  
-        
+
         # Display the DataFrame
         display_df = df[['source_short']]
         edited_df = st.data_editor(display_df, use_container_width=True, hide_index=False, disabled=True)
