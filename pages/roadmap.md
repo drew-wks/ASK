@@ -13,13 +13,13 @@ Things I plan to do over the coming months to continue to improve ASK
 [x] Explore better prompts through prompt templates  
 [x] Tune retrieval hyperparamters such as lambda, k-means 
 [x] Tag documents with effective date  
+[x] Get Streamlit working faster via st.session_state and st.cache_resource  
 [ ] Insert a pre-prompting/inference step to ensure all relevant dos are retrieved
 [ ] Reason through contradictions in corpus docs (e.g., conflicting policies)
 [ ] Index additional metadata  
 [ ] Include effective date in retrieval   
 [ ] Give greater to weight to more recent documents: currently assessing   
 [ ] Explore other chunking strategies: may not be necessary  
-[ ] Get Streamlit working faster via st.session_state and st.database  
 [ ] Test other private and [open-source embedding models](https://huggingface.co/spaces/mteb/leaderboard) incl. cohere, anarchy  
 
 ##### UI Enhancements: making ASK easier to use  

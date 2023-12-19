@@ -5,14 +5,16 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 - Add additional metadata keys and values into library data, including effective date
 
-## [0.5.3] - 2023-12-18
+## [0.5.3] - 2023-12-19
 ### Features
 - Removal of ALAUXs that announce documents in the library to avoid competing with those docs during retrieval: ALAUXs 2023 (003, 008, 012, 013, 032, 034, 036), ALAUXs 2022 (025,034, 041,042, 043)
 - Developed code to delete docs from library
+- Removal of Streamlit collecting summary statistics
 
 ### Bug fixes
 - Removal of superceded directives: AUX-PL-007(E)
 - Added missing AUX-PL-007(E)
+- Number of library documents and last update date are now dynamically generated
 
 
 ## [0.5.2] - 2023-12-13
