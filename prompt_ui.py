@@ -71,9 +71,9 @@ examples.write("""
 st.write("  ")
 
 user_feedback = " "
-query = st.text_input("Type your question or task here", max_chars=200)
+user_question = st.text_input("Type your question or task here", max_chars=200)
+query = ASK.query_maker(user_question)
 if query:
-    os.write(1, f"query start: {datetime.datetime.now().strftime('%H:%M:%S')}\n".encode())
     with st.status("Checking documents...", expanded=False) as status:
         try:
             if query == "pledge":
