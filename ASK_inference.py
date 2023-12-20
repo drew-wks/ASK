@@ -44,6 +44,7 @@ import os
 import openai
 import re
 import pandas as pd
+import datetime
 
 llm=ChatOpenAI(model=config["model"], temperature=config["temperature"]) #keep outside the function so it's accessible elsewhere in this notebook
 
