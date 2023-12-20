@@ -1,12 +1,16 @@
 import datetime
 import streamlit as st
-import ASK_inference as ASK
+
 import pandas as pd
 import re
 from streamlit_extras.switch_page_button import switch_page
 from pathlib import Path
 import os
 import base64
+
+parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, parent_dir)
+import ASK_inference as ASK
 
 st.set_page_config(page_title="ASK Library", initial_sidebar_state="collapsed")
 
