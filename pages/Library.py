@@ -2,7 +2,6 @@ import datetime
 import streamlit as st
 import sys
 import pandas as pd
-import re
 from streamlit_extras.switch_page_button import switch_page
 from pathlib import Path
 import os
