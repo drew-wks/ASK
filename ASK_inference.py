@@ -300,6 +300,26 @@ def get_openai_api_status():
 
 
 
+def get_library_list_excel_and_date():
+    directory_path = 'pages/library/'
+    files_in_directory = os.listdir(directory_path)
+    excel_files = [file for file in files_in_directory if re.match(r'library_document_list.*\.xlsx$', file)]
+
+    if not excel_files:
+        st.error("There's no Excel file in the directory.")
+        return None, None
+
+    excel_files_with_time = [(file, os.path.getmtime(os.path.join(directory_path, file))) for file in excel_files]
+    excel_files_with_time.sort(key=lambda x: x[1], reverse=True)
+    most_recent_file, modification_time = excel_files_with_time[0]
+    df = pd.read_excel(os.path.join(directory_path, most_recent_file))
+
+    last_update_date = datetime.datetime.fromtimestamp(modification_time).strftime('%d %B %Y')
+    
+    return df, last_update_date
+
+
+
 # Example usage in another script
 if __name__ == "__main__":
    
