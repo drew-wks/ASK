@@ -14,7 +14,7 @@ Things I plan to do over the coming months to continue to improve ASK
 [x] Tune retrieval hyperparamters such as lambda, k-means 
 [x] Tag documents with effective date  
 [x] Get Streamlit working faster via st.session_state and st.cache_resource  
-[ ] Insert a pre-prompting/inference step to ensure all relevant dos are retrieved
+[x] Insert a pre-prompting/inference step to ensure all relevant dos are retrieved
 [ ] Reason through contradictions in corpus docs (e.g., conflicting policies)
 [ ] Index additional metadata  
 [ ] Include effective date in retrieval   
