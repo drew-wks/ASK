@@ -83,7 +83,6 @@ if user_question:
             if query == "pledge":
                 response = ASK.rag_dummy(query, retriever)  # ASK.rag_dummy for UNIT TESTING
             else:
-                st.status("Forming your response...", expanded=False)
                 response = ASK.rag(query, retriever)
 
             short_source_list = ASK.create_short_source_list(response)
@@ -97,7 +96,6 @@ if user_question:
             print(f"An error occurred: {e} Please try ASK again later")
             response = None  
 
-        os.write(1, f"complete:    {datetime.datetime.now().strftime('%H:%M:%S')}\n".encode())
         examples.empty()  
         st.info(f"**Question:** *{user_question}*\n\n ##### Response:\n{response['result']}\n\n **Sources:**  \n{short_source_list}\n **Note:** \n ASK can make mistakes. Verify the sources and check your local policies.")
 
