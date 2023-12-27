@@ -83,6 +83,7 @@ if user_question:
             if query == "pledge":
                 response = ASK.rag_dummy(query, retriever)  # ASK.rag_dummy for UNIT TESTING
             else:
+                st.status("Forming your response...", expanded=False)
                 response = ASK.rag(query, retriever)
 
             short_source_list = ASK.create_short_source_list(response)
