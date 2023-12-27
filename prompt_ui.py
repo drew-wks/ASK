@@ -97,9 +97,7 @@ if user_question:
             response = None  
 
         os.write(1, f"complete:    {datetime.datetime.now().strftime('%H:%M:%S')}\n".encode())
-        examples.empty()  # Uncomment and use this line if it's part of your original code
-
-
+        examples.empty()  
         st.info(f"**Question:** *{user_question}*\n\n ##### Response:\n{response['result']}\n\n **Sources:**  \n{short_source_list}\n **Note:** \n ASK can make mistakes. Verify the sources and check your local policies.")
 
     status.update(label=":blue[**Response**]", expanded=True)
@@ -107,6 +105,7 @@ if user_question:
     with st.status("Compiling references...", expanded=False) as status:
         time.sleep(1)
         st.write(long_source_list)
+        st.write(query)
         status.update(label=":blue[CLICK HERE FOR FULL SOURCE DETAILS]", expanded=False)
 
     collector.log_prompt(

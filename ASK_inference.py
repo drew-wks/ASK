@@ -9,11 +9,11 @@ from langchain.embeddings import OpenAIEmbeddings
 
 config = {
     "splitter_type": "CharacterTextSplitter",
-    "chunk_size": 2000,
+    "chunk_size": 2000,   # basically a full pdf page. not needed here. kept for reference
     "chunk_overlap": 200,
     "length_function" : len, 
-    "separators" : ["}"],  #[" ", ",", "\n"]
-    "embedding": OpenAIEmbeddings(), #  includes a pull of the open api key
+    "separators" : ["}"],  #[" ", ",", "\n"]  # not needed here. kept for reference
+    "embedding": OpenAIEmbeddings(),  # includes a pull of the open api key
     "embedding_dims": 1536,
     "search_type": "mmr",
     "k": 5,
@@ -22,10 +22,10 @@ config = {
     "score_threshold": 0.5,
     "model": "gpt-3.5-turbo-16k",
     "temperature": 0.7,
-    "chain_type": "stuff",
+    "chain_type": "stuff", # a LangChain parameter
 }
 
-#CONFIG: qdrant
+# CONFIG for the qdrant vector database
 qdrant_collection_name = "ASK_vectorstore"
 qdrant_path = "/tmp/local_qdrant" # Only required for local instance /private/tmp/local_qdrant
 
@@ -46,6 +46,7 @@ import openai
 import re
 import pandas as pd
 import datetime
+import requests
 
 llm=ChatOpenAI(model=config["model"], temperature=config["temperature"]) #keep outside the function so it's accessible elsewhere in this notebook
 
@@ -121,6 +122,10 @@ openai.api_key = st.secrets["OPENAI_API_KEY"] # Use this version for streamlit
 
 
 def query_maker(user_question):
+    '''Adds context to the user question to assist retrieval. 
+    
+    Adds acronym definitions and jargon explanations to the user's question
+    '''
 
     retrieval_context_dict = retrieval_context_excel_to_dict('admin/retrieval_context.xlsx')
     acronyms_dict = retrieval_context_dict.get("acronyms", None)
@@ -163,13 +168,14 @@ def query_maker(user_question):
     return response.choices[0].message['content'] if response.choices else None
 
 
+
 def rag(query, retriever):
-    '''run a RAG completion'''
+    '''Runs a RAG completion on the modified query'''
 
     system_message_prompt_template = SystemMessagePromptTemplate(
     prompt=PromptTemplate(
         input_variables=['context'],
-        template="Use the following pieces of context to answer the users question. INCLUDES ALL OF THE DETAILS YOU CAN IN YOUR RESPONSE, INDLUDING REQUIREMENTS AND REGULATIONS. Include Auxiliary Core Training (AUXCT) in your response for any question regarding certifications or officer positions.  \nIf you don't know the answer, just say I don't know, don't try to make up an answer. \n----------------\n{context}"
+        template="Use the following pieces of context to answer the users question. INCLUDES ALL OF THE DETAILS IN YOUR RESPONSE, INDLUDING REQUIREMENTS AND REGULATIONS. Include Auxiliary Core Training (AUXCT) in your response for any question regarding certifications or officer positions.  \nIf you don't know the answer, just say I don't know, don't try to make up an answer. \n----------------\n{context}"
         )
     )
 
@@ -184,26 +190,17 @@ def rag(query, retriever):
         return_source_documents=True,
         retriever=retriever
     )
-    response = rag_instance({"query": query})
-    return response
 
-
-def rag_old1(query, retriever):
-    '''run a RAG completion'''
-
-    rag_instance = RetrievalQA.from_chain_type(
-        llm=llm,
-        chain_type=config["chain_type"],
-        retriever=retriever,
-        return_source_documents=True,
-    )
     response = rag_instance({"query": query})
     return response
 
 
 
 def rag_dummy(query, retriever):
-    '''returns a dummy canned response'''
+    '''A bug-fixing utility.
+    
+    Returns a dummy canned response instead of calling the LLM
+    '''
 
     with open("dummy_response.pkl", "rb") as file:
         dummy_response = pickle.load(file)
@@ -236,9 +233,9 @@ def create_short_source_list(response):
 def create_long_source_list(response):
     '''Extracts a list of sources along with full source
     
-    response is a dictionary with three keys:
-    dict_keys(['query', 'result', 'source_documents'])
-    'source_documents' is a list with a custom object Document 
+    Response is a dictionary with three keys:
+    ['query', 'result', 'source_documents']
+    source_documents is a list with a LangChain custom Document object
     '''
     
     markdown_list = []
@@ -256,7 +253,8 @@ def create_long_source_list(response):
 
 
 def count_tokens(response):
-    ''' counts the tokens from the response'''
+    '''Counts the tokens from the response'''
+
     encoding = tiktoken.encoding_for_model(config["model"])
     query_tokens = encoding.encode(response['query'])
     query_length = len(query_tokens)
@@ -269,10 +267,10 @@ def count_tokens(response):
     return query_length, source_length, result_length, tot_tokens
 
 
-import requests
-
 
 def get_openai_api_status():
+    '''Notify user if OpenAI is down so they don't blame the app'''
+
     components_url = 'https://status.openai.com/api/v2/components.json'
     status_message = ''
 
@@ -290,7 +288,6 @@ def get_openai_api_status():
             (component for component in components if component.get('name', '').lower() == 'api'), None)
 
         if api_component:
-            # Set the status message to the status of the API component
             status_message = api_component.get('status', '')
         else:
             status_message = 'API component not found'
@@ -305,6 +302,8 @@ def get_openai_api_status():
 
 
 def get_library_list_excel_and_date():
+    '''Gets the most recent list of library documents for the user to review'''
+
     directory_path = 'pages/library/'
     files_in_directory = os.listdir(directory_path)
     excel_files = [file for file in files_in_directory if re.match(r'library_document_list.*\.xlsx$', file)]
@@ -316,7 +315,11 @@ def get_library_list_excel_and_date():
     excel_files_with_time = [(file, os.path.getmtime(os.path.join(directory_path, file))) for file in excel_files]
     excel_files_with_time.sort(key=lambda x: x[1], reverse=True)
     most_recent_file, modification_time = excel_files_with_time[0]
-    df = pd.read_excel(os.path.join(directory_path, most_recent_file))
+    try:
+        df = pd.read_excel(os.path.join(directory_path, most_recent_file))
+    except Exception as e:
+        print(f"Failed to read the Excel file: {e}")
+        return None, None
 
     last_update_date = datetime.datetime.fromtimestamp(modification_time).strftime('%d %B %Y')
     
