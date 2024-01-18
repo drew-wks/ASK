@@ -26,7 +26,7 @@ Things I plan to do over the coming months to continue to improve ASK
 [x] Implement workaround chat input field on mobile devices (a bug with streamlit)  
 [x] Bring feedback back into the UI  
 [x] Incorporate better visual status into UI  
-[x] Add a warning when the underlying LLM (e.g., OpenAI) is down
+[x] Add a warning when the underlying LLM (e.g., OpenAI) is down  
 
 ##### Instrumentation: tooling to measure and assess performance  
 [x] Assess instrumentation providers: wandb, neptune, Trubrics  
@@ -37,6 +37,6 @@ Things I plan to do over the coming months to continue to improve ASK
 [ ] Explore Neptune platform  
 
 ##### Administration: simplify backend through automation  
-[x] Evaluate Vectara db 
+[x] Evaluate Vectara db  
 [ ] Utilize agents to replace programmatic work such as bringing metadata into chunks  
 [ ] Explore having agent extract doc purpose and incoporate as metadata  

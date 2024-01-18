@@ -9,11 +9,11 @@ from langchain.embeddings import OpenAIEmbeddings
 
 config = {
     "splitter_type": "CharacterTextSplitter",
-    "chunk_size": 2000,
+    "chunk_size": 2000,   # basically a full pdf page. not needed here. kept for reference
     "chunk_overlap": 200,
     "length_function" : len, 
-    "separators" : ["}"],  #[" ", ",", "\n"]
-    "embedding": OpenAIEmbeddings(), #  includes a pull of the open api key
+    "separators" : ["}"],  #[" ", ",", "\n"]  # not needed here. kept for reference
+    "embedding": OpenAIEmbeddings(),  # includes a pull of the open api key
     "embedding_dims": 1536,
     "search_type": "mmr",
     "k": 5,
@@ -22,10 +22,10 @@ config = {
     "score_threshold": 0.5,
     "model": "gpt-3.5-turbo-16k",
     "temperature": 0.7,
-    "chain_type": "stuff",
+    "chain_type": "stuff", # a LangChain parameter
 }
 
-#CONFIG: qdrant
+# CONFIG for the qdrant vector database
 qdrant_collection_name = "ASK_vectorstore"
 qdrant_path = "/tmp/local_qdrant" # Only required for local instance /private/tmp/local_qdrant
 
@@ -40,11 +40,13 @@ from langchain.prompts import PromptTemplate, ChatPromptTemplate, SystemMessageP
 import tiktoken
 import pickle
 import streamlit as st
+import json
 import os
 import openai
 import re
 import pandas as pd
 import datetime
+import requests
 
 llm=ChatOpenAI(model=config["model"], temperature=config["temperature"]) #keep outside the function so it's accessible elsewhere in this notebook
 
@@ -96,55 +98,64 @@ def init_retriever_and_generator(qdrant):
     return retriever
 
 
+def retrieval_context_excel_to_dict(file_path):
+    ''' Read Excel file into a dictionary of worksheets. 
+    Each worksheet is its own dictionary. Column 1 is 
+    the key. Column 2 is the values'''
+
+    xls = pd.ExcelFile(file_path)
+    dict = {}
+
+    for sheet_name in xls.sheet_names:
+        df = pd.read_excel(xls, sheet_name=sheet_name)
+        if df.shape[1] >= 2:
+            dict[sheet_name] = pd.Series(
+                df.iloc[:, 1].values, index=df.iloc[:, 0]).to_dict()
+        else:
+            print(f"The sheet '{sheet_name}' does not have enough columns.")
+    return dict
+
+
 
 # openai.api_key = os.environ['OPENAI_API_KEY']
 openai.api_key = st.secrets["OPENAI_API_KEY"] # Use this version for streamlit
 
 
 def query_maker(user_question):
-    # Define the system message
-    system_message = "Each time a term in the json list appears in the question, add the additional info to the end of the question. DO NOT ANSWER THE QUESTION. Return the new question as your response. DO NOT REMOVE ANY PART OF THE ORIGINAL QUESTION. DO NOT ANSWER THE QUESTION.\n here's an example. \nQuestion: how do I get a vessel examiner certification? \nYour response: how do I get a vessel examiner certification? Certification includes information about initial qualification."
+    '''Adds context to the user question to assist retrieval. 
+    
+    Adds acronym definitions and jargon explanations to the user's question
+    '''
 
-    json_list = """[
-    {
-        "term": "Certification",
-        "additional info": "Certification includes information about initial qualification."
-    },
-    {
-        "term": "Currency",
-        "additional info": "See ALAUX 002/23  2023 National Workshops, AUX-PL-001(A) RISK MANAGEMENT TRAINING REQUIREMENTS FOR THE COAST GUARD AUXILIARY, CG-BSX Policy Letter 19-02  CHANGES TO AUXILIARY INCIDENT COMMAND SYSTEM (ICS) CORE TRAINING."
-    },
-    {
-        "term": "Current",
-        "additional info": "See ALAUX 002/23  2023 National Workshops, AUX-PL-001(A) RISK MANAGEMENT TRAINING REQUIREMENTS FOR THE COAST GUARD AUXILIARY, CG-BSX Policy Letter 19-02  CHANGES TO AUXILIARY INCIDENT COMMAND SYSTEM (ICS) CORE TRAINING."
-    },
-    {
-        "term": "Boat crew currency, current in boat crew",
-        "additional info": "See ALAUX 048/22, ALAUX 002/23  2023 National Workshops, CG-BSX Policy Letter 19-02  CHANGES TO AUXILIARY INCIDENT COMMAND SYSTEM (ICS) CORE TRAINING."
-    },
-    {
-        "term": "Air crew",
-        "additional info": "Air crew is a position in the aviation program."
-    },
-    {
-        "term": "Pilot",
-        "additional info": "Pilot is a position in the aviation program."
-    },
-    {
-        "term": "Coxswain",
-        "additional info": "Coxswain is a position in the boat crew program. It is a type of Surface Operations."
-    },
-    {
-        "term": "Co-pilot",
-        "additional info": "Co-pilot is a type of pilot in the aviation program."
-    }
-]
-"""
+    retrieval_context_dict = retrieval_context_excel_to_dict('admin/retrieval_context.xlsx')
+    acronyms_dict = retrieval_context_dict.get("acronyms", None)
+    acronyms_json = json.dumps(acronyms_dict, indent=4)
+    terms_dict = retrieval_context_dict.get("terms", None)
+    terms_json = json.dumps(terms_dict, indent=4)
 
-    # Construct the user message
-    user_message = f"User question: {user_question}```list: {json_list}```"
+    system_message = """
+    Your task is to modify the user's question based on two lists: 'acronym_json' and 'terms_json'. Each list contains terms and their associated additional information. Follow these instructions:
 
-    # Construct the messages for the API call
+    - Review the user's question and identify if any acronyms from 'acronym_json' or phrases in 'terms_json' appear in it.
+    - If an acronym from 'acronym_json' replace the term with the associated additional information.
+    - If a phrase from 'terms_json' appears in the question, append its associated additional information to the end of the question.
+    - Do not remove or alter any other part of the original question.
+    - Do not provide an answer to the question.
+    - If no terms from either list are found in the question, leave the question as is.
+
+    Example:
+    - Question: How do I get a VE certification?
+    - Your response: How do I get a vessel examiner certification? Certification includes information about initial qualification.
+
+    - Question: What are the requirements for pilot training?
+    - Your response: What are the requirements for pilot training? Pilot is a position in the aviation program.
+
+        - Question: What is required to stay current in the Auxiliary?
+    - Your response: What is required to stay current in the Auxiliary? To be in the Auxiliary, members are required to maintain the Core Training (AUXCT), undego an annual uniform inspection, and pay annual dues.
+    """
+
+    user_message = f"User question: {user_question}```acronyms_json: {acronyms_json}\n\nterms_json: {terms_json}```"
+
     messages = [
         {'role': 'system', 'content': system_message},
         {'role': 'user', 'content': user_message},
@@ -161,16 +172,15 @@ def query_maker(user_question):
 
 
 
-system_message_prompt_template = SystemMessagePromptTemplate(
+def rag(query, retriever):
+    '''Runs a RAG completion on the modified query'''
+
+    system_message_prompt_template = SystemMessagePromptTemplate(
     prompt=PromptTemplate(
         input_variables=['context'],
-        template="Use the following pieces of context to answer the users question. INCLUDES ALL OF THE DETAILS YOU CAN IN YOUR RESPONSE, INDLUDING REQUIREMENTS AND REGULATIONS. If the question is about qualification, certification or currency, then follow these steps: 1. Determine the name of the qualification or certification. 2. Determine whether the question is about initial qualification or currency maintenance. Each have different requirements. 3. Determine what program the qualification or certification belongs to, such as Boat Crew program or Aviation program. 4. Determine any requirements that apply to all positions and certifications in that program as well as the specific requirements for the certification. For example, a Coxswain is a certification in the boat crew program. The Boat Crew program has requirements such as annual surface operations workshop. Additionally, coxswain has the requirement to complete a navigation test. Likewise, A Co-Pilot is a certification in the Aviation program. The Aviation program has requirements for all flight crewmembers that apply to Co-Pilot and First Pilot. First Pilot and Co-Pilot are Pilot flight crew positions, so they have Pilot requirements apply to First Pilot and Co-Pilot. Co-Pilot and First Pilot may have additional requirements specific to their certification. Risk Management Team Coordination Training (RM-TCT) is an annual currency requirement for all certifications in boat crew program, surface operations, air, telecommunications and others. National workshops are annual program requirements in years in which the workshop is specified. All certifications and officer positions require an Auxiliarist be current in Auxiliary Core Training (AUXCT). Most certifications require completion of Introduction to Risk Management course. Crewmember is an Auxiliary certification unless the user states otherwise. \nIf you don't know the answer, just say I don't know, don't try to make up an answer. \n----------------\n{context}"
+        template="Use the following pieces of context to answer the users question. INCLUDES ALL OF THE DETAILS IN YOUR RESPONSE, INDLUDING REQUIREMENTS AND REGULATIONS. National Workshops are required for boat crew, aviation, and telecommunications when then are offered and you should mention this in questions about those programs. Include Auxiliary Core Training (AUXCT) in your response for any question regarding certifications or officer positions.  \nIf you don't know the answer, just say I don't know, don't try to make up an answer. \n----------------\n{context}"
+        )
     )
-)
-
-
-def rag(query, retriever):
-    '''run a RAG completion'''
 
     llm_chain = LLMChain(
         prompt=ChatPromptTemplate(input_variables=['context', 'question'], messages=[system_message_prompt_template, HumanMessagePromptTemplate(prompt=PromptTemplate(input_variables=['question'], template='{question}'))]),
@@ -183,26 +193,17 @@ def rag(query, retriever):
         return_source_documents=True,
         retriever=retriever
     )
-    response = rag_instance({"query": query})
-    return response
 
-
-def rag_old1(query, retriever):
-    '''run a RAG completion'''
-
-    rag_instance = RetrievalQA.from_chain_type(
-        llm=llm,
-        chain_type=config["chain_type"],
-        retriever=retriever,
-        return_source_documents=True,
-    )
     response = rag_instance({"query": query})
     return response
 
 
 
 def rag_dummy(query, retriever):
-    '''returns a dummy canned response'''
+    '''A bug-fixing utility.
+    
+    Returns a dummy canned response instead of calling the LLM
+    '''
 
     with open("dummy_response.pkl", "rb") as file:
         dummy_response = pickle.load(file)
@@ -235,9 +236,9 @@ def create_short_source_list(response):
 def create_long_source_list(response):
     '''Extracts a list of sources along with full source
     
-    response is a dictionary with three keys:
-    dict_keys(['query', 'result', 'source_documents'])
-    'source_documents' is a list with a custom object Document 
+    Response is a dictionary with three keys:
+    ['query', 'result', 'source_documents']
+    source_documents is a list with a LangChain custom Document object
     '''
     
     markdown_list = []
@@ -255,7 +256,8 @@ def create_long_source_list(response):
 
 
 def count_tokens(response):
-    ''' counts the tokens from the response'''
+    '''Counts the tokens from the response'''
+
     encoding = tiktoken.encoding_for_model(config["model"])
     query_tokens = encoding.encode(response['query'])
     query_length = len(query_tokens)
@@ -268,10 +270,10 @@ def count_tokens(response):
     return query_length, source_length, result_length, tot_tokens
 
 
-import requests
-
 
 def get_openai_api_status():
+    '''Notify user if OpenAI is down so they don't blame the app'''
+
     components_url = 'https://status.openai.com/api/v2/components.json'
     status_message = ''
 
@@ -289,7 +291,6 @@ def get_openai_api_status():
             (component for component in components if component.get('name', '').lower() == 'api'), None)
 
         if api_component:
-            # Set the status message to the status of the API component
             status_message = api_component.get('status', '')
         else:
             status_message = 'API component not found'
@@ -304,6 +305,8 @@ def get_openai_api_status():
 
 
 def get_library_list_excel_and_date():
+    '''Gets the most recent list of library documents for the user to review'''
+
     directory_path = 'pages/library/'
     files_in_directory = os.listdir(directory_path)
     excel_files = [file for file in files_in_directory if re.match(r'library_document_list.*\.xlsx$', file)]
@@ -315,7 +318,11 @@ def get_library_list_excel_and_date():
     excel_files_with_time = [(file, os.path.getmtime(os.path.join(directory_path, file))) for file in excel_files]
     excel_files_with_time.sort(key=lambda x: x[1], reverse=True)
     most_recent_file, modification_time = excel_files_with_time[0]
-    df = pd.read_excel(os.path.join(directory_path, most_recent_file))
+    try:
+        df = pd.read_excel(os.path.join(directory_path, most_recent_file))
+    except Exception as e:
+        print(f"Failed to read the Excel file: {e}")
+        return None, None
 
     last_update_date = datetime.datetime.fromtimestamp(modification_time).strftime('%d %B %Y')
     
