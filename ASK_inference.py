@@ -136,9 +136,9 @@ def query_maker(user_question):
     system_message = """
     Your task is to modify the user's question based on two lists: 'acronym_json' and 'terms_json'. Each list contains terms and their associated additional information. Follow these instructions:
 
-    - Review the user's question and identify if any terms from 'acronym_json' or 'terms_json' appear in it.
-    - If a term from either 'acronym_json' replace the term with the associated additional information.
-    - If the term from 'terms_json' appears in the question, append its associated additional information to the end of the question.
+    - Review the user's question and identify if any acronyms from 'acronym_json' or phrases in 'terms_json' appear in it.
+    - If an acronym from 'acronym_json' replace the term with the associated additional information.
+    - If a phrase from 'terms_json' appears in the question, append its associated additional information to the end of the question.
     - Do not remove or alter any other part of the original question.
     - Do not provide an answer to the question.
     - If no terms from either list are found in the question, leave the question as is.
@@ -149,6 +149,9 @@ def query_maker(user_question):
 
     - Question: What are the requirements for pilot training?
     - Your response: What are the requirements for pilot training? Pilot is a position in the aviation program.
+
+        - Question: What is required to stay current in the Auxiliary?
+    - Your response: What is required to stay current in the Auxiliary? To be in the Auxiliary, members are required to maintain the Core Training (AUXCT), undego an annual uniform inspection, and pay annual dues.
     """
 
     user_message = f"User question: {user_question}```acronyms_json: {acronyms_json}\n\nterms_json: {terms_json}```"
