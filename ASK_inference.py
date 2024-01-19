@@ -336,7 +336,7 @@ if __name__ == "__main__":
    
     # Replace 'your_query' with the actual query you want to pass to rag
     query = 'your_query'
-    response = rag(query, retriever) #thisn is slightly different from the notebook
+    response = rag(query, retriever) #this is slightly different from the notebook
     
     # Call other functions to process the response
     short_source_list = create_short_source_list(response)
