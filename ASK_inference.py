@@ -1,6 +1,22 @@
 
-'''import os
+from langchain.chat_models import ChatOpenAI
+from qdrant_client import QdrantClient
+from langchain.vectorstores import Qdrant
+from langchain.chains import RetrievalQA, StuffDocumentsChain, LLMChain
+from langchain.prompts import PromptTemplate, ChatPromptTemplate, SystemMessagePromptTemplate, HumanMessagePromptTemplate
+import tiktoken
+import pickle
+import streamlit as st
+import json
+import os
+import openai
+import re
+import pandas as pd
+import datetime
+import requests
 
+
+'''
 from dotenv import load_dotenv, find_dotenv
 _ = load_dotenv(find_dotenv()) # read local .env file
 '''
@@ -25,33 +41,13 @@ config = {
     "chain_type": "stuff", # a LangChain parameter
 }
 
-# CONFIG for the qdrant vector database
 qdrant_collection_name = "ASK_vectorstore"
 qdrant_path = "/tmp/local_qdrant" # Only required for local instance /private/tmp/local_qdrant
-
-
-
-    #-----------------------------------
-from langchain.chat_models import ChatOpenAI
-from qdrant_client import QdrantClient
-from langchain.vectorstores import Qdrant
-from langchain.chains import RetrievalQA, StuffDocumentsChain, LLMChain
-from langchain.prompts import PromptTemplate, ChatPromptTemplate, SystemMessagePromptTemplate, HumanMessagePromptTemplate
-import tiktoken
-import pickle
-import streamlit as st
-import json
-import os
-import openai
-import re
-import pandas as pd
-import datetime
-import requests
-
+openai.api_key = st.secrets["OPENAI_API_KEY"] # Use this version for streamlit
 llm=ChatOpenAI(model=config["model"], temperature=config["temperature"]) #keep outside the function so it's accessible elsewhere in this notebook
 
-query = []
 
+query = []
 
 
 def qdrant_connect_local():
@@ -115,10 +111,6 @@ def retrieval_context_excel_to_dict(file_path):
             print(f"The sheet '{sheet_name}' does not have enough columns.")
     return dict
 
-
-
-# openai.api_key = os.environ['OPENAI_API_KEY']
-openai.api_key = st.secrets["OPENAI_API_KEY"] # Use this version for streamlit
 
 
 def query_maker(user_question):
