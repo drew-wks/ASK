@@ -4,7 +4,7 @@
 
 
 ```mermaid
-sequenceDiagram
+sequenceDiagram;
     actor Curator
     participant System
 
