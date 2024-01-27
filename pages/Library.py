@@ -70,7 +70,7 @@ with tab2:
         st.markdown(f"{num_items} items. Last update: {last_update_date}")  
 
         # Display the DataFrame
-        display_df = df[['title', 'publication_number, 'effective_date']]
+        display_df = df[['title', 'publication_number', 'effective_date']]
         edited_df = st.data_editor(display_df, use_container_width=True, hide_index=False, disabled=True)
         isim = 'ASK_library.csv'
         indir = edited_df.to_csv(index=False)
