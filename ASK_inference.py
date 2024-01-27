@@ -296,7 +296,7 @@ def get_openai_api_status():
 
 
 
-def get_library_list_excel_and_date():
+def get_library_doc_catalog_excel_and_date():
     '''Gets the most recent list of library documents for the user to review'''
 
     directory_path = 'pages/library_catalog/'
