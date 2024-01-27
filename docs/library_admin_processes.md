@@ -1,3 +1,7 @@
+## ASK System Administration (Weaviate)
+#### Adding PDFs to Library
+##### 1. Prepare the document metadata
+
 ```mermaid
 sequenceDiagram
     actor Curator
