@@ -57,7 +57,7 @@ if "operational" not in api_status_message:
     st.error(f"ASK is currently down due to OpenAI {api_status_message}.")
 else: st.write("#### Get answers to USCG Auxiliary questions from authoritative sources.")
 
-df, last_update_date = ASK.get_library_list_excel_and_date()
+df, last_update_date = ASK.get_library_doc_catalog_excel_and_date()
 num_items = len(df)
 
 
