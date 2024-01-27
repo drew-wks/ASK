@@ -2,7 +2,6 @@
 sequenceDiagram
     actor Curator
     participant System
-
     Curator->>System: specify target PDFs to add
     create participant File Storage 
     System->>File Storage: copy PDFs to PDF_ingest_queue folder
