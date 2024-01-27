@@ -7,7 +7,8 @@ sequenceDiagram
     actor Curator
     participant System
     Curator->>System: specify target PDFs to add
-    Note right of John: Rational thoughts <br/>prevail!
+    Create participant File Storage
+    System->>File Storage: copy PDFs to PDF_ingest_queue folder
     John-->>Curator: Great!
     John->>System: How about you?
     System-->>John: Jolly good!
