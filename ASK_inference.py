@@ -324,8 +324,6 @@ def get_library_doc_catalog_excel_and_date():
 
 # Example usage in another script
 if __name__ == "__main__":
-   
-   
     # Replace 'your_query' with the actual query you want to pass to rag
     query = 'your_query'
     response = rag(query, retriever) #thisn is slightly different from the notebook

@@ -22,7 +22,7 @@ st.markdown(hide_st_style, unsafe_allow_html=True)
 
 st.markdown("""
         <style>
-               .block-container {
+                .block-container {
                     padding-top: 0rem;
                     padding-bottom: 1rem;
                     padding-left: 2rem;
