@@ -8,7 +8,7 @@ sequenceDiagram
     participant System
     participant John
     Curator->>System: specify target PDFs to add
-    participant FileStorage
+    create participant FileStorage
     System->>FileStorage: copy PDFs to PDF_ingest_queue folder
     John-->>Curator: Great!
     John->>System: How about you?
