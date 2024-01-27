@@ -1,7 +1,7 @@
 ## ASK System Administration (Weaviate)
 #### Adding PDFs to Library
 ##### 1. Prepare the document metadata
-<div style="border: 2px solid black; padding: 10px;">
+
 
 ```mermaid
 sequenceDiagram
@@ -20,10 +20,10 @@ sequenceDiagram
     Curator->>File Storage: add metadata values to updated ingest_list_{timestamp}.xlsx
 ```
 
-</div>
+
 
 ##### 2. Upsert the PDFs and metadata into the vectorstore
-<div style="border: 2px solid black; padding: 10px;">
+
 
 ```mermaid
 sequenceDiagram
@@ -41,4 +41,3 @@ sequenceDiagram
     System->>System: clear PDF_ingest_queue folder
 ```
 
-</div>
