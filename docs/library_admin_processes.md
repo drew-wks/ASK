@@ -6,7 +6,7 @@
 sequenceDiagram
     actor Curator
     participant System
-    Curator->>John: Hello John, how are you?
+    Curator->>System: specify target PDFs to add
     loop Healthcheck
         John->>John: Fight against hypochondria
     end
