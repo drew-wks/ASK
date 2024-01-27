@@ -1,6 +1,6 @@
 ```mermaid
 sequenceDiagram
-    participant Alice
+    actor Alice
     participant Bob
     Alice->>John: Hello John, how are you?
     loop Healthcheck
