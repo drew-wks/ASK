@@ -6,9 +6,10 @@
 sequenceDiagram
     actor Curator
     participant System
+    participant File Storage
     Curator->>System: specify target PDFs to add
-    create participant FileStorage
-    System->>FileStorage: copy PDFs to PDF_ingest_queue folder
+    create participant File Storage
+    System->>File Storage: copy PDFs to PDF_ingest_queue folder
     John-->>Curator: Great!
     John->>System: How about you?
     System-->>John: Jolly good!
