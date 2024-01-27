@@ -119,7 +119,7 @@ def query_maker(user_question):
     Adds acronym definitions and jargon explanations to the user's question
     '''
 
-    retrieval_context_dict = retrieval_context_excel_to_dict('admin/retrieval_context.xlsx')
+    retrieval_context_dict = retrieval_context_excel_to_dict('utils/retrieval_context.xlsx')
     acronyms_dict = retrieval_context_dict.get("acronyms", None)
     acronyms_json = json.dumps(acronyms_dict, indent=4)
     terms_dict = retrieval_context_dict.get("terms", None)
@@ -197,7 +197,7 @@ def rag_dummy(query, retriever):
     Returns a dummy canned response instead of calling the LLM
     '''
 
-    with open("dummy_response.pkl", "rb") as file:
+    with open("utils/dummy_response.pkl", "rb") as file:
         dummy_response = pickle.load(file)
     return dummy_response
         
@@ -299,7 +299,7 @@ def get_openai_api_status():
 def get_library_list_excel_and_date():
     '''Gets the most recent list of library documents for the user to review'''
 
-    directory_path = 'pages/library/'
+    directory_path = 'pages/library_catalog/'
     files_in_directory = os.listdir(directory_path)
     excel_files = [file for file in files_in_directory if re.match(r'library_document_list.*\.xlsx$', file)]
 
