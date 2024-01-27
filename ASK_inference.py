@@ -304,7 +304,7 @@ def get_library_doc_catalog_excel_and_date():
     excel_files = [file for file in files_in_directory if re.match(r'library_doc_catalog.*\.xlsx$', file)]
 
     if not excel_files:
-        st.error("There's no Excel file in the directory.")
+        os.write(1,b'There's no Excel file in the directory.\n')
         return None, None
 
     excel_files_with_time = [(file, os.path.getmtime(os.path.join(directory_path, file))) for file in excel_files]

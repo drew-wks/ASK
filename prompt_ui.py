@@ -72,7 +72,6 @@ examples.write("""
     *¿En que ocasiones es necesario un saludo militar?*   
     
 """)
-# this code is now in a code editor where I can chaange it!!!
 
 st.write("  ")
 
