@@ -299,7 +299,7 @@ def get_openai_api_status():
 def get_library_doc_catalog_excel_and_date():
     '''Gets the most recent catalog of library documents for the user to review'''
 
-    directory_path = 'pages/library_catalog/'
+    directory_path = 'docs/library_catalog/'
     files_in_directory = os.listdir(directory_path)
     excel_files = [file for file in files_in_directory if re.match(r'library_doc_catalog.*\.xlsx$', file)]
 
