@@ -53,13 +53,13 @@ if back:
 tab1, tab2, tab3, tab4, tab5 = st.tabs(["Overview", "Library", "FAQs", "Product Roadmap", "Feedback"])
 
 with tab1:
-    overview = read_markdown_file("pages/ask_overview.md")
+    overview = read_markdown_file("docs/ask_overview.md")
     st.markdown(overview, unsafe_allow_html=True)
     
 
 with tab2:
     df, last_update_date = ASK.get_library_doc_catalog_excel_and_date()
-    overview = read_markdown_file("pages/library_overview.md")
+    overview = read_markdown_file("docs/library_overview.md")
 
     if df is not None:
         num_items = len(df)
@@ -80,16 +80,16 @@ with tab2:
 
     else:
         # Display the original markdown file content if df is None
-        overview = read_markdown_file("pages/library_overview.md")
+        overview = read_markdown_file("docs/library_overview.md")
         st.markdown(overview, unsafe_allow_html=True)
 
 
 with tab3:
-    overview = read_markdown_file("pages/faqs.md")
+    overview = read_markdown_file("docs/faqs.md")
     st.markdown(overview, unsafe_allow_html=True)
 
 with tab4:
-    roadmap = read_markdown_file("pages/roadmap.md")
+    roadmap = read_markdown_file("docs/roadmap.md")
     st.markdown(roadmap, unsafe_allow_html=True)
     
 with tab5:
