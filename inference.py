@@ -8,20 +8,12 @@ import tiktoken
 import pickle
 import streamlit as st
 import json
-import os
 import openai
-import re
 import pandas as pd
-import datetime
-import requests
-
-
-'''
-from dotenv import load_dotenv, find_dotenv
-_ = load_dotenv(find_dotenv()) # read local .env file
-'''
 
 from langchain.embeddings import OpenAIEmbeddings
+
+openai.api_key = st.secrets["OPENAI_API_KEY"] # Use this version for streamlit
 
 config = {
     "splitter_type": "CharacterTextSplitter",
@@ -43,7 +35,6 @@ config = {
 
 qdrant_collection_name = "ASK_vectorstore"
 qdrant_path = "/tmp/local_qdrant" # Only required for local instance /private/tmp/local_qdrant
-openai.api_key = st.secrets["OPENAI_API_KEY"] # Use this version for streamlit
 llm=ChatOpenAI(model=config["model"], temperature=config["temperature"]) #keep outside the function so it's accessible elsewhere in this notebook
 
 
@@ -51,8 +42,6 @@ query = []
 
 
 def qdrant_connect_local():
-    print("attempting to assign client")
-    
     if 'client' in globals():
         return globals()['client']  # Return the existing client
     client = QdrantClient(path=qdrant_path)  # Only required for a local instance
@@ -61,8 +50,6 @@ def qdrant_connect_local():
 
 
 def qdrant_connect_cloud(api_key, url):
-    print("attempting to assign client")
-    
     if 'client' in globals():
         return globals()['client']  # Return the existing client
     client = QdrantClient(
@@ -119,7 +106,7 @@ def query_maker(user_question):
     Adds acronym definitions and jargon explanations to the user's question
     '''
 
-    retrieval_context_dict = retrieval_context_excel_to_dict('utils/retrieval_context.xlsx')
+    retrieval_context_dict = retrieval_context_excel_to_dict('config/retrieval_context.xlsx')
     acronyms_dict = retrieval_context_dict.get("acronyms", None)
     acronyms_json = json.dumps(acronyms_dict, indent=4)
     terms_dict = retrieval_context_dict.get("terms", None)
@@ -197,7 +184,7 @@ def rag_dummy(query, retriever):
     Returns a dummy canned response instead of calling the LLM
     '''
 
-    with open("utils/dummy_response.pkl", "rb") as file:
+    with open("config/dummy_response.pkl", "rb") as file:
         dummy_response = pickle.load(file)
     return dummy_response
         
@@ -260,65 +247,6 @@ def count_tokens(response):
     tokens = encoding.encode(str(response))
     tot_tokens = len(tokens)
     return query_length, source_length, result_length, tot_tokens
-
-
-
-def get_openai_api_status():
-    '''Notify user if OpenAI is down so they don't blame the app'''
-
-    components_url = 'https://status.openai.com/api/v2/components.json'
-    status_message = ''
-
-    try:
-        response = requests.get(components_url)
-        # Raises an HTTPError if the HTTP request returned an unsuccessful status code
-        response.raise_for_status()
-
-        # Parse the JSON response
-        components_info = response.json()
-        components = components_info.get('components', [])
-
-        # Find the component that represents the API
-        api_component = next(
-            (component for component in components if component.get('name', '').lower() == 'api'), None)
-
-        if api_component:
-            status_message = api_component.get('status', '')
-        else:
-            status_message = 'API component not found'
-
-    except requests.exceptions.HTTPError as http_err:
-        status_message = f'HTTP error occurred: {repr(http_err)}'
-    except Exception as err:
-        status_message = f'Other error occurred: {repr(err)}'
-
-    return status_message
-
-
-
-def get_library_doc_catalog_excel_and_date():
-    '''Gets the most recent catalog of library documents for the user to review'''
-
-    directory_path = 'pages/library_catalog/'
-    files_in_directory = os.listdir(directory_path)
-    excel_files = [file for file in files_in_directory if re.match(r'library_doc_catalog.*\.xlsx$', file)]
-
-    if not excel_files:
-        os.write(1,b"There's no Excel file in the directory.\n")
-        return None, None
-
-    excel_files_with_time = [(file, os.path.getmtime(os.path.join(directory_path, file))) for file in excel_files]
-    excel_files_with_time.sort(key=lambda x: x[1], reverse=True)
-    most_recent_file, modification_time = excel_files_with_time[0]
-    try:
-        df = pd.read_excel(os.path.join(directory_path, most_recent_file))
-    except Exception as e:
-        print(f"Failed to read the Excel file: {e}")
-        return None, None
-
-    last_update_date = datetime.datetime.fromtimestamp(modification_time).strftime('%d %B %Y')
-    
-    return df, last_update_date
 
 
 

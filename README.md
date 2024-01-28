@@ -1,33 +1,32 @@
 ![Logo](https://raw.githubusercontent.com/dvvilkins/ASK/main/images/ASK_logotype_color.png?raw=true)
 
-**Auxiliary Source of Knowledge (ASK)** was developed by U.S. Coast Guard Auxiliarist Drew Wilkins as a proof of concept to make it easier for Auxiliarists and prospective members to find Auxiliary-related information. ASK utilizes Retrieval Augmented Generation to search over 300 Coast Guard Auxiliary references to find answers directly from authoritative sources.
+ASK stands for **Auxiliary Source of Knowledge**. ASK was developed by Auxiliarist Drew Wilkins as a proof of concept to make it easier for Auxiliarists and prospective members to find Auxiliary-related information. Powered by Artificial Intelligence (AI), ASK searches over 300 Coast Guard Auxiliary references to find answers directly from authoritative sources.
 
 ## Background
-ASK stems from the need for easier ways to find official information. Being a member of the U.S. Coast Guard, Auxiliarists are surrounded by vast amounts of policy and procedure information that guides their actions.
+ASK stems from the need for easier ways to find official information. Auxiliarists are surrounded by a growing amount of policy and procedure info necessary to guide their actions. However, accessing these resources is not straight-forward. The bulk of it is stowed away in PDFs scattered across various platforms, making it cumbersome to located and search. Furthermore, outdated and region-specific info can be misconstrued as applicable. 
 
-However, that bulk of that information is stowed away in PDFs scattered across various platforms, making it cumbersome to located and search. Furthermore, outdated and regionally-specific documents can be misconstrued as applicable. Web searches yield thousands of documents, but it is difficult to know which one applies. Tools like Chat GPT might provide inaccurate data or even fabricate responses.
+Since 2008, Auxiliary missions types have grown 36%. The Auxiliary now manages over 120 competencies and 377 tasks requiring over 245 Auxiliary-related policy documents to support. That’s almost 9000 pages of Auxiliary policies. In some cases, currency requires familiarity with eight or more policy documents, which creates an obstacle to skills development and readiness. 
 
-ASK is different. It examines the documents themselves, and then uses AI to answer them in natural language. ASK works by analyzing documents that are the most current official policy that exists at a national level. Its library contains over 238 policy documents (over 8000 pages)— from Commandant Instructions to ALAUXs to national workshops—managed in a central location. Scope is limited to publicly-available, national documents, so it doesn’t include information behind firewall or specific to individual districts, sectors, divisions, etc. That way, even applicants can use it without authentication.
+ASK makes it easier to find Auxiliary-related information. It takes a user’s question, examines the public USCG Auxiliary documents and then answers the question in natural language using AI.
 
 ## Mission 
 ASK's mission is to provide members efficient, accurate, and easy access  to the authoritative source of knowledge on any topic in the Auxiliary.
 
-## Access
-ASK is available to try [here](https://uscg-auxiliary-ask.streamlit.app/) <br>
-<a href="https://uscg-auxiliary-ask.streamlit.app/"><img align="center" src="https://raw.githubusercontent.com/dvvilkins/ASK/main/images/what_is_the_aux_screenshot.png" alt="library ui" width="80%" align="center"/></a>
-
 ## Uses
 
-  - **Policy Compliance:** ASK can assist members fulfill their responsibilities to understand and adhere to policy, and help the organization transition to new policies. For example, a member can find the policy changes affecting their competency.
+  - **Policy Compliance:** ASK helps members understand and adhere to policy and helps the organization transition to new policies. For example, a member can find the policy changes affecting their competency.
 
- - **New Member Onboarding:** ASK can help new members integrate into the Auxiliary. For example, a new member can ask questions that might make them “feel stupid” to ask in person. A supportive and informative “first ninety days” sets the foundation for a productive and engaged member.
+ - **New Member Onboarding:** ASK gives new members a convenient access to answers or to ask a question they may be hesitatnt to ask in person. For example, a new member can ask questions that might make them “feel stupid” to ask in person. A supportive and informative “first ninety days” sets the foundation for a productive and engaged member.
 
  - **Training Support:** ASK provides personalized learning for trainees. It can compare and contrast terms or create custom quizzes, with ASK grading the results
 
- - **In-the-Field Mission Support:** ASK facilitates instant, on-the-go access to crucial documents during mission execution, enhancing Auxiliarist performance efficiency and decision-making. It can create checklists and provide Quick information retrieval. For example, an AUX Culinary Assistant could immediately determine all the currency requirements for the competency.
+ - **In-the-Field Mission Support:** ASK is field-ready. Auxiliarists can access crucial documents during mission execution, enhancing Auxiliarist performance efficiency and decision-making. 
 
- - **Language Access:** ASK can assist the US Coast Guard in fulfilling its requirements under Executive Order 13166, _“Improving Access to Services for Persons with Limited English Proficiency”_ by detecting language automatically and translate both question and responses in real time
+ - **Language Access:** ASK translates queries and results into foreign languages which helps the USCG fulfill its requirements under Executive Order 13166, “Improving Access to Services for Persons with Limited English Proficiency” 
 
+## Access
+ASK is available to try [here](https://uscg-auxiliary-ask.streamlit.app/) <br>
+<a href="https://uscg-auxiliary-ask.streamlit.app/"><img align="center" src="https://raw.githubusercontent.com/dvvilkins/ASK/main/images/what_is_the_aux_screenshot.png" alt="library ui" width="80%" align="center"/></a>
 
 ## How it Works
 ### Generative AI Document Search
