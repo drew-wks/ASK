@@ -42,7 +42,7 @@ collector = utils.get_feedback_collector()
 # see feedback at https://trubrics.streamlit.app/?ref=blog.streamlit.io
 
 
-st.image("https://raw.githubusercontent.com/dvvilkins/ASK/main/images/ASK_logotype_color.png?raw=true", use_column_width="always")
+st.image("https://raw.githubusercontent.com/dvvilkins/ASK/main/images/ASK_logotype_color.png?raw=true", use_column_width="true")
 
 
 api_status_message = utils.get_openai_api_status()
