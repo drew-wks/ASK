@@ -22,7 +22,7 @@ st.markdown(hide_st_style, unsafe_allow_html=True)
 
 st.markdown("""
         <style>
-               .block-container {
+                .block-container {
                     padding-top: 0rem;
                     padding-bottom: 1rem;
                     padding-left: 2rem;
@@ -57,7 +57,7 @@ if "operational" not in api_status_message:
     st.error(f"ASK is currently down due to OpenAI {api_status_message}.")
 else: st.write("#### Get answers to USCG Auxiliary questions from authoritative sources.")
 
-df, last_update_date = ASK.get_library_list_excel_and_date()
+df, last_update_date = ASK.get_library_doc_catalog_excel_and_date()
 num_items = len(df)
 
 
@@ -68,11 +68,10 @@ examples = st.empty()
 examples.write("""  
     **ASK answers questions such as:**   
     *What are the requirements to run for FC?*  
-    *How do I stay current as a member?*   
+    *How do I stay current in boat crew?*   
     *¿En que ocasiones es necesario un saludo militar?*   
     
 """)
-# this code is now in a code editor where I can chaange it!!!
 
 st.write("  ")
 

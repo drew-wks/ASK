@@ -27,7 +27,7 @@ st.markdown(hide_st_style, unsafe_allow_html=True)
 
 st.markdown("""
         <style>
-               .block-container {
+                .block-container {
                     padding-top: 1rem;
                     padding-bottom: 1rem;
                     padding-left: 3rem;
@@ -39,7 +39,7 @@ st.markdown("""
 
 
 def read_markdown_file(markdown_file):
-   return Path(markdown_file).read_text()
+    return Path(markdown_file).read_text()
 
 
 
@@ -58,7 +58,7 @@ with tab1:
     
 
 with tab2:
-    df, last_update_date = ASK.get_library_list_excel_and_date()
+    df, last_update_date = ASK.get_library_doc_catalog_excel_and_date()
     overview = read_markdown_file("pages/library_overview.md")
 
     if df is not None:
@@ -66,16 +66,16 @@ with tab2:
         st.markdown("#### Library Overview")
         st.markdown(f"ASK is loaded with **{num_items}** national documents (almost 9000 pages) including USCG Directives, CHDIRAUX documents and documents issued by the USCG Auxiliary National leadership. All these documents are located in public sections of the USCG and USCG Auxiliary websites (cgaux.org uscg.mil).  No secure content is included (i.e., content requiring Member Zone or CAC access. All documents are national. Regional requirements may vary, so check with your local AOR leadership for the final word. ")
         st.markdown(f"{overview}")
-        st.markdown("#### Document List")
+        st.markdown("#### Library Catalog")
         st.markdown(f"{num_items} items. Last update: {last_update_date}")  
 
         # Display the DataFrame
-        display_df = df[['source_short']]
+        display_df = df[['title', 'publication_number', 'effective_date']]
         edited_df = st.data_editor(display_df, use_container_width=True, hide_index=False, disabled=True)
-        isim = 'ASK_library.csv'
+        isim = f'ASK_document_catalog_{last_update_date}.csv'
         indir = edited_df.to_csv(index=False)
         b64 = base64.b64encode(indir.encode(encoding='ISO-8859-1')).decode(encoding='ISO-8859-1')  
-        linko_final = f'<a href="data:file/csv;base64,{b64}" download={isim}>Click to download</a>'
+        linko_final = f'<a href="data:file/csv;base64,{b64}" download="{isim}">Click to download the catalog</a>'
         st.markdown(linko_final, unsafe_allow_html=True)
 
     else:
@@ -98,9 +98,9 @@ with tab5:
     st.markdown('If you would like to help ASK acheive this mission, **please reach out!**')
                 
     st.markdown('''Presently, ASK works by analyzing documents that are the most current official policy that exists at a national level. 
-             If you see a document missing from the libary or should be removed, please let us know.''')  
+            If you see a document missing from the libary or should be removed, please let us know.''')  
     
     st.markdown('''If you find an error or ommision in a response, please let me know. Be sure to include the exact question asked
-             and a reference to the applicable policy (doc and page).''')  
+            and a reference to the applicable policy (doc and page).''')  
                 
     st.markdown('Send an email to uscgaux.drew@wks.us.''')
