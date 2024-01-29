@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 - Add additional metadata keys and values into library data, including effective date
+- Merged metadata docs and librabry list into one file called library_catalog
 
 ## [0.5.3] - 2023-12-19
 ### Features
