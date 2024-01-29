@@ -2,9 +2,12 @@
 # Project ASK Change Log
 All notable changes to this project will be documented in this file.  
 
-## [Unreleased]
+## [Unreleased-Test branch]
 - Add additional metadata keys and values into library data, including effective date
+- Reorganized repo file directory
 - Merged metadata docs and librabry list into one file called library_catalog
+- Added project development workflow diagram
+- Updated administration processes diagram
 
 ## [0.5.3] - 2023-12-19
 ### Features
