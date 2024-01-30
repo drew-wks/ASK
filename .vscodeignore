@@ -1,0 +1,10 @@
+// .vscodeignore
+//tells the directory tree package to ignore these folders
+
+.git
+.DS_Store
+.venv
+.venv*
+.vscode
+.vscodeignore
+__pycache__

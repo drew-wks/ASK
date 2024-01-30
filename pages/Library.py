@@ -38,7 +38,7 @@ def read_markdown_file(markdown_file):
 
 
 
-st.image("https://raw.githubusercontent.com/dvvilkins/ASK/main/images/ASK_logotype_color.png?raw=true", use_column_width="always")
+st.image("https://raw.githubusercontent.com/drew-wks/ASK/main/images/ASK_logotype_color.png?raw=true", use_column_width="always")
 
 back = st.button("< Back to App", type="primary")
 if back:
@@ -53,7 +53,12 @@ with tab1:
     
 
 with tab2:
-    df, last_update_date = utils.get_library_doc_catalog_excel_and_date()
+    file_path, last_update_date = utils.get_most_recent_filepath_and_date("library_catalog", "docs/library_catalog/", "xlsx")
+    try:
+        df = pd.read_excel(file_path)
+    except Exception as e:
+        os.write(1, f"Failed to read the Excel file: {e}\n".encode())
+        
     overview = read_markdown_file("docs/library_overview.md")
 
     if df is not None:
