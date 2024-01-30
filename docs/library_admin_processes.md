@@ -1,6 +1,6 @@
 ## ASK System Administration
 #### Adding PDFs to Library
-##### 1. Prepare the document metadata
+##### 1. Prepare the document metadata (prep_document_metadata.ipynb)
 <div style="border: 2px solid black; padding: 10px;">
 
 ```mermaid
