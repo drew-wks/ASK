@@ -6,7 +6,7 @@ import datetime, time
 from streamlit_extras.stylable_container import stylable_container
 
 
-st.set_page_config(page_title="inference Auxiliary Source of Knowledge", initial_sidebar_state="collapsed")
+st.set_page_config(page_title="ASK Auxiliary Source of Knowledge", initial_sidebar_state="collapsed")
 
 st.markdown( """ <style> [data-testid="collapsedControl"] { display: none } </style> """, unsafe_allow_html=True, )
 
@@ -47,19 +47,19 @@ st.image("https://raw.githubusercontent.com/dvvilkins/ASK/main/images/ASK_logoty
 
 api_status_message = utils.get_openai_api_status()
 if "operational" not in api_status_message:
-    st.error(f"inference is currently down due to OpenAI {api_status_message}.")
+    st.error(f"ASK is currently down due to OpenAI {api_status_message}.")
 else: st.write("#### Get answers to USCG Auxiliary questions from authoritative sources.")
 
 df, last_update_date = utils.get_most_recent_filepath_and_date("library_catalog", "docs/library_catalog/", "xlsx")
 num_items = len(df)
 
 
-st.markdown(f"inference uses Artificial Intelligence (AI) to search over {num_items} Coast Guard Auxiliary references for answers. This is a working prototype for evaluation. Not an official USCG Auxiliary service. Learn more <a href='Library' target='_self'><b>here</b>.</a>", unsafe_allow_html=True)
+st.markdown(f"ASK uses Artificial Intelligence (AI) to search over {num_items} Coast Guard Auxiliary references for answers. This is a working prototype for evaluation. Not an official USCG Auxiliary service. Learn more <a href='Library' target='_self'><b>here</b>.</a>", unsafe_allow_html=True)
 
 examples = st.empty()
 
 examples.write("""  
-    **inference answers questions such as:**   
+    **ASK answers questions such as:**   
     *What are the requirements to run for FC?*  
     *How do I stay current in boat crew?*   
     *¿En que ocasiones es necesario un saludo militar?*   
@@ -83,10 +83,10 @@ if user_question:
             long_source_list = inference.create_long_source_list(response)
 
         except openai.error.RateLimitError:
-            print("inference has run out of Open AI credits. Tell Drew to go fund his account! uscgaux.drew@wks.us")
+            print("ASK has run out of Open AI credits. Tell Drew to go fund his account! uscgaux.drew@wks.us")
             response = None  
         examples.empty()  
-        st.info(f"**Question:** *{user_question}*\n\n ##### Response:\n{response['result']}\n\n **Sources:**  \n{short_source_list}\n **Note:** \n inference can make mistakes. Verify the sources and check your local policies.")
+        st.info(f"**Question:** *{user_question}*\n\n ##### Response:\n{response['result']}\n\n **Sources:**  \n{short_source_list}\n **Note:** \n ASK can make mistakes. Verify the sources and check your local policies.")
 
     status.update(label=":blue[**Response**]", expanded=True)
 
