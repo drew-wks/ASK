@@ -89,7 +89,7 @@ def get_most_recent_filepath_and_date(base_filename, directory_path, file_extens
     check_directory_exists(directory_path, create_if_not_exists=True)
     files_in_directory = os.listdir(directory_path)
     # Construct regex pattern from base filename and file extension
-    regex_pattern = rf'\d{{4}}-\d{{2}}-\d{{2}}T\d{{2}}:\d{{2}}Z\.{file_extension}$'
+    regex_pattern = rf'library_catalog\d{{4}}-\d{{2}}-\d{{2}}T\d{{4}}Z\.{file_extension}$'
     matching_files = [file for file in files_in_directory if re.match(regex_pattern, file)]
 
     if not matching_files:
