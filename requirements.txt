@@ -9,6 +9,5 @@ streamlit_extras
 datetime
 pandas
 openpyxl # used to import the library.xlsx file
-#ipykernal
-#used in the admin notebooks
 pypdf
+#ipykernal
