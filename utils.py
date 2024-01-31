@@ -1,7 +1,9 @@
 import datetime
 import requests
 import re
+import uuid
 import os
+import pypdf as PdfReader
 import pandas as pd
 import streamlit as st
 from trubrics.integrations.streamlit import FeedbackCollector
@@ -101,4 +103,15 @@ def get_most_recent_filepath_and_date(base_filename, directory_path, file_extens
     last_update_date = datetime.datetime.fromtimestamp(modification_time).strftime('%d %B %Y')
 
     return os.path.join(directory_path, most_recent_file), last_update_date
+
+
+
+def compute_doc_id(pdf_path):
+    '''generate a unique UUID from first page of the PDF file'''
+    with open(pdf_path, 'rb') as f:
+        reader = PdfReader(f)
+        first_page = reader.pages[0].extract_text()
+    namespace = uuid.NAMESPACE_DNS
+    first_page_uuid = uuid.uuid5(namespace, first_page)
+    return first_page_uuid
     
