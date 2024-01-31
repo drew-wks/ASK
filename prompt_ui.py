@@ -50,7 +50,7 @@ if "operational" not in api_status_message:
     st.error(f"inference is currently down due to OpenAI {api_status_message}.")
 else: st.write("#### Get answers to USCG Auxiliary questions from authoritative sources.")
 
-df, last_update_date = utils.get_library_doc_catalog_excel_and_date()
+df, last_update_date = utils.get_most_recent_filepath_and_date(library_catalog, "docs/library_catalog/", "xlsx")
 num_items = len(df)
 
 
