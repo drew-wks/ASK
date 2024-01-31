@@ -76,34 +76,31 @@ def check_directory_exists(directory_path, create_if_not_exists=False):
 
 
 
-def get_most_recent_filepath_and_date(directory_path, file_extension):
+def get_most_recent_filepath_and_date(base_filename, directory_path, file_extension):
     """
-    Returns the path of the most recent file in the specified directory with the given file extension, along with its last modification date.
+    Returns the path of the most recent file based on the base filename, directory path, and file extension, along with its last modification date.
 
-    This function searches for files in the given directory that match a specific pattern in the filename and identifies the most recent file based on the date-time in the filename.
-    
+    This function searches for files matching the base filename pattern with the specified extension in the given directory and identifies the most recent file based on modification time. It also returns the modification time in 'dd Month YYYY' format.
+        
     Usage:
-        file_path, last_update_date = get_most_recent_filepath_and_date("docs/library_catalog/", "xlsx")
+        file_path, last_update_date = get_most_recent_file_path_and_date("library_catalog", "docs/library_catalog/", "xlsx")
     """
 
-    # Ensure the directory exists
-    if not os.path.exists(directory_path):
-        print(f"Directory {directory_path} does not exist.")
-        return None, None
-
+    check_directory_exists(directory_path, create_if_not_exists=True)
     files_in_directory = os.listdir(directory_path)
-    # Construct regex pattern for matching filenames
-    regex_pattern = rf'library_catalog\d{{4}}-\d{{2}}-\d{{2}}T\d{{4}}Z\.{file_extension}$'
+    # Construct regex pattern from base filename and file extension
+    regex_pattern = rf'{base_filename}.*\.{file_extension}$'
     matching_files = [file for file in files_in_directory if re.match(regex_pattern, file)]
 
     if not matching_files:
-        print("There's no matching file in the directory.")
+        os.write(1, b"There's no matching file in the directory.\n")
         return None, None
 
-    # Sort files based on the date-time in the filename
-    matching_files.sort(key=lambda x: datetime.datetime.strptime(x[len('library_catalog'):len('library_catalog')+15], '%Y-%m-%dT%H%MZ'), reverse=True)
-    most_recent_file = matching_files[0]
-    last_update_date = most_recent_file[len('library_catalog'):len('library_catalog')+15]
+    matching_files_with_time = [(file, os.path.getmtime(os.path.join(directory_path, file))) for file in matching_files]
+    matching_files_with_time.sort(key=lambda x: x[1], reverse=True)
+    most_recent_file, modification_time = matching_files_with_time[0]
+
+    last_update_date = datetime.datetime.fromtimestamp(modification_time).strftime('%d %B %Y')
 
     return os.path.join(directory_path, most_recent_file), last_update_date
 

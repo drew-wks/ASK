@@ -54,10 +54,8 @@ with tab1:
 
 with tab2:
     file_path, last_update_date = utils.get_most_recent_filepath_and_date("library_catalog", "docs/library_catalog/", "xlsx")
-    st.markdown(f"{files_path}")  
     try:
-        df= pd.DataFrame()
-        #df = pd.read_excel(file_path)
+        df = pd.read_excel(file_path)
     except Exception as e:
         os.write(1, f"Failed to read the Excel file: {e}\n".encode())
         
