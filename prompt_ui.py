@@ -50,9 +50,12 @@ if "operational" not in api_status_message:
     st.error(f"ASK is currently down due to OpenAI {api_status_message}.")
 else: st.write("#### Get answers to USCG Auxiliary questions from authoritative sources.")
 
-df, last_update_date = utils.get_most_recent_filepath_and_date("library_catalog_", "docs/library_catalog/", "xlsx")
-num_items = len(df)
-
+file_path, last_update_date = utils.get_most_recent_filepath_and_date("library_catalog", "docs/library_catalog/", "xlsx")
+df = pd.read_excel(file_path)
+if df is not None:
+    num_items = len(df)
+else:
+    num_items = 250
 
 st.markdown(f"ASK uses Artificial Intelligence (AI) to search over {num_items} Coast Guard Auxiliary references for answers. This is a working prototype for evaluation. Not an official USCG Auxiliary service. Learn more <a href='Library' target='_self'><b>here</b>.</a>", unsafe_allow_html=True)
 
