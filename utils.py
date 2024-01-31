@@ -97,9 +97,10 @@ def get_most_recent_filepath_and_date(base_filename, directory_path, file_extens
         return None, None
 
     # Sort files based on the date-time in the filename
-    matching_files.sort(key=lambda x: datetime.datetime.strptime(x.split('.')[0], '%Y-%m-%dT%H:%MZ'), reverse=True)
+    matching_files.sort(key=lambda x: datetime.datetime.strptime(x[len('library_catalog'):len('library_catalog')+16], '%Y-%m-%dT%H%MZ'), reverse=True)
     most_recent_file = matching_files[0]
-    last_update_date = most_recent_file.split('.')[0]
+    last_update_date = most_recent_file[len('library_catalog'):len('library_catalog')+16]
+
 
     return os.path.join(directory_path, most_recent_file), last_update_date
 
