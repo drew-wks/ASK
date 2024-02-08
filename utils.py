@@ -89,22 +89,23 @@ def get_most_recent_filepath_and_date(base_filename, directory_path, file_extens
     check_directory_exists(directory_path, create_if_not_exists=True)
     files_in_directory = os.listdir(directory_path)
     # Construct regex pattern from base filename and file extension
-    regex_pattern = rf'{base_filename}.*\.{file_extension}$'
+    regex_pattern = rf'{base_filename}_\d{{4}}-\d{{2}}-\d{{2}}T\d{{4}}Z\.{file_extension}$'
     matching_files = [file for file in files_in_directory if re.match(regex_pattern, file)]
 
     if not matching_files:
         os.write(1, b"There's no matching file in the directory.\n")
         return None, None
 
-    matching_files_with_time = [(file, os.path.getmtime(os.path.join(directory_path, file))) for file in matching_files]
-    matching_files_with_time.sort(key=lambda x: x[1], reverse=True)
-    most_recent_file, modification_time = matching_files_with_time[0]
-
-    last_update_date = datetime.datetime.fromtimestamp(modification_time).strftime('%d %B %Y')
+    # Sort files based on the date-time in the filename
+    matching_files.sort(key=lambda x: datetime.datetime.strptime(x[len(base_filename)+1:len(base_filename)+16], '%Y-%m-%dT%H%MZ'), reverse=True)
+    most_recent_file = matching_files[0]
+    last_update_date = most_recent_file[len(base_filename)+1:len(base_filename)+16]
+    print(matching_files)
 
     return os.path.join(directory_path, most_recent_file), last_update_date
 
-
+catalog_file_path, last_update_date = get_most_recent_filepath_and_date(
+    "library_catalog", "../docs/library_catalog/", "xlsx")
 
 def compute_doc_id(pdf_path):
     '''generate a unique UUID from first page of the PDF file'''
