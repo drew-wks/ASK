@@ -16,8 +16,7 @@ venv*.bak/
 
 # Personal Docs
 .DS_Store
-Local/
-
+local/
 
 # Streamlit
 .streamlit/secrets.toml

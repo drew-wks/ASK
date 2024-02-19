@@ -3,9 +3,10 @@ import requests
 import re
 import uuid
 import os
-import pypdf as PdfReader
+from pypdf import PdfReader
 import pandas as pd
 import streamlit as st
+from dateutil import parser
 from trubrics.integrations.streamlit import FeedbackCollector
 
 
@@ -97,10 +98,10 @@ def get_most_recent_filepath_and_date(base_filename, directory_path, file_extens
         return None, None
 
     # Sort files based on the date-time in the filename
-    matching_files.sort(key=lambda x: datetime.datetime.strptime(x[len(base_filename)+1:len(base_filename)+16], '%Y-%m-%dT%H%MZ'), reverse=True)
+    matching_files.sort(key=lambda x: parser.parse(x[len(base_filename)+1:len(base_filename)+16]), reverse=True)
     most_recent_file = matching_files[0]
     last_update_date = most_recent_file[len(base_filename)+1:len(base_filename)+16]
-    print(matching_files)
+    print(f"found the following file(s) {matching_files}")
 
     return os.path.join(directory_path, most_recent_file), last_update_date
 
@@ -109,9 +110,8 @@ catalog_file_path, last_update_date = get_most_recent_filepath_and_date(
 
 def compute_doc_id(pdf_path):
     '''generate a unique UUID from first page of the PDF file'''
-    with open(pdf_path, 'rb') as f:
-        reader = PdfReader(f)
-        first_page = reader.pages[0].extract_text()
+    reader = PdfReader(pdf_path)
+    first_page = reader.pages[0].extract_text()
     namespace = uuid.NAMESPACE_DNS
     first_page_uuid = uuid.uuid5(namespace, first_page)
     return first_page_uuid
