@@ -109,10 +109,21 @@ catalog_file_path, last_update_date = get_most_recent_filepath_and_date(
     "library_catalog", "../docs/library_catalog/", "xlsx")
 
 def compute_doc_id(pdf_path):
-    '''generate a unique UUID from first page of the PDF file'''
+    '''
+    generates a unique UUID from first page of the PDF file
+    
+    If first page is generic expiration message dated November 2022,
+    then set uuid to second page. If the doc is empty, then set uuid to EMPTY DOC
+    '''
     reader = PdfReader(pdf_path)
     first_page = reader.pages[0].extract_text()
     namespace = uuid.NAMESPACE_DNS
     first_page_uuid = uuid.uuid5(namespace, first_page)
-    return first_page_uuid
+    if str(first_page_uuid) == '4ebd0208-8328-5d69-8c44-ec50939c0967':
+        first_page_uuid = "EMPTY_DOCUMENT"
+    elif str(first_page_uuid) == '20b41567-46aa-5210-9c92-ea491921869f':
+        first_page = reader.pages[1].extract_text()
+        first_page_uuid = uuid.uuid5(namespace, first_page)
+
+    return first_page_uuid, first_page
     
