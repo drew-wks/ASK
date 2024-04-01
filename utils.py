@@ -126,3 +126,5 @@ def compute_doc_id(pdf_path):
         first_page_uuid = uuid.uuid5(namespace, first_page)
 
     return first_page_uuid, first_page
+
+uuid, first_page = compute_doc_id("RBSVP_Handbook_16796_3_Electronic_Signature.pdf")
