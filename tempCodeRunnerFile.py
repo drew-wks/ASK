@@ -126,3 +126,6 @@ def compute_doc_id(pdf_path):
         first_page_uuid = uuid.uuid5(namespace, first_page)
 
     return first_page_uuid, first_page
+    
+uuid, first_page = compute_doc_id("/Users/drew_wilkins/Drews_Files/Drew/Python/ASK/local/PDFs/original_library_documents/CG_Auxiliary-specific/Coast_Guard_Aids_to_Navigation_Program_Handbook_16500.16_Electronic_Signature.pdf")
+print(uuid)
