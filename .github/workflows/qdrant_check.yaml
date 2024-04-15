@@ -3,6 +3,7 @@ name: daily_qdrant_check"
 on:
   schedule:
     - cron: '0 */96 * * *'
+    workflow_dispatch:
 
 jobs:
   my-job:
