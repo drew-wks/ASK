@@ -1,4 +1,4 @@
-name: "daily_qdrant_check"
+name: daily_qdrant_check
 
 on:
   schedule:
