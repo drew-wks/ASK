@@ -17,6 +17,6 @@ jobs:
           python-version: 3.x
       - name: Run qdrant_check.py
         env:
-          USER_EMAIL: ${{ secrets.QDRANT_URL }}
-          USER_PASSWORD: ${{ secrets.QDRANT_API_KEY }}
+          QDRANT_URL: ${{ secrets.QDRANT_URL }}
+          QDRANT_API_KEY: ${{ secrets.QDRANT_API_KEY }}
         run: python qdrant_check.py
