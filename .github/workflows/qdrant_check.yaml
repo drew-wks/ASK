@@ -2,12 +2,21 @@ name: daily_qdrant_check
 
 on:
   schedule:
-    - cron: '0 */96 * * *'
-  workflow_dispatch:
+    - cron: '13 */96 * * *'
+    # “At minute 13 past every 96th hour.” https://crontab.guru/#13_*/96_*_*_*
+  workflow_dispatch:  # enables ability to run manually 
+  
 
 jobs:
-  my-job:
+  build:
     runs-on: ubuntu-latest
     steps:
-      - name: first-step
-        run: echo "hello world"
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: 3.x
+      - name: Run qdrant_check.py
+        env:
+          USER_EMAIL: ${{ secrets.QDRANT_URL }}
+          USER_PASSWORD: ${{ secrets.QDRANT_API_KEY }}
+        run: python qdrant_check.py
