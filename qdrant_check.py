@@ -1,4 +1,4 @@
-from qdrant_client import QdrantClient
+from qdrant-client import QdrantClient
 import traceback
 
 qdrant_collection_name = "ASK_vectorstore"
