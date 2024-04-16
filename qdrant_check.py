@@ -1,5 +1,4 @@
-!pip install qdrant-client
-from qdrant-client import QdrantClient
+from qdrant_client import QdrantClient
 import traceback
 
 qdrant_collection_name = "ASK_vectorstore"
