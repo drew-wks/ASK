@@ -1,5 +1,6 @@
 import tiktoken
 import os
+import traceback
 from qdrant_client import QdrantClient
 
 
