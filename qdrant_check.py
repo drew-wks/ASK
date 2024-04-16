@@ -1,3 +1,4 @@
+!pip install qdrant-client
 from qdrant-client import QdrantClient
 import traceback
 
