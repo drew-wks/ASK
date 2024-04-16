@@ -1,4 +1,7 @@
 import tiktoken
+import os
+from qdrant_client import QdrantClient
+
 
 qdrant_collection_name = "ASK_vectorstore"
 QDRANT_URL=os.environ.get("QDRANT_URL"),
