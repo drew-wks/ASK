@@ -1,4 +1,4 @@
-name: four_day_qdrant_check
+name: qdrant_check_96_hour
 
 on:
   schedule:
