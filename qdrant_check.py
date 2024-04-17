@@ -1,4 +1,5 @@
 import os
+from qdrant_client import QdrantClient
 import traceback
 import requests  # Import requests library to make HTTP requests
 
