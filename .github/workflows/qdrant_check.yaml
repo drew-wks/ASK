@@ -1,4 +1,4 @@
-name: qdrant_check_96_hr
+name: qdrant check status every 96 hrs
 
 on:
   schedule:
