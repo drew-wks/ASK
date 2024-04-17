@@ -2,6 +2,11 @@ import os
 import traceback
 from qdrant_client import QdrantClient
 
+'''
+Checks the status of the qdrant db. To add email report of results implement the code here:
+https://www.youtube.com/watch?v=2OwLb-aaiBQ
+'''
+
 
 url=os.environ.get("QDRANT_URL")
 api_key=os.environ.get("QDRANT_API_KEY")  # Only required for Qdrant Cloud
