@@ -1,0 +1,24 @@
+name: Empty Commit Workflow
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "13 0 * * 0"  # Run once a week on Sunday at 00:13
+
+jobs:
+  scheduled:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        name: Check out repo
+      - name: Set up Git
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+      - name: Make Empty Commit
+        run: git commit --allow-empty -m "Empty-Commit"
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
