@@ -1,12 +1,11 @@
-import tiktoken
 import os
 import traceback
 from qdrant_client import QdrantClient
 
 
 qdrant_collection_name = "ASK_vectorstore"
-QDRANT_URL=os.environ.get("QDRANT_URL"),
-QDRANT_API_KEY=os.environ.get("QDRANT_API_KEY"),  # Only required for Qdrant Cloud
+QDRANT_URL=os.environ.get("QDRANT_URL")
+QDRANT_API_KEY=os.environ.get("QDRANT_API_KEY")  # Only required for Qdrant Cloud
     
 def qdrant_connect_cloud(QDRANT_API_KEY, QDRANT_URL):
     try:
