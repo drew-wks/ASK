@@ -55,11 +55,11 @@ The main components of the solution are:
 
 - **Embedding model**: Embeddings are generated using OpenAI Ada v.2 which is providing state of the art (SOTA) embeddings at the time of this writing. The model is accessed from the code via API. Alternatives exist and may provide superior results or same for less cost. More on this embedding can be found here: https://platform.openai.com/docs/guides/embeddings/what-are-embeddings
 
-- **Storage**: Qdrant open-source vector database cluster hosted on AWS. The proof of concept utilizes 300 MB of file storage (186 MB payload of pdfs plus 100 MB for the vectors, metadata, index and swap files). The recommended configuration is for 600 MB to hold all policy documents in the Auxiliary. ![Qdrant Check Workflow Status](https://github.com/drew-wks/ASK/actions/workflows/qdrant_check_96hr.yaml/badge.svg)
+- **Storage**: Qdrant open-source vector database cluster hosted on AWS. The proof of concept utilizes 300 MB of file storage (186 MB payload of pdfs plus 100 MB for the vectors, metadata, index and swap files). The recommended configuration is for 600 MB to hold all policy documents in the Auxiliary. [![qdrant check status every 96 hrs](https://github.com/drew-wks/ASK/actions/workflows/qdrant_check_96hr.yaml/badge.svg)](https://github.com/drew-wks/ASK/actions/workflows/qdrant_check_96hr.yaml)
 
 - **Inference model**: OpenAI ChatGPT 3.5 series via API. Chat history is currently turned off as it doesn’t seem to be needed and minimizes per-request costs. More information on this API is located at https://platform.openai.com/docs/guides/gpt/chat-completions-api
 
-- **Runtime environment, Web app server, front end:** All provided by Streamlit framework and cloud turns the Python script by rendering it as a web app. ![Streamlit Check Status](https://github.com/drew-wks/ASK/actions/workflows/empty_commit_96hr.yaml/badge.svg)
+- **Runtime environment, Web app server, front end:** All provided by Streamlit framework and cloud turns the Python script by rendering it as a web app. [![Empty Commit Workflow 96 hr](https://github.com/drew-wks/ASK/actions/workflows/empty_commit_96hr.yaml/badge.svg)](https://github.com/drew-wks/ASK/actions/workflows/empty_commit_96hr.yaml)
 
 Two additional components simplify system development and management:
 
