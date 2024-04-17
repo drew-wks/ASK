@@ -1,33 +1,25 @@
 name: four_day_qdrant_check
-
 on:
   schedule:
     - cron: '13 */96 * * *'
     # “At minute 13 past every 96th hour.” https://crontab.guru/#13_*/96_*_*_*
   workflow_dispatch:  # enables ability to run manually 
-
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
       - name: Install Python 3
         run: sudo apt-get install python3
-
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           python -m pip install qdrant_client
-          python -m pip uninstall urllib3    
-          python -m pip uninstall chardet
-          python -m pip3 install --upgrade requests
-
+          python -m pip install tiktoken
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
-
       - name: Run qdrant_check.py
         env:
           QDRANT_URL: ${{ secrets.QDRANT_URL }}
