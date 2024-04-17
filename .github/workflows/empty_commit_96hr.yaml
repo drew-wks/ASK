@@ -1,4 +1,4 @@
-name: Empty Commit Workflow Weekly
+name: Empty Commit Workflow 96 hr
 
 on:
   workflow_dispatch:
