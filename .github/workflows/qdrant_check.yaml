@@ -21,7 +21,7 @@ jobs:
           python -m pip install qdrant_client
           python -m pip uninstall urllib3    
           python -m pip uninstall chardet
-          python -m pip install --upgrade requests
+          python -m pip3 install --upgrade requests
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
