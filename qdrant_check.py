@@ -1,10 +1,12 @@
 import os
 import traceback
 from qdrant_client import QdrantClient
+
+
 qdrant_collection_name = "ASK_vectorstore"
 url=os.environ.get("QDRANT_URL")
 api_key=os.environ.get("QDRANT_API_KEY")  # Only required for Qdrant Cloud
-
+    
 def qdrant_connect_cloud(api_key, url):
     try:
         print("attempting to assign client")
@@ -18,3 +20,13 @@ def qdrant_connect_cloud(api_key, url):
         print("An error occurred while connecting to Qdrant:")
         traceback.print_exc()
         return None
+
+
+client = qdrant_connect_cloud(api_key, url)
+if client:
+    try:
+        collections = client.get_collections()
+        print("Collections:", collections)
+    except Exception as e:
+        print("An error occurred while getting collections:")
+        print(e)
