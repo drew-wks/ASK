@@ -3,7 +3,8 @@ name: Empty Commit Workflow Weekly
 on:
   workflow_dispatch:
   schedule:
-    - cron: "13 0 * * 0"  # Run once a week on Sunday at 00:13
+    - cron: '13 */96 * * *'
+    # “At minute 13 past every 96th hour.” https://crontab.guru/#13_*/96_*_*_*
 
 permissions:
   contents: write
