@@ -11,9 +11,9 @@ def qdrant_connect_cloud(api_key, url):
     try:
         print("attempting to assign client")
         client = QdrantClient(
-            url=QDRANT_URL,
+            url=url,
             prefer_grpc=True,
-            api_key=QDRANT_API_KEY,
+            api_key=api_key,
         )
         return client
     except Exception:
