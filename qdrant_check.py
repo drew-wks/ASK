@@ -4,16 +4,16 @@ from qdrant_client import QdrantClient
 
 
 qdrant_collection_name = "ASK_vectorstore"
-QDRANT_URL=os.environ.get("QDRANT_URL")
-QDRANT_API_KEY=os.environ.get("QDRANT_API_KEY")  # Only required for Qdrant Cloud
+url=os.environ.get("QDRANT_URL")
+api_key=os.environ.get("QDRANT_API_KEY")  # Only required for Qdrant Cloud
     
-def qdrant_connect_cloud(QDRANT_API_KEY, QDRANT_URL):
+def qdrant_connect_cloud(api_key, url):
     try:
         print("attempting to assign client")
         client = QdrantClient(
-            QDRANT_URL=QDRANT_URL,
+            url=QDRANT_URL,
             prefer_grpc=True,
-            QDRANT_API_KEY=QDRANT_API_KEY,
+            api_key=QDRANT_API_KEY,
         )
         return client
     except Exception:
@@ -22,7 +22,7 @@ def qdrant_connect_cloud(QDRANT_API_KEY, QDRANT_URL):
         return None
 
 
-client = qdrant_connect_cloud(QDRANT_API_KEY, QDRANT_URL)
+client = qdrant_connect_cloud(api_key, url)
 if client:
     try:
         collections = client.get_collections()
