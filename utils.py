@@ -127,5 +127,5 @@ def compute_doc_id(pdf_path):
         first_page = reader.pages[1].extract_text()
         first_page_uuid = uuid.uuid5(namespace, first_page)
 
-    return first_page_uuid, first_page
+    return first_page_uuid
 
