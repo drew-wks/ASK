@@ -105,8 +105,7 @@ def get_most_recent_filepath_and_date(base_filename, directory_path, file_extens
 
     return os.path.join(directory_path, most_recent_file), last_update_date
 
-catalog_file_path, last_update_date = get_most_recent_filepath_and_date(
-    "library_catalog", "../docs/library_catalog/", "xlsx")
+
 
 def compute_doc_id(pdf_path):
     '''
@@ -114,6 +113,9 @@ def compute_doc_id(pdf_path):
     
     If first page is generic expiration message dated November 2022,
     then set uuid to second page. If the doc is empty, then set uuid to EMPTY DOC
+    
+    Example usage
+    uuid, first_page = compute_doc_id("RBSVP_Handbook_16796_3_Electronic_Signature.pdf")
     '''
     reader = PdfReader(pdf_path)
     first_page = reader.pages[0].extract_text()
@@ -127,4 +129,3 @@ def compute_doc_id(pdf_path):
 
     return first_page_uuid, first_page
 
-uuid, first_page = compute_doc_id("RBSVP_Handbook_16796_3_Electronic_Signature.pdf")
