@@ -10,7 +10,7 @@ permissions:
   contents: write
   
 jobs:
-  Empty_Commit:
+  Empty_Commit_job:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
