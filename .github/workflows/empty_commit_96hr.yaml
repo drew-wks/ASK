@@ -1,4 +1,4 @@
-name: Empty Commit every 96 hrs
+name: Empty commit every 96 hrs
 
 on:
   workflow_dispatch:
