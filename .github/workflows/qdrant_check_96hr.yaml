@@ -1,4 +1,4 @@
-name: qdrant check status every 96 hrs
+name: Check Qdrant status every 96 hrs
 
 on:
   schedule:
@@ -7,7 +7,7 @@ on:
   workflow_dispatch:  # enables ability to run manually 
 
 jobs:
-  build:
+ Check_Qdrant_job:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
