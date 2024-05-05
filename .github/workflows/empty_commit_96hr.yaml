@@ -3,7 +3,7 @@ name: Empty commit every 96 hrs
 on:
   workflow_dispatch:
   schedule:
-    - cron: '13 */96 * * *'
+    - cron: '0 15 */4 * *'
     # “At minute 13 past every 96th hour.” https://crontab.guru/#13_*/96_*_*_*
 
 permissions:
