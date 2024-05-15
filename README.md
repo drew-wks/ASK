@@ -24,9 +24,11 @@ ASK's mission is to provide members efficient, accurate, and easy access  to the
 
  - **Language Access:** ASK translates queries and results into foreign languages which helps the USCG fulfill its requirements under Executive Order 13166, “Improving Access to Services for Persons with Limited English Proficiency” 
 
+## System Status
+[![Services check](https://github.com/drew-wks/ASK/actions/workflows/qdrant_check_96hr.yaml/badge.svg)](https://github.com/drew-wks/ASK/actions/workflows/qdrant_check_96hr.yaml)<br>
+
 ## Access
 ASK is available to try [here](https://uscg-auxiliary-ask.streamlit.app/) <br>
-[![Services check](https://github.com/drew-wks/ASK/actions/workflows/qdrant_check_96hr.yaml/badge.svg)](https://github.com/drew-wks/ASK/actions/workflows/qdrant_check_96hr.yaml)<br>
 <a href="https://uscg-auxiliary-ask.streamlit.app/"><img align="center" src="https://raw.githubusercontent.com/dvvilkins/ASK/main/images/what_is_the_aux_screenshot.png" alt="library ui" width="80%" align="center"/></a>
 
 
