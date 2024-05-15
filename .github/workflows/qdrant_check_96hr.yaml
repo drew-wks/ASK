@@ -1,13 +1,14 @@
-name: Check Qdrant status every 96 hrs
+name: Check services each Mon and Fri
 
 on:
   schedule:
-    - cron: '0 15 */4 * *'
-    # “At minute 13 past every 96th hour.” https://crontab.guru/#13_*/96_*_*_*
+    - cron: '0 13 * * 1,5'
+    # GitHub's scheduler runs jobs on a fixed daily or weekly schedule. 
+    # This runs at 13:00 on every Monday and Friday
   workflow_dispatch:  # enables ability to run manually 
 
 jobs:
- Check_Qdrant_job:
+  check services:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -15,13 +16,18 @@ jobs:
       - name: Install Python 3
         run: sudo apt-get install python3
 
-      - name: Install dependencies
+      - name: Install qdrant dependencies
         run: |
           python -m pip install --upgrade pip
           python -m pip install qdrant_client
 
-      - name: Run qdrant_check.py
+      - name: Check Qdrant Status
         env:
           QDRANT_URL: ${{ secrets.QDRANT_URL }}
           QDRANT_API_KEY: ${{ secrets.QDRANT_API_KEY }}
         run: python qdrant_check.py
+
+      - name: Check Streamlit Status
+        run: |
+          python -m pip install requests
+          python streamlit_check.py

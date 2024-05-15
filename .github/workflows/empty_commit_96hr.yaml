@@ -1,4 +1,4 @@
-name: Empty commit every 96 hrs
+name: Streamlit update (via empty github commit) 96 hr
 
 on:
   workflow_dispatch:
