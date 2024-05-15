@@ -1,4 +1,4 @@
-name: Check services each Mon and Fri
+name: Services check
 
 on:
   schedule:
