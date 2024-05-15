@@ -1,6 +1,6 @@
 ![Logo](https://raw.githubusercontent.com/dvvilkins/ASK/main/images/ASK_logotype_color.png?raw=true)
 
-
+[![Services check](https://github.com/drew-wks/ASK/actions/workflows/qdrant_check_96hr.yaml/badge.svg)](https://github.com/drew-wks/ASK/actions/workflows/qdrant_check_96hr.yaml)
 ASK stands for **Auxiliary Source of Knowledge**. ASK was developed by Auxiliarist Drew Wilkins as a proof of concept to make it easier for Auxiliarists and prospective members to find Auxiliary-related information. Powered by Artificial Intelligence (AI), ASK searches over 300 Coast Guard Auxiliary references to find answers directly from authoritative sources.
 
 ## Background
@@ -55,7 +55,7 @@ The main components of the solution are:
 
 - **Embedding model**: Embeddings are generated using OpenAI Ada v.2 which is providing state of the art (SOTA) embeddings at the time of this writing. The model is accessed from the code via API. Alternatives exist and may provide superior results or same for less cost. More on this embedding can be found here: https://platform.openai.com/docs/guides/embeddings/what-are-embeddings
 
-- **Storage**: Qdrant open-source vector database cluster hosted on AWS. The proof of concept utilizes 300 MB of file storage (186 MB payload of pdfs plus 100 MB for the vectors, metadata, index and swap files). The recommended configuration is for 600 MB to hold all policy documents in the Auxiliary. [![qdrant check status every 96 hrs](https://github.com/drew-wks/ASK/actions/workflows/qdrant_check_96hr.yaml/badge.svg)](https://github.com/drew-wks/ASK/actions/workflows/qdrant_check_96hr.yaml)
+- **Storage**: Qdrant open-source vector database cluster hosted on AWS. The proof of concept utilizes 300 MB of file storage (186 MB payload of pdfs plus 100 MB for the vectors, metadata, index and swap files). The recommended configuration is for 600 MB to hold all policy documents in the Auxiliary. 
 
 - **Inference model**: OpenAI ChatGPT 3.5 series via API. Chat history is currently turned off as it doesn’t seem to be needed and minimizes per-request costs. More information on this API is located at https://platform.openai.com/docs/guides/gpt/chat-completions-api
 
