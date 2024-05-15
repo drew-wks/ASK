@@ -1,6 +1,5 @@
 ![Logo](https://raw.githubusercontent.com/dvvilkins/ASK/main/images/ASK_logotype_color.png?raw=true)
 
-[![Services check](https://github.com/drew-wks/ASK/actions/workflows/qdrant_check_96hr.yaml/badge.svg)](https://github.com/drew-wks/ASK/actions/workflows/qdrant_check_96hr.yaml)
 ASK stands for **Auxiliary Source of Knowledge**. ASK was developed by Auxiliarist Drew Wilkins as a proof of concept to make it easier for Auxiliarists and prospective members to find Auxiliary-related information. Powered by Artificial Intelligence (AI), ASK searches over 300 Coast Guard Auxiliary references to find answers directly from authoritative sources.
 
 ## Background
@@ -28,6 +27,7 @@ ASK's mission is to provide members efficient, accurate, and easy access  to the
 ## Access
 ASK is available to try [here](https://uscg-auxiliary-ask.streamlit.app/) <br>
 <a href="https://uscg-auxiliary-ask.streamlit.app/"><img align="center" src="https://raw.githubusercontent.com/dvvilkins/ASK/main/images/what_is_the_aux_screenshot.png" alt="library ui" width="80%" align="center"/></a>
+[![Services check](https://github.com/drew-wks/ASK/actions/workflows/qdrant_check_96hr.yaml/badge.svg)](https://github.com/drew-wks/ASK/actions/workflows/qdrant_check_96hr.yaml)
 
 ## How it Works
 ### Generative AI Document Search
