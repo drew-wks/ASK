@@ -26,8 +26,9 @@ ASK's mission is to provide members efficient, accurate, and easy access  to the
 
 ## Access
 ASK is available to try [here](https://uscg-auxiliary-ask.streamlit.app/) <br>
+[![Services check](https://github.com/drew-wks/ASK/actions/workflows/qdrant_check_96hr.yaml/badge.svg)](https://github.com/drew-wks/ASK/actions/workflows/qdrant_check_96hr.yaml)<br>
 <a href="https://uscg-auxiliary-ask.streamlit.app/"><img align="center" src="https://raw.githubusercontent.com/dvvilkins/ASK/main/images/what_is_the_aux_screenshot.png" alt="library ui" width="80%" align="center"/></a>
-[![Services check](https://github.com/drew-wks/ASK/actions/workflows/qdrant_check_96hr.yaml/badge.svg)](https://github.com/drew-wks/ASK/actions/workflows/qdrant_check_96hr.yaml)
+
 
 ## How it Works
 ### Generative AI Document Search
