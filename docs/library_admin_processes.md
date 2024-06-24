@@ -9,7 +9,8 @@ sequenceDiagram
     participant System
     participant File Storage
     
-    Curator->>System: specify target PDFs to add
+    Curator->>System: identify path to target PDFs in prep_document_metadata.ipynb
+    Curator->>System: Run prep_document_metadata.ipynb
     System->>File Storage: copy PDFs to PDF_ingest_queue folder
     System->>System: check PDFs for errors
     System->>System: extracts PDF names and existing metadata
@@ -31,9 +32,10 @@ sequenceDiagram
     participant System
     participant Vectorstore
 
+    Curator->>System: Run upsert_pdfs_and_payload.ipynb 
     File Storage->>System: Retrieve latest ingest_list
     System->>System: Retrieve document info from ingest_list
-    System->>Vectorstore: Embed vectors, assign properties and append to the Weaviate pdf  collection
+    System->>Vectorstore: Embed vectors, assign properties and append to the Weaviate pdf collection
     System->>System: Chunk PDF pages
     System->>System: Retreive page info from ingest_list
     System->>Vectorstore: Embed vectors, assign properties, and append to the Weaviate pdf pages collection
