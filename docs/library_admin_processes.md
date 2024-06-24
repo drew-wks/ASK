@@ -9,8 +9,8 @@ sequenceDiagram
     participant System
     participant File Storage
     
-    Curator->>System: specify target PDFs to addA*
-    System->>File Storage: copy PDFs to PDF_ingest_queue folder*
+    Curator->>System: specify target PDFs to add
+    System->>File Storage: copy PDFs to PDF_ingest_queue folder
     System->>System: check PDFs for errors
     System->>System: extracts PDF names and existing metadata
     File Storage->>System: retrieve latest ingest_list_{timestamp}.xlsx
