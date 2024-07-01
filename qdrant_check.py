@@ -3,7 +3,14 @@ import traceback
 from qdrant_client import QdrantClient
 
 '''
-Checks the status of the qdrant db. To add email report of results implement the code here:
+Checks the status of the qdrant db. 
+
+To check if it ran correctly, 
+1. the Requests tab of the Qdrant Cluster Details page should list a request to the /collections/{collection_name} endpoint
+2. The Logs tab shluld have a mesage related to the collection ace such as Fetching collection 'ASK_vectorstore
+
+
+To add email report of results implement the code here:
 https://www.youtube.com/watch?v=2OwLb-aaiBQ
 '''
 
