@@ -51,7 +51,7 @@ query = []
 
 
 def qdrant_connect_local():
-    print("attempting to assign client")
+    print("attempting to assign qdrant local client")
     
     if 'client' in globals():
         return globals()['client']  # Return the existing client
@@ -61,7 +61,7 @@ def qdrant_connect_local():
 
 
 def qdrant_connect_cloud(api_key, url):
-    print("attempting to assign client")
+    print("attempting to assign qdrant cloud client")
     
     if 'client' in globals():
         return globals()['client']  # Return the existing client
