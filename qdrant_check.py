@@ -3,18 +3,17 @@ import traceback
 from qdrant_client import QdrantClient
 import pprint
 
-'''
-Checks the status of the Qdrant database.
 
-To check if it ran correctly, 
-1. The Requests tab of the Qdrant Cluster Details page should list a request to the /collections/{collection_name} endpoint.
-2. The Logs tab should have a message related to the collection ace such as "Fetching collection 'ASK_vectorstore'".
+# Checks the status of the Qdrant database.
 
-To add an email report of results, implement the code here:
-https://www.youtube.com/watch?v=2OwLb-aaiBQ
-'''
+# To check if it ran correctly, 
+#  1. The Requests tab of the Qdrant Cluster Details page should list a request to the /collections/{collection_name} endpoint.
+#  2. The Logs tab should have a message related to the collection ace such as "Fetching collection 'ASK_vectorstore'".
 
-# Fetching environment variables
+# To add an email report of results, implement the code here:
+# https://www.youtube.com/watch?v=2OwLb-aaiBQ
+
+
 url = os.environ.get("QDRANT_URL")
 api_key = os.environ.get("QDRANT_API_KEY")  # Only required for Qdrant Cloud
 
