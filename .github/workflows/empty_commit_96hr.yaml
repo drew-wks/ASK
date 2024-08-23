@@ -3,8 +3,8 @@ name: Streamlit update (empty github commit)
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 15 */4 * *'
-    # “At minute 13 past every 96th hour.” https://crontab.guru/#13_*/96_*_*_*
+    - cron: '0 15 * * *'
+    # Daily at 3pm
 
 permissions:
   contents: write
