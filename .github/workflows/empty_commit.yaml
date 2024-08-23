@@ -1,4 +1,4 @@
-name: Streamlit update (empty github commit)
+name: Empty github commit (triggers Streamlit update)
 
 on:
   workflow_dispatch:
