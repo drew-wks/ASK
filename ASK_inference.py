@@ -54,6 +54,7 @@ def qdrant_connect_local():
     print("attempting to assign qdrant local client")
     
     if 'client' in globals():
+        print(f"found a global qdrant client has been assigned")
         return globals()['client']  # Return the existing client
     client = QdrantClient(path=qdrant_path)  # Only required for a local instance
     return client
