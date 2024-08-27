@@ -60,6 +60,7 @@ def qdrant_connect_cloud(api_key, url):
     print("attempting to assign qdrant cloud client")
     
     if 'client' in globals():
+        print(f"found a global qdrant client has been assigned")
         return globals()['client']  # Return the existing client
     client = QdrantClient(
         url=url, 
