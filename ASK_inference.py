@@ -24,11 +24,6 @@ _ = load_dotenv(find_dotenv()) # read local .env file
 from langchain.embeddings import OpenAIEmbeddings
 
 config = {
-    "splitter_type": "CharacterTextSplitter",
-    "chunk_size": 2000,   # basically a full pdf page. not needed here. kept for reference
-    "chunk_overlap": 200,
-    "length_function" : len, 
-    "separators" : ["}"],  #[" ", ",", "\n"]  # not needed here. kept for reference
     "embedding": OpenAIEmbeddings(),  # includes a pull of the open api key
     "embedding_dims": 1536,
     "search_type": "mmr",
