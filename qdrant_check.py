@@ -7,7 +7,7 @@ import requests
 
 # Checks the status of the Qdrant database.
 
-# To check if it ran correctly, 
+# To check if it ran correctly,
 #  1. The Requests tab of the Qdrant Cluster Details page should list a request to the /collections/{collection_name} endpoint.
 #  2. The Logs tab should have a message related to the collection ace such as "Fetching collection 'ASK_vectorstore'".
 
@@ -19,6 +19,8 @@ url = os.environ.get("QDRANT_URL")
 api_key = os.environ.get("QDRANT_API_KEY")  # Only required for Qdrant Cloud
 
 # Function to connect to Qdrant
+
+
 def qdrant_connect_cloud(api_key, url):
     try:
         print("Attempting to assign client...")
@@ -33,6 +35,7 @@ def qdrant_connect_cloud(api_key, url):
         traceback.print_exc()
         return None
 
+
 # Connect to Qdrant
 client = qdrant_connect_cloud(api_key, url)
 
@@ -42,19 +45,18 @@ if client:
         collection = client.get_collection('ASK_vectorstore')
         print("Collection name:", 'ASK_vectorstore')
         print("Collection status:", collection.status)
-        
+
         # Pretty print the collection information
         pp = pprint.PrettyPrinter(width=80, compact=False)
         pp.pprint(collection)
-        
+
     except Exception as e:
         print("An error occurred while getting the collection:")
         print(e)
 
-
     try:
         response = requests.get(
-        f'{url}/metrics', headers={'Authorization': f'Bearer {api_key}'}
+            f'{url}/metrics', headers={'Authorization': f'Bearer {api_key}'}
         )
 
         if response.ok:
@@ -63,6 +65,8 @@ if client:
                     print(line)
         else:
             print(f"Failed to fetch metrics: {response.status_code}")
+    except Exception as e:
+        print("An error occurred while fetching metrics:")
+        print(e)
 else:
     print("Client is None, unable to proceed.")
-
