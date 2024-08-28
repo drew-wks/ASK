@@ -49,7 +49,8 @@ if client:
         # Pretty print the collection information
         pp = pprint.PrettyPrinter(width=80, compact=False)
         pp.pprint(collection)
-
+       
+        # make a random request to the /search endpoint
         client.search(
             collection_name=qdrant_collection_name,
             query_filter=models.Filter(
@@ -73,6 +74,7 @@ if client:
         print(e)
 
     try:
+        # get the request metrics
         response = requests.get(
             f'{url}/metrics', headers={'Authorization': f'Bearer {api_key}'}
         )
