@@ -2,6 +2,7 @@ import os
 import traceback
 from qdrant_client import QdrantClient
 import pprint
+import requests
 
 
 # Checks the status of the Qdrant database.
@@ -49,5 +50,19 @@ if client:
     except Exception as e:
         print("An error occurred while getting the collection:")
         print(e)
+
+
+    try:
+        response = requests.get(
+        f'{url}/metrics', headers={'Authorization': f'Bearer {api_key}'}
+        )
+
+        if response.ok:
+            for line in response.text.splitlines():
+                if 'rest_responses_total' in line or 'grpc_responses_total' in line:
+                    print(line)
+        else:
+            print(f"Failed to fetch metrics: {response.status_code}")
 else:
     print("Client is None, unable to proceed.")
+
