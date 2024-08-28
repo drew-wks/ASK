@@ -50,8 +50,6 @@ def get_feedback_collector():
         project="default"
     )
 
-collector = get_feedback_collector()
-
 
 st.image("https://raw.githubusercontent.com/dvvilkins/ASK/main/images/ASK_logotype_color.png?raw=true", use_column_width="always")
 
@@ -82,6 +80,7 @@ st.write("  ")
 user_feedback = " "
 user_question = st.text_input("Type your question or task here", max_chars=200)
 if user_question:
+    collector = get_feedback_collector()
     query = ASK.query_maker(user_question)
     with st.status("Checking documents...", expanded=False) as status:
         try:
