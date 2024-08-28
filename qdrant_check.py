@@ -50,7 +50,7 @@ if client:
         pp = pprint.PrettyPrinter(width=80, compact=False)
         pp.pprint(collection)
        
-        # make a random request to the /search endpoint
+        # make a random request to the /search endpoint. This is necessary because I cannot confirm that requesting collection info constitutes a request
         client.search(
             collection_name=qdrant_collection_name,
             query_filter=models.Filter(
@@ -74,7 +74,7 @@ if client:
         print(e)
 
     try:
-        # get the request metrics
+        # get the request metrics. The info on the dashboard is only about requests made through the dashboard so it's useless for monitoring usage to keep my free cloud instance
         response = requests.get(
             f'{url}/metrics', headers={'Authorization': f'Bearer {api_key}'}
         )
