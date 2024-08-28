@@ -17,7 +17,7 @@ import requests
 
 url = os.environ.get("QDRANT_URL")
 api_key = os.environ.get("QDRANT_API_KEY")  # Only required for Qdrant Cloud
-
+qdrant_collection_name = "ASK_vectorstore"
 # Function to connect to Qdrant
 
 
@@ -42,13 +42,15 @@ client = qdrant_connect_cloud(api_key, url)
 if client:
     try:
         # Fetching collection information
-        collection = client.get_collection('ASK_vectorstore')
+        collection = client.get_collection(qdrant_collection_name)
         print("Collection name:", 'ASK_vectorstore')
         print("Collection status:", collection.status)
 
         # Pretty print the collection information
         pp = pprint.PrettyPrinter(width=80, compact=False)
         pp.pprint(collection)
+
+    
 
     except Exception as e:
         print("An error occurred while getting the collection:")
