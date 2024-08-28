@@ -42,19 +42,15 @@ retriever = ASK.init_retriever_and_generator(qdrant)
 
 # Manage Trubrics authentication token with session state
 # see feedback at https://trubrics.streamlit.app/?ref=blog.streamlit.io
-if 'trubrics_collector' not in st.session_state:
-    try:
-        st.session_state.trubrics_collector = FeedbackCollector(
-            project="default",
-            email=st.secrets.TRUBRICS_EMAIL,
-            password=st.secrets.TRUBRICS_PASSWORD,
-        )
-    except Exception as e:
-        st.error(f"Error authenticating with Trubrics: {e}")
-        st.stop()
+@st.cache_data
+def get_feedback_collector():
+    return FeedbackCollector(
+        email=st.secrets.TRUBRICS_EMAIL,
+        password=st.secrets.TRUBRICS_PASSWORD,
+        project="default"
+    )
 
-collector = st.session_state.trubrics_collector
-
+collector = get_feedback_collector()
 
 
 st.image("https://raw.githubusercontent.com/dvvilkins/ASK/main/images/ASK_logotype_color.png?raw=true", use_column_width="always")
