@@ -1,10 +1,12 @@
-import requests
+import requests, platform
 
 def check_streamlit_app(url):
     try:
         response = requests.get(url)
         if response.status_code == 200:
             print("ASK Streamlit app is up and running!")
+            print(f"Python version: {platform.python_version()}")
+            
         else:
             print("ASK Streamlit app is not reachable. Status code:", response.status_code)
             sys.exit(1)  # Exits with error if status code is not 200
