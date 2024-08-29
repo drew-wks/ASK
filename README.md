@@ -62,7 +62,7 @@ The main components of the solution are:
 
 - **Inference model**: OpenAI ChatGPT 3.5 series via API. Chat history is currently turned off as it doesn’t seem to be needed and minimizes per-request costs. More information on this API is located at https://platform.openai.com/docs/guides/gpt/chat-completions-api
 
-- **Runtime environment, Web app server, front end:** All provided by Streamlit framework and cloud turns the Python script by rendering it as a web app. [![Empty Commit Workflow 96 hr](https://github.com/drew-wks/ASK/actions/workflows/empty_commit_96hr.yaml/badge.svg)](https://github.com/drew-wks/ASK/actions/workflows/empty_commit_96hr.yaml)
+- **Runtime environment, Web app server, front end:** All provided by Streamlit framework and cloud turns the Python script by rendering it as a web app. [![Empty Commit Workflow](https://github.com/drew-wks/ASK/actions/workflows/empty_commit.yaml/badge.svg)](https://github.com/drew-wks/ASK/actions/workflows/empty_commit.yaml)
 
 Two additional components simplify system development and management:
 
