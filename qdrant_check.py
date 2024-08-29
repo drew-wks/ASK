@@ -1,22 +1,33 @@
+"""
+This script checks the status of a Qdrant database and ensures it remains active by making a periodic request.
+
+Since this app uses the free tier of Qdrant Cloud, it requires at least one request per week to prevent suspension.
+The script:
+1. Connects to the Qdrant Cloud instance.
+2. Fetches and displays the status of a specified collection.
+3. Makes a search request to keep the instance active.
+4. Fetches and prints usage metrics to verify that the request was registered.
+
+Usage:
+- Run this script periodically (e.g., via a cron job) to keep your Qdrant instance active.
+- This repository has a Github Actions file services_check.yaml which runs this script.
+
+To email these results, you can implement the code found here:
+https://www.youtube.com/watch?v=2OwLb-aaiBQ
+"""
+
+
 import os
 import traceback
 from qdrant_client import QdrantClient, models
 import pprint
 import requests
 
-"""
-Checks Qdrant status
 
-This script checks the status of the Qdrant database and makes a request to ensure it stays active.
-The app uses the free tier of Qdrant Cloud, which requires a request to be made at least once per week.
-To verify if the script ran correctly, the gRPC counter number returned should increment by one each time it is run.
-
-To add an email report of the results, you can implement the code found here:
-https://www.youtube.com/watch?v=2OwLb-aaiBQ
-"""
 
 def get_qdrant_client(api_key, url):
     """Establish connection to the Qdrant Cloud instance."""
+
     try:
         print("Connecting to Qdrant...")
         return QdrantClient(url=url, prefer_grpc=True, api_key=api_key)
