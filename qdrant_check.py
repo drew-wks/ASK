@@ -24,10 +24,8 @@ import pprint
 import requests
 
 
-
 def get_qdrant_client(api_key, url):
     """Establish connection to the Qdrant Cloud instance."""
-
     try:
         print("Connecting to Qdrant...")
         return QdrantClient(url=url, prefer_grpc=True, api_key=api_key)
