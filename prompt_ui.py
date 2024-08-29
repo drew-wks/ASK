@@ -34,6 +34,8 @@ st.markdown("""
         </style>
         """, unsafe_allow_html=True)
 
+import platform
+st.write(f"Python version: {platform.python_version()}")
 
 # Initialize the RAG clients and retriver
 try:
