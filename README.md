@@ -54,7 +54,7 @@ ASK relies on five core components: a python codebase, a Gen AI model, vector da
 
 The main components of the solution are:
 
-  - **Codebase**: written by me in Python 3.8.10 using open source licenses. Version control is via a public git repository located at _https://github.com/dvvilkins/Webapp1_
+  - **Codebase**: written by me in Python 3.11 using open source licenses. Version control is via a public git repository located at _https://github.com/dvvilkins/Webapp1_
 
 - **Embedding model**: Embeddings are generated using OpenAI Ada v.2 which is providing state of the art (SOTA) embeddings at the time of this writing. The model is accessed from the code via API. Alternatives exist and may provide superior results or same for less cost. More on this embedding can be found here: https://platform.openai.com/docs/guides/embeddings/what-are-embeddings
 
