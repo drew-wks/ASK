@@ -34,8 +34,6 @@ st.markdown("""
         </style>
         """, unsafe_allow_html=True)
 
-import platform
-st.write(f"Python version: {platform.python_version()}")
 
 # Initialize the RAG clients and retriver
 try:
@@ -62,7 +60,8 @@ def get_feedback_collector():
 
 
 st.image("https://raw.githubusercontent.com/dvvilkins/ASK/main/images/ASK_logotype_color.png?raw=true", use_column_width="always")
-
+import platform
+st.write(f"Python version: {platform.python_version()}")
 
 # Check Open AI service status
 api_status_message = ASK.get_openai_api_status()
