@@ -32,7 +32,7 @@ def fetch_collection_info(client, collection_name):
         collection = client.get_collection(collection_name)
         print(f"Collection name: {collection_name}")
         print(f"Collection status: {collection.status}")
-        pprint.pprint(collection)
+        print("")
     except Exception as e:
         print("Failed to fetch collection info:", e)
 
