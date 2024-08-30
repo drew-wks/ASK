@@ -6,7 +6,8 @@ langchain==0.0.315
 qdrant-client==1.6.3
 tiktoken==0.5.1
 streamlit_extras
-datetime
+datetime # used in seveaal places to create a delay
 pandas
 openpyxl # used to import the library.xlsx file
-requests
+selenium # needed to check for app suspension due to inactivity
+webdriver-manager  # needed to check for app suspension due to inactivity
