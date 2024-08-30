@@ -15,4 +15,4 @@ def check_streamlit_app(url):
         sys.exit(1)  # Exits with error if there's an exception
 
 
-check_streamlit_app('https://uscg-auxiliary-ask.streamlit.app/')
+check_streamlit_app('https://ask-test.streamlit.app/')
