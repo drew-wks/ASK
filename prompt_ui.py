@@ -1,11 +1,11 @@
-import streamlit as st 
-import inference
-from inference import config
-import utils
-import datetime, time
-import pandas as pd   
+import time
+
+import pandas as pd
+import streamlit as st
 from streamlit_extras.stylable_container import stylable_container
 
+import inference
+import utils
 
 st.set_page_config(page_title="ASK Auxiliary Source of Knowledge", initial_sidebar_state="collapsed")
 
@@ -32,15 +32,8 @@ st.markdown("""
         """, unsafe_allow_html=True)
 
 
-qdrant_connect_cloud_cached = st.cache_resource(inference.qdrant_connect_cloud)
-api_key = st.secrets.QDRANT_API_KEY
-url = st.secrets.QDRANT_URL
-client = inference.qdrant_connect_cloud(api_key, url) # use this for ask-test so you can see the changes
-# client = qdrant_connect_cloud_cached(api_key, url) # use this version for ask-main for speed
-qdrant = inference.create_langchain_qdrant(client)
-retriever = inference.init_retriever_and_generator(qdrant)
+retriever = inference.init_retriever_and_generator()
 collector = utils.get_feedback_collector()
-# see feedback at https://trubrics.streamlit.app/?ref=blog.streamlit.io
 
 
 st.image("https://raw.githubusercontent.com/dvvilkins/ASK/main/images/ASK_logotype_color.png?raw=true", use_column_width="always")

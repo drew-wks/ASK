@@ -1,82 +1,73 @@
-
-from langchain.chat_models import ChatOpenAI
-from qdrant_client import QdrantClient
-from langchain.vectorstores import Qdrant
-from langchain.chains import RetrievalQA, StuffDocumentsChain, LLMChain
-from langchain.prompts import PromptTemplate, ChatPromptTemplate, SystemMessagePromptTemplate, HumanMessagePromptTemplate
-import tiktoken
-import pickle
-import streamlit as st
 import json
+import pickle
+
 import openai
 import pandas as pd
-
+import streamlit as st
+import tiktoken
+import weaviate
+from langchain.chains import RetrievalQA, StuffDocumentsChain, LLMChain
+from langchain.chat_models import ChatOpenAI
 from langchain.embeddings import OpenAIEmbeddings
+from langchain.prompts import PromptTemplate, ChatPromptTemplate, SystemMessagePromptTemplate, \
+    HumanMessagePromptTemplate
+from langchain_weaviate.vectorstores import WeaviateVectorStore
 
-openai.api_key = st.secrets["OPENAI_API_KEY"] # Use this version for streamlit
+openai.api_key = st.secrets["OPENAI_API_KEY"]  # Use this version for streamlit
 
 config = {
     "splitter_type": "CharacterTextSplitter",
-    "chunk_size": 2000,   # basically a full pdf page. not needed here. kept for reference
+    "chunk_size": 2000,  # basically a full pdf page. not needed here. kept for reference
     "chunk_overlap": 200,
-    "length_function" : len, 
-    "separators" : ["}"],  #[" ", ",", "\n"]  # not needed here. kept for reference
+    "length_function": len,
+    "separators": ["}"],  # [" ", ",", "\n"]  # not needed here. kept for reference
     "embedding": OpenAIEmbeddings(),  # includes a pull of the open api key
     "embedding_dims": 1536,
     "search_type": "mmr",
     "k": 5,
-    'fetch_k': 20,   # fetch 30 docs then select 4
-    'lambda_mult': .7,    # 0= max diversity, 1 is min. default is 0.5
+    'fetch_k': 20,  # fetch 30 docs then select 4
+    'lambda_mult': .7,  # 0= max diversity, 1 is min. default is 0.5
     "score_threshold": 0.5,
     "model": "gpt-3.5-turbo-16k",
     "temperature": 0.7,
-    "chain_type": "stuff", # a LangChain parameter
+    "chain_type": "stuff",  # a LangChain parameter
 }
 
-qdrant_collection_name = "ASK_vectorstore"
-qdrant_path = "/tmp/local_qdrant" # Only required for local instance /private/tmp/local_qdrant
-llm=ChatOpenAI(model=config["model"], temperature=config["temperature"]) #keep outside the function so it's accessible elsewhere in this notebook
-
+weaviate_collection_name = "PDF_document_page"
+llm = ChatOpenAI(model=config["model"], temperature=config[
+    "temperature"])  # keep outside the function so it's accessible elsewhere in this notebook
 
 query = []
 
 
-def qdrant_connect_local():
-    if 'client' in globals():
-        return globals()['client']  # Return the existing client
-    client = QdrantClient(path=qdrant_path)  # Only required for a local instance
-    return client
-
-
-
-def qdrant_connect_cloud(api_key, url):
-    if 'client' in globals():
-        return globals()['client']  # Return the existing client
-    client = QdrantClient(
-        url=url, 
-        prefer_grpc=True,
-        api_key=api_key,
+def create_langchain_weaviate(client):
+    return WeaviateVectorStore(
+        client=client,
+        index_name=weaviate_collection_name,
+        text_key="content",
+        embedding=config["embedding"],
     )
-    return client
 
 
+def weaviate_connect_cloud():
+    api_key = st.secrets.WEAVIATE_API_KEY
+    url = st.secrets.WEAVIATE_URL
 
-def create_langchain_qdrant(client):
-    '''create a langchain vectorstore object'''
-    qdrant = Qdrant(
-        client=client, 
-        collection_name=qdrant_collection_name, 
-        embeddings=config["embedding"]
+    return weaviate.connect_to_wcs(
+        cluster_url=url,
+        auth_credentials=weaviate.auth.AuthApiKey(api_key=api_key),
+        headers={"X-OpenAI-Api-Key": openai.api_key}
     )
-    return qdrant
 
-    
 
-def init_retriever_and_generator(qdrant):
+def init_retriever_and_generator():
+    client = weaviate_connect_cloud()
+    weaviate_lc = create_langchain_weaviate(client)
     '''initialize a document retriever and response generator'''
-    retriever = qdrant.as_retriever(
-        search_type=config["search_type"], 
-        search_kwargs={'k': config["k"], "fetch_k": config["fetch_k"], "lambda_mult": config["lambda_mult"], "filter": None}, # filter documents by metadata
+    retriever = weaviate_lc.as_retriever(
+        search_type=config["search_type"],
+        search_kwargs={'k': config["k"], "fetch_k": config["fetch_k"], "lambda_mult": config["lambda_mult"],
+                       "filter": None},  # filter documents by metadata
     )
     return retriever
 
@@ -97,7 +88,6 @@ def retrieval_context_excel_to_dict(file_path):
         else:
             print(f"The sheet '{sheet_name}' does not have enough columns.")
     return dict
-
 
 
 def query_maker(user_question):
@@ -150,21 +140,25 @@ def query_maker(user_question):
     return response.choices[0].message['content'] if response.choices else None
 
 
-
 def rag(query, retriever):
     '''Runs a RAG completion on the modified query'''
 
     system_message_prompt_template = SystemMessagePromptTemplate(
-    prompt=PromptTemplate(
-        input_variables=['context'],
-        template="Use the following pieces of context to answer the users question. INCLUDES ALL OF THE DETAILS IN YOUR RESPONSE, INDLUDING REQUIREMENTS AND REGULATIONS. National Workshops are required for boat crew, aviation, and telecommunications when then are offered and you should mention this in questions about those programs. Include Auxiliary Core Training (AUXCT) in your response for any question regarding certifications or officer positions.  \nIf you don't know the answer, just say I don't know, don't try to make up an answer. \n----------------\n{context}"
+        prompt=PromptTemplate(
+            input_variables=['context'],
+            template="Use the following pieces of context to answer the users question. INCLUDES ALL OF THE DETAILS IN YOUR RESPONSE, INDLUDING REQUIREMENTS AND REGULATIONS. National Workshops are required for boat crew, aviation, and telecommunications when then are offered and you should mention this in questions about those programs. Include Auxiliary Core Training (AUXCT) in your response for any question regarding certifications or officer positions.  \nIf you don't know the answer, just say I don't know, don't try to make up an answer. \n----------------\n{context}"
         )
     )
 
     llm_chain = LLMChain(
-        prompt=ChatPromptTemplate(input_variables=['context', 'question'], messages=[system_message_prompt_template, HumanMessagePromptTemplate(prompt=PromptTemplate(input_variables=['question'], template='{question}'))]),
+        prompt=ChatPromptTemplate(input_variables=['context', 'question'], messages=[system_message_prompt_template,
+                                                                                     HumanMessagePromptTemplate(
+                                                                                         prompt=PromptTemplate(
+                                                                                             input_variables=[
+                                                                                                 'question'],
+                                                                                             template='{question}'))]),
         llm=llm,
-        )
+    )
 
     rag_instance = RetrievalQA(
         combine_documents_chain=StuffDocumentsChain(
@@ -177,7 +171,6 @@ def rag(query, retriever):
     return response
 
 
-
 def rag_dummy(query, retriever):
     '''A bug-fixing utility.
     
@@ -187,7 +180,6 @@ def rag_dummy(query, retriever):
     with open("config/dummy_response.pkl", "rb") as file:
         dummy_response = pickle.load(file)
     return dummy_response
-        
 
 
 def create_short_source_list(response):
@@ -199,17 +191,16 @@ def create_short_source_list(response):
     '''
 
     markdown_list = []
-    
+
     for i, doc in enumerate(response['source_documents'], start=1):
-        page_content = doc.page_content  
-        source = doc.metadata['source']  
-        short_source = source.split('/')[-1].split('.')[0]  
-        page = doc.metadata['page']  
+        page_content = doc.page_content
+        source = doc.metadata['source']
+        short_source = source.split('/')[-1].split('.')[0]
+        page = doc.metadata['page']
         markdown_list.append(f"*{short_source}*, page {page}\n")
-    
+
     short_source_list = '\n'.join(markdown_list)
     return short_source_list
-
 
 
 def create_long_source_list(response):
@@ -219,19 +210,18 @@ def create_long_source_list(response):
     ['query', 'result', 'source_documents']
     source_documents is a list with a LangChain custom Document object
     '''
-    
+
     markdown_list = []
-    
+
     for i, doc in enumerate(response['source_documents'], start=1):
-        page_content = doc.page_content  
-        source = doc.metadata['source']  
-        short_source = source.split('/')[-1].split('.')[0]  
-        page = doc.metadata['page']  
+        page_content = doc.page_content
+        source = doc.metadata['source']
+        short_source = source.split('/')[-1].split('.')[0]
+        page = doc.metadata['page']
         markdown_list.append(f"**Reference {i}:**    *{short_source}*, page {page}   {page_content}\n")
-    
+
     long_source_list = '\n'.join(markdown_list)
     return long_source_list
-
 
 
 def count_tokens(response):
@@ -249,13 +239,13 @@ def count_tokens(response):
     return query_length, source_length, result_length, tot_tokens
 
 
-
 # Example usage in another script
 if __name__ == "__main__":
     # Replace 'your_query' with the actual query you want to pass to rag
     query = 'your_query'
-    response = rag(query, retriever) #thisn is slightly different from the notebook
-    
+    retriever = init_retriever_and_generator()
+    response = rag(query, retriever)  # thisn is slightly different from the notebook
+
     # Call other functions to process the response
     short_source_list = create_short_source_list(response)
     long_source_list = create_long_source_list(response)
