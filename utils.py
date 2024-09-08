@@ -19,7 +19,6 @@ def get_feedback_collector():
     )
 
 
-
 def get_openai_api_status():
     '''Notify user if OpenAI is down so they don't blame the app'''
 
@@ -52,7 +51,6 @@ def get_openai_api_status():
     return status_message
 
 
-
 def check_directory_exists(directory_path, create_if_not_exists=False):
     """
     Check if a directory exists. Optionally, create the directory if it does not exist.
@@ -64,17 +62,16 @@ def check_directory_exists(directory_path, create_if_not_exists=False):
     if not os.path.isdir(directory_path):
         if create_if_not_exists:
             try:
-                os.write(1,f"Directory does not exist: {directory_path}. Creating it.".encode())
+                os.write(1, f"Directory does not exist: {directory_path}. Creating it.".encode())
                 os.makedirs(directory_path)
                 return True
             except OSError as error:
-                os.write(1,f"Error creating directory {directory_path}: {error}".encode())
+                os.write(1, f"Error creating directory {directory_path}: {error}".encode())
                 return False
         else:
-            os.write(1,f"Directory does not exist: {directory_path}".encode())
+            os.write(1, f"Directory does not exist: {directory_path}".encode())
             return False
     return True
-
 
 
 def get_most_recent_filepath_and_date(base_filename, directory_path, file_extension):
@@ -98,13 +95,12 @@ def get_most_recent_filepath_and_date(base_filename, directory_path, file_extens
         return None, None
 
     # Sort files based on the date-time in the filename
-    matching_files.sort(key=lambda x: parser.parse(x[len(base_filename)+1:len(base_filename)+16]), reverse=True)
+    matching_files.sort(key=lambda x: parser.parse(x[len(base_filename) + 1:len(base_filename) + 16]), reverse=True)
     most_recent_file = matching_files[0]
-    last_update_date = most_recent_file[len(base_filename)+1:len(base_filename)+16]
+    last_update_date = most_recent_file[len(base_filename) + 1:len(base_filename) + 16]
     print(f"found the following file(s) {matching_files}")
 
     return os.path.join(directory_path, most_recent_file), last_update_date
-
 
 
 def compute_doc_id(pdf_path):
@@ -128,4 +124,3 @@ def compute_doc_id(pdf_path):
         first_page_uuid = uuid.uuid5(namespace, first_page)
 
     return first_page_uuid
-
