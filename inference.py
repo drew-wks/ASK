@@ -116,7 +116,7 @@ def query_maker(user_question):
     Adds acronym definitions and jargon explanations to the user's question
     '''
 
-    retrieval_context_dict = retrieval_context_excel_to_dict('utils/retrieval_context.xlsx')
+    retrieval_context_dict = retrieval_context_excel_to_dict('config/retrieval_context.xlsx')
     acronyms_dict = retrieval_context_dict.get("acronyms", None)
     acronyms_json = json.dumps(acronyms_dict, indent=4)
     terms_dict = retrieval_context_dict.get("terms", None)
