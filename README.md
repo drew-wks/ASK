@@ -1,4 +1,4 @@
-![Logo](https://raw.githubusercontent.com/dvvilkins/ASK/main/images/ASK_logotype_color.png?raw=true)
+![Logo](https://raw.githubusercontent.com/drew-wks/ASK/main/images/ASK_logotype_color.png?raw=true)
 
 ASK stands for **Auxiliary Source of Knowledge**. ASK was developed by Auxiliarist Drew Wilkins as a proof of concept to make it easier for Auxiliarists and prospective members to find Auxiliary-related information. Powered by Artificial Intelligence (AI), ASK searches over 300 Coast Guard Auxiliary references to find answers directly from authoritative sources.
 
@@ -24,13 +24,9 @@ ASK's mission is to provide members efficient, accurate, and easy access  to the
 
  - **Language Access:** ASK translates queries and results into foreign languages which helps the USCG fulfill its requirements under Executive Order 13166, “Improving Access to Services for Persons with Limited English Proficiency” 
 
-## System Status
-[![Services check](https://github.com/drew-wks/ASK/actions/workflows/services_check.yaml/badge.svg)](https://github.com/drew-wks/ASK/actions/workflows/services_check.yaml)
-
 ## Access
 ASK is available to try [here](https://uscg-auxiliary-ask.streamlit.app/) <br>
-<a href="https://uscg-auxiliary-ask.streamlit.app/"><img align="center" src="https://raw.githubusercontent.com/dvvilkins/ASK/main/images/what_is_the_aux_screenshot.png" alt="library ui" width="80%" align="center"/></a>
-
+<a href="https://uscg-auxiliary-ask.streamlit.app/"><img align="center" src="https://raw.githubusercontent.com/drew-wks/ASK/main/images/what_is_the_aux_screenshot.png" alt="library ui" width="80%" align="center"/></a>
 
 ## How it Works
 ### Generative AI Document Search
@@ -45,7 +41,7 @@ ASK is loaded with over 250 national documents (over 8000 pages). The app includ
 
 ## Data Flow
 The data flow model is below. <br><br>
-<img align="center" src="https://raw.githubusercontent.com/dvvilkins/ASK/main/images/data_flow_diagram.png" alt="low" width="80%" align="center"/></a>  
+<img align="center" src="https://raw.githubusercontent.com/drew-wks/ASK/main/images/data_flow_diagram.png" alt="low" width="80%" align="center"/></a>  
 
 
 ## Technology Components
@@ -54,15 +50,15 @@ ASK relies on five core components: a python codebase, a Gen AI model, vector da
 
 The main components of the solution are:
 
-  - **Codebase**: written by me in Python 3.11 using open source licenses. Version control is via a public git repository located at _https://github.com/dvvilkins/Webapp1_
+  - **Codebase**: written by me in Python 3.8.10 using open source licenses. Version control is via a public git repository located at _https://github.com/drew-wks/ASK. Development workflow is notated [here.](docs/project_development_workflow.md)
 
 - **Embedding model**: Embeddings are generated using OpenAI Ada v.2 which is providing state of the art (SOTA) embeddings at the time of this writing. The model is accessed from the code via API. Alternatives exist and may provide superior results or same for less cost. More on this embedding can be found here: https://platform.openai.com/docs/guides/embeddings/what-are-embeddings
 
-- **Storage**: Qdrant open-source vector database cluster hosted on AWS. The proof of concept utilizes 300 MB of file storage (186 MB payload of pdfs plus 100 MB for the vectors, metadata, index and swap files). The recommended configuration is for 600 MB to hold all policy documents in the Auxiliary. 
+- **Storage**: Qdrant open-source vector database cluster hosted on AWS. The proof of concept utilizes 300 MB of file storage (186 MB payload of pdfs plus 100 MB for the vectors, metadata, index and swap files). The recommended configuration is for 600 MB to hold all policy documents in the Auxiliary.
 
 - **Inference model**: OpenAI ChatGPT 3.5 series via API. Chat history is currently turned off as it doesn’t seem to be needed and minimizes per-request costs. More information on this API is located at https://platform.openai.com/docs/guides/gpt/chat-completions-api
 
-- **Runtime environment, Web app server, front end:** All provided by Streamlit framework and cloud turns the Python script by rendering it as a web app. [![Empty Commit Workflow](https://github.com/drew-wks/ASK/actions/workflows/empty_commit.yaml/badge.svg)](https://github.com/drew-wks/ASK/actions/workflows/empty_commit.yaml)
+- **Runtime environment, Web app server, front end:** All provided by Streamlit framework and cloud turns the Python script by rendering it as a web app.
 
 Two additional components simplify system development and management:
 
@@ -73,7 +69,7 @@ Two additional components simplify system development and management:
 ## Configuration
 The following configuration was specified for the proof of concept. This proposal recommends using it for the first-year launch of ASK. 
 <br> <br>
- <img src="https://raw.githubusercontent.com/dvvilkins/ASK/main/images/configuration_table.png" alt="configuration table" width="60%"/>
+ <img src="https://raw.githubusercontent.com/drew-wks/ASK/main/images/configuration_table.png" alt="configuration table" width="60%"/>
 
 ## Administration
 Process details for adding and removing PDFs from the library are located [here.](docs/library_admin_processes.md)
@@ -81,7 +77,7 @@ Process details for adding and removing PDFs from the library are located [here.
 ## Costs
 Estimated year one costs are given below based on the recommended configuration. Primary cost drivers are usage and storage. All costs are monthly subscriptions. There is no deployment cost since the prototype has already been built and can be moved to production using volunteers.
  <br> <br> 
- <img align="center" src="https://raw.githubusercontent.com/dvvilkins/ASK/main/images/costs.png" alt="costs" width="50%"/>
+ <img align="center" src="https://raw.githubusercontent.com/drew-wks/ASK/main/images/costs.png" alt="costs" width="50%"/>
 
 ## Github Repo Contents
 The streamlit app is a multi-page app with the TOC hidden. Streamlit runs off of prompt_ui.py. ASK_inference.py contains most of the retrieval and inference code.  
@@ -97,5 +93,5 @@ Other features
   - Warning is displayed if OpenAI quota is exceeded and I need to pay for more credits
 
 Testing  
-  - Primarily conducted through a separate streamlit app that accesses github.com/drew-wks/ASK/tree/test.  
+  - Development workflow is notated [here.](docs/project_development_workflow.md) 
   - Additional testing is conducted using /test, test.py, just_streamlit_text.py
