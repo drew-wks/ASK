@@ -1,7 +1,7 @@
 import streamlit as st 
 from trubrics.integrations.streamlit import FeedbackCollector
-import ASK_inference as ASK # both scripts must be in same directory for this to work
-from ASK_inference import config
+import inference as ASK # both scripts must be in same directory for this to work
+from inference import config
 import datetime, time
 from streamlit_extras.stylable_container import stylable_container
 

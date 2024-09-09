@@ -13,20 +13,10 @@ Things I plan to do over the coming months to continue to improve ASK
 [x] Explore better prompts through prompt templates  
 [x] Tune retrieval hyperparamters such as lambda, k-means 
 [x] Tag documents with effective date  
-[x] Get Streamlit working faster via st.session_state and st.cache_resource  
-[x] Insert a pre-prompting/inference step to ensure all relevant dos are retrieved
+[x] Insert a pre-prompting/inference step to ensure all relevant docs are retrieved
 [ ] Reason through contradictions in corpus docs (e.g., conflicting policies)
-[ ] Index additional metadata  
-[ ] Include effective date in retrieval   
-[ ] Give greater to weight to more recent documents: currently assessing   
-[ ] Explore other chunking strategies: may not be necessary  
+[ ] Include effective date in retrieval and explore giving greater to weight to more recent documents: currently assessing 
 [ ] Test other private and [open-source embedding models](https://huggingface.co/spaces/mteb/leaderboard) incl. cohere, anarchy  
-
-##### UI Enhancements: making ASK easier to use  
-[x] Implement workaround chat input field on mobile devices (a bug with streamlit)  
-[x] Bring feedback back into the UI  
-[x] Incorporate better visual status into UI  
-[x] Add a warning when the underlying LLM (e.g., OpenAI) is down  
 
 ##### Instrumentation: tooling to measure and assess performance  
 [x] Assess instrumentation providers: wandb, neptune, Trubrics  
@@ -38,5 +28,13 @@ Things I plan to do over the coming months to continue to improve ASK
 
 ##### Administration: simplify backend through automation  
 [x] Evaluate Vectara db  
-[ ] Utilize agents to replace programmatic work such as bringing metadata into chunks  
-[ ] Explore having agent extract doc purpose and incoporate as metadata  
+[x] Scheduled checks of Qdrant and Streamlit for health via Github Actions
+[ ] Explore alternative database such as Weaviate that can separate doc level info and page level info into separate collections
+[ ] Explore model-based metadata extraction using unstructured
+
+##### UI Enhancements: making ASK easier and more enjoyable to use  
+[x] Implement workaround chat input field on mobile devices (a bug with streamlit)  
+[x] Bring feedback back into the UI  
+[x] Get Streamlit working faster via st.session_state and st.cache_resource
+[x] Incorporate better visual status into UI  
+[x] Add a warning when the underlying LLM (e.g., OpenAI) is down  

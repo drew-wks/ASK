@@ -194,7 +194,7 @@ def rag_dummy(query, retriever):
     Returns a dummy canned response instead of calling the LLM
     '''
 
-    with open("utils/dummy_response.pkl", "rb") as file:
+    with open("config/dummy_response.pkl", "rb") as file:
         dummy_response = pickle.load(file)
     return dummy_response
         

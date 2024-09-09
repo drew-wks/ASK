@@ -2,8 +2,16 @@
 # Project ASK Change Log
 All notable changes to this project will be documented in this file.  
 
-## [Unreleased]
+## [0.6.1] - 2024-09-07
+### Features
 - Add additional metadata keys and values into library data, including effective date
+- Moved vector db admin tools into separate git repo
+- Updated data_flow_diagram.png
+- Reorganized repo file directory
+
+### Bug fixes
+- Addressed bug in UUID approach. All docs to be re-tagged with new UUIDs in next database re-build  
+
 
 ## [0.5.3] - 2023-12-19
 ### Features
