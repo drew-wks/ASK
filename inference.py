@@ -92,9 +92,23 @@ def init_retriever_and_generator(qdrant):
 
 
 def retrieval_context_excel_to_dict(file_path):
-    ''' Read Excel file into a dictionary of worksheets. 
-    Each worksheet is its own dictionary. Column 1 is 
-    the key. Column 2 is the values'''
+    ''' 
+    Reads an Excel file into a dictionary of dictionaries. 
+
+    Each worksheet is read as its own dictionary, where 
+    the values in the first column are the keys and the 
+    values in the second column are the values. If a 
+    worksheet has fewer than two columns, it will be skipped.
+    
+    Args:
+        file_path (str): The path to the Excel file.
+
+    Returns:
+        dict: A dictionary where each key is a sheet name, 
+        and the value is a dictionary with key-value pairs 
+        from the first two columns of the worksheet.
+    '''
+
 
     xls = pd.ExcelFile(file_path)
     dict = {}
@@ -111,9 +125,14 @@ def retrieval_context_excel_to_dict(file_path):
 
 
 def query_maker(user_question):
-    '''Adds context to the user question to assist retrieval. 
+    '''Modifies the user's question by adding context from acronym definitions and jargon explanations.
+
+    This function retrieves two dictionaries, 'acronyms' and 'terms', from an Excel file and uses them to modify the user's question.
     
-    Adds acronym definitions and jargon explanations to the user's question
+    - The 'acronyms' dictionary maps acronyms to their full definitions, which are used to replace acronyms in the question.
+    - The 'terms' dictionary provides additional information for specific terms or jargon, which are appended to the user's question when those terms are identified.
+
+    The Excel file containing the 'acronyms' and 'terms' dictionaries is parsed by the 'retrieval_context_excel_to_dict' function, which processes the file and converts relevant sheets into dictionaries.
     '''
 
     retrieval_context_dict = retrieval_context_excel_to_dict('config/retrieval_context.xlsx')
