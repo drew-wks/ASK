@@ -2,7 +2,7 @@
  #### Frequently Asked Questions (FAQs)  
 
  **Why did you create ASK?**  
- Being a member of the U.S. Coast Guard like you, I was surrounded by vast amounts of policy and procedure information that guides my actions.  However, that bulk of that information is stowed away in PDFs scattered across various platforms, making it cumbersome to locate and search. Furthermore, outdated and regionally-specific documents can be misconstrued as applicable. So, I created ASK to show how Artificial Intelligence can help Auxiliarists and prospective members find ths information we need to do our work.
+ Being a member of the U.S. Coast Guard like you, I was surrounded by vast amounts of policy and procedure information that guides my actions.  However, that bulk of that information is stowed away in PDFs scattered across various platforms, making it cumbersome to locate and search. Furthermore, outdated and regionally-specific documents can be misconstrued as applicable. So, I created ASK to show how Artificial Intelligence can help Auxiliarists and prospective members find the information we need to do our work.
 
 
  **How does ASK stay up to date?**  
