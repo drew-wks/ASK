@@ -97,9 +97,12 @@ Testing
   - Additional testing is conducted using /test, test.py, just_streamlit_text.py
 
 ### How to Run Locally (using VS Code)
-1. Clone the repository and run the `./setup.sh` script. If premission is deined, try the command `chmod +x setup.sh` first
+1. Clone the repository
 2. Open the project in VS Code.
-3. Go to the "Run and Debug" panel in VS Code (Ctrl+Shift+D or Cmd+Shift+D).
-4. Select "Run Streamlit App" and press the green play button to start
-5. The Streamlit user interface will load in the default browser
+3. Run the `./setup.sh` script. If premission is deined, try the command `chmod +x setup.sh` first
+4. re-activate your venv via the command `source venv/bin/activate` and add your streamlit secrets into .secrets.toml
+5. Select the prompt_ui.py file
+6. Go to the "Run and Debug" panel in VS Code (Ctrl+Shift+D or Cmd+Shift+D).
+7. Select "Run Streamlit App" and press the green play button to start
+8. The Streamlit user interface will load in the default browser
 
