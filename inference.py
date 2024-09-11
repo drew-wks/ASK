@@ -1,19 +1,15 @@
 
+import pickle
+import json
 from langchain.chat_models import ChatOpenAI
 from qdrant_client import QdrantClient
 from langchain.vectorstores import Qdrant
 from langchain.chains import RetrievalQA, StuffDocumentsChain, LLMChain
 from langchain.prompts import PromptTemplate, ChatPromptTemplate, SystemMessagePromptTemplate, HumanMessagePromptTemplate
 import tiktoken
-import pickle
 import streamlit as st
-import json
-import os
 import openai
-import re
 import pandas as pd
-import datetime
-import requests
 
 
 '''
@@ -267,74 +263,26 @@ def count_tokens(response):
     '''Counts the tokens from the response'''
 
     encoding = tiktoken.encoding_for_model(config["model"])
+     
+    # Count tokens for the query
     query_tokens = encoding.encode(response['query'])
     query_length = len(query_tokens)
-    source_tokens = encoding.encode(str(response['source_documents']))
+    
+    # Count tokens for the source documents
+    source_documents = response['source_documents']
+    if isinstance(source_documents, list):
+        source_tokens = encoding.encode(' '.join(map(str, source_documents)))
+    else:
+        source_tokens = encoding.encode(str(source_documents))
     source_length = len(source_tokens)
+    
+    # Count tokens for the result
     result_tokens = encoding.encode(response['result'])
     result_length = len(result_tokens)
-    tokens = encoding.encode(str(response))
-    tot_tokens = len(tokens)
-    return query_length, source_length, result_length, tot_tokens
-
-
-
-def get_openai_api_status():
-    '''Notify user if OpenAI is down so they don't blame the app'''
-
-    components_url = 'https://status.openai.com/api/v2/components.json'
-    status_message = ''
-
-    try:
-        response = requests.get(components_url)
-        # Raises an HTTPError if the HTTP request returned an unsuccessful status code
-        response.raise_for_status()
-
-        # Parse the JSON response
-        components_info = response.json()
-        components = components_info.get('components', [])
-
-        # Find the component that represents the API
-        api_component = next(
-            (component for component in components if component.get('name', '').lower() == 'api'), None)
-
-        if api_component:
-            status_message = api_component.get('status', '')
-        else:
-            status_message = 'API component not found'
-
-    except requests.exceptions.HTTPError as http_err:
-        status_message = f'HTTP error occurred: {repr(http_err)}'
-    except Exception as err:
-        status_message = f'Other error occurred: {repr(err)}'
-
-    return status_message
-
-
-
-def get_library_doc_catalog_excel_and_date():
-    '''Gets the most recent catalog of library documents for the user to review'''
-
-    directory_path = 'docs/library_catalog/'
-    files_in_directory = os.listdir(directory_path)
-    excel_files = [file for file in files_in_directory if re.match(r'library_doc_catalog.*\.xlsx$', file)]
-
-    if not excel_files:
-        os.write(1,b"There's no Excel file in the directory.\n")
-        return None, None
-
-    excel_files_with_time = [(file, os.path.getmtime(os.path.join(directory_path, file))) for file in excel_files]
-    excel_files_with_time.sort(key=lambda x: x[1], reverse=True)
-    most_recent_file, modification_time = excel_files_with_time[0]
-    try:
-        df = pd.read_excel(os.path.join(directory_path, most_recent_file))
-    except Exception as e:
-        print(f"Failed to read the Excel file: {e}")
-        return None, None
-
-    last_update_date = datetime.datetime.fromtimestamp(modification_time).strftime('%d %B %Y')
     
-    return df, last_update_date
+    # Count total tokens
+    total_tokens = query_length + source_length + result_length  
+    return query_length, source_length, result_length, total_tokens
 
 
 
@@ -347,4 +295,9 @@ if __name__ == "__main__":
     # Call other functions to process the response
     short_source_list = create_short_source_list(response)
     long_source_list = create_long_source_list(response)
-    source_length, source_tokens, tot_tokens = count_tokens(response)
+    query_length, source_length, result_length, total_tokens = count_tokens(response)
+
+
+
+
+

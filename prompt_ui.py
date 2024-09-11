@@ -2,6 +2,7 @@ import streamlit as st
 from trubrics.integrations.streamlit import FeedbackCollector
 import inference as ASK # both scripts must be in same directory for this to work
 from inference import config
+import utils
 import datetime, time
 from streamlit_extras.stylable_container import stylable_container
 
@@ -62,14 +63,14 @@ def get_feedback_collector():
 st.image("https://raw.githubusercontent.com/dvvilkins/ASK/main/images/ASK_logotype_color.png?raw=true", use_column_width="always")
 
 # Check Open AI service status
-api_status_message = ASK.get_openai_api_status()
+api_status_message = utils.get_openai_api_status()
 if "operational" not in api_status_message:
     st.error(f"ASK is currently down due to OpenAI {api_status_message}.")
 else: st.write("#### Get answers to USCG Auxiliary questions from authoritative sources.")
 
 
 # Get the library catalog
-df, last_update_date = ASK.get_library_doc_catalog_excel_and_date()
+df, last_update_date = utils.get_library_doc_catalog_excel_and_date()
 num_items = len(df)
 
 
