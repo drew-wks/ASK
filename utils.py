@@ -3,9 +3,11 @@ import os
 import re
 import datetime
 import pandas as pd
+import streamlit as st 
 from trubrics.integrations.streamlit import FeedbackCollector
 
 
+# Set up the Truberics feedback collector. feedback is accessible at https://trubrics.streamlit.app/?ref=blog.streamlit.io
 @st.cache_data
 def get_feedback_collector():
     return FeedbackCollector(

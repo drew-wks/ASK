@@ -50,16 +50,6 @@ except Exception as e:
     st.stop() 
 
 
-# Set up the Truberics feedback collector. feedback is accessible at https://trubrics.streamlit.app/?ref=blog.streamlit.io
-@st.cache_data
-def get_feedback_collector():
-    return FeedbackCollector(
-        email=st.secrets.TRUBRICS_EMAIL,
-        password=st.secrets.TRUBRICS_PASSWORD,
-        project="default"
-    )
-
-
 st.image("https://raw.githubusercontent.com/dvvilkins/ASK/main/images/ASK_logotype_color.png?raw=true", use_column_width="always")
 
 # Check Open AI service status
