@@ -3,6 +3,16 @@ import os
 import re
 import datetime
 import pandas as pd
+from trubrics.integrations.streamlit import FeedbackCollector
+
+
+@st.cache_data
+def get_feedback_collector():
+    return FeedbackCollector(
+        project="default",
+        email=st.secrets["TRUBRICS_EMAIL"],
+        password=st.secrets["TRUBRICS_PASSWORD"]
+    )
 
 
 def get_openai_api_status():
