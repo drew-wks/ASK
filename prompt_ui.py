@@ -5,6 +5,7 @@ from inference import config
 import utils
 import datetime, time
 from streamlit_extras.stylable_container import stylable_container
+import openai
 
 
 # Collapse the sidebar and hide the sidebar collapse button
@@ -80,7 +81,7 @@ st.write("  ")
 user_feedback = " "
 user_question = st.text_input("Type your question or task here", max_chars=200)
 if user_question:
-    collector = get_feedback_collector()
+    collector = utils.get_feedback_collector()
     query = ASK.query_maker(user_question)
     with st.status("Checking documents...", expanded=False) as status:
         try:
