@@ -1,4 +1,4 @@
-streamlit>=1.50.0
+streamlit
 st-click-detector
 openai==0.27.8
 trubrics[streamlit]==1.6.1
