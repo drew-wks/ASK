@@ -9,7 +9,7 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')
 
 
 """
-Automated testing script for Streamlit app 'ui.py'.
+Automated testing script for Streamlit app.
 
 This script tests the following functionalities:
 1. Simulates a user typing questions into the prompt field.
@@ -24,12 +24,13 @@ Test Cases:
 
 Usage:
 - Install the required dependencies using 'pip install pytest streamlit'.
+- Change the directory to your project cd ASK
 - Run the test using the command 'pytest test_ui.py' to execute all the test cases.
 """
 
 def test_user_query_response():
     # Load and run the app from ui.py
-    at = AppTest.from_file("ui.py").run()
+    at = AppTest.from_file("prompt_ui.py").run()
 
     # Simulate the user typing the first question into the input box
     at.text_input[0].input("What are the requirements to run for FC?").run()

@@ -13,3 +13,5 @@ pytest
 openpyxl # used to import the library.xlsx file
 selenium # needed to check for app suspension due to inactivity
 webdriver-manager  # needed to check for app suspension due to inactivity
+
+# TODO figure out which package is using Pydantic and update it. class-based `config` is deperecated. Also, json_encoders
