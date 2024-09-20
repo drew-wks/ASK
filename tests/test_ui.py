@@ -25,12 +25,15 @@ Test Cases:
 Usage:
 - Install the required dependencies using 'pip install pytest streamlit'.
 - Change the directory to your project cd ASK
-- Run the test using the command 'pytest test_ui.py' to execute all the test cases.
+- Run the test using the command 'pytest tests/test_ui.py' to execute all the test cases.
 """
 
 def test_user_query_response():
-    # Load and run the app from ui.py
-    at = AppTest.from_file("prompt_ui.py").run()
+    # Adjust path to locate 'prompt_ui.py' in the parent directory
+    script_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'prompt_ui.py'))
+    
+    # Load and run the app from prompt_ui.py
+    at = AppTest.from_file(script_path).run()
 
     # Simulate the user typing the first question into the input box
     at.text_input[0].input("What are the requirements to run for FC?").run()
