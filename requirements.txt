@@ -1,4 +1,4 @@
-streamlit
+streamlit>=1.50.0
 streamlit.testing.v1
 st-click-detector
 openai==0.27.8
