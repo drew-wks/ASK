@@ -1,4 +1,5 @@
 streamlit
+streamlit.testing.v1
 st-click-detector
 openai==0.27.8
 trubrics[streamlit]==1.6.1
@@ -8,6 +9,7 @@ tiktoken==0.5.1
 streamlit_extras
 datetime # used in seveaal places to create a delay
 pandas
+pytest
 openpyxl # used to import the library.xlsx file
 selenium # needed to check for app suspension due to inactivity
 webdriver-manager  # needed to check for app suspension due to inactivity
