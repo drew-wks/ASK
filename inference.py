@@ -17,6 +17,7 @@ from dotenv import load_dotenv, find_dotenv
 _ = load_dotenv(find_dotenv()) # read local .env file
 '''
 
+openai.api_key = st.secrets["OPENAI_API_KEY"] # Use this version for streamlit
 from langchain.embeddings import OpenAIEmbeddings
 
 config = {
@@ -34,7 +35,6 @@ config = {
 
 qdrant_collection_name = "ASK_vectorstore"
 qdrant_path = "/tmp/local_qdrant" # Only required for local instance /private/tmp/local_qdrant
-openai.api_key = st.secrets["OPENAI_API_KEY"] # Use this version for streamlit
 llm=ChatOpenAI(model=config["model"], temperature=config["temperature"]) #keep outside the function so it's accessible elsewhere in this notebook
 
 

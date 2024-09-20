@@ -3,9 +3,15 @@ import pytest
 import time
 import sys
 import os
+import streamlit as st
+st.cache_resource.clear()
+st.cache_data.clear()
+
 
 # Add the parent directory to sys.path to import rag_qdrant_lc
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+sys.path.insert(0, os.path.abspath(
+    os.path.join(os.path.dirname(__file__), '..')))
 
 
 """
@@ -33,9 +39,12 @@ def test_user_query_response():
     script_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'prompt_ui.py'))
     
     # Load and run the app from prompt_ui.py
-    at = AppTest.from_file(script_path).run()
-
+    script_path = os.path.abspath(os.path.join(
+        os.path.dirname(__file__), '..', 'prompt_ui.py'))
+    at = AppTest.from_file(script_path).run(timeout=10)
+    time.sleep(10)
     # Simulate the user typing the first question into the input box
+    print("Simulating user input for the first question.")
     at.text_input[0].input("What are the requirements to run for FC?").run()
 
     # Wait to ensure the app has time to process the response (15 seconds)
@@ -47,9 +56,12 @@ def test_user_query_response():
     assert "Sources" in first_response   # Check if the sources are included in the info box
 
     # Print the first response to the console
+    assert "response" in first_response
+    assert "Sources" in first_response
     print("First Response:", first_response)
 
     # Simulate the user typing the second question after the first response
+    print("Simulating user input for the second question.")
     at.text_input[0].input("How do I stay current in boat crew?").run()
 
     # Wait again to ensure the app has time to process the second response (15 seconds)
@@ -62,6 +74,7 @@ def test_user_query_response():
 
     # Print the second response to the console
     print("Second Response:", second_response)
+
 
 if __name__ == "__main__":
     pytest.main()
