@@ -1,7 +1,7 @@
 import streamlit as st 
 from trubrics.integrations.streamlit import FeedbackCollector
-import inference as ASK # both scripts must be in same directory for this to work
-from inference import config
+import rag_qdrant_lc as rag # both scripts must be in same directory for this to work
+from rag_qdrant_lc import config
 import utils
 import datetime, time
 from streamlit_extras.stylable_container import stylable_container
@@ -37,20 +37,6 @@ st.markdown("""
         """, unsafe_allow_html=True)
 
 
-# Initialize the RAG clients and retriver
-try:
-    # Cache the Qdrant client connection for performance optimization
-    qdrant_connect_cloud_cached = st.cache_resource(ASK.qdrant_connect_cloud)
-    api_key = st.secrets.QDRANT_API_KEY
-    url = st.secrets.QDRANT_URL
-    client = qdrant_connect_cloud_cached(api_key, url) # use ASK.qdrant_connect_cloud(api_key, url) instead for ask-test so you can see the changes
-    qdrant = ASK.create_langchain_qdrant(client)
-    retriever = ASK.init_retriever_and_generator(qdrant)
-except Exception as e:
-    st.error(f"An error occurred while setting up the Qdrant client: {e}")
-    st.stop() 
-
-
 st.image("https://raw.githubusercontent.com/dvvilkins/ASK/main/images/ASK_logotype_color.png?raw=true", use_column_width="always")
 
 # Check Open AI service status
@@ -82,16 +68,16 @@ user_feedback = " "
 user_question = st.text_input("Type your question or task here", max_chars=200)
 if user_question:
     collector = utils.get_feedback_collector()
-    query = ASK.query_maker(user_question)
+    query = rag.query_maker(user_question)
     with st.status("Checking documents...", expanded=False) as status:
         try:
             if query == "pledge":
-                response = ASK.rag_dummy(query, retriever)  # ASK.rag_dummy for UNIT TESTING
+                response = rag.rag_dummy(query, retriever)  # rag.rag_dummy for UNIT TESTING
             else:
-                response = ASK.rag(query, retriever)
+                response = rag.rag(query, retriever)
 
-            short_source_list = ASK.create_short_source_list(response)
-            long_source_list = ASK.create_long_source_list(response)
+            short_source_list = rag.create_short_source_list(response)
+            long_source_list = rag.create_long_source_list(response)
 
         except openai.error.RateLimitError:
             print("ASK has run out of Open AI credits. Tell Drew to go fund his account! uscgaux.drew@wks.us")
