@@ -1,4 +1,8 @@
-import streamlit as st 
+import streamlit as st
+# Collapse the sidebar and hide the sidebar collapse button
+st.set_page_config(page_title="ASK Auxiliary Source of Knowledge", initial_sidebar_state="collapsed")
+
+
 from trubrics.integrations.streamlit import FeedbackCollector
 import rag_qdrant_lc as rag # both scripts must be in same directory for this to work
 from rag_qdrant_lc import config
@@ -8,8 +12,6 @@ from streamlit_extras.stylable_container import stylable_container
 import openai
 
 
-# Collapse the sidebar and hide the sidebar collapse button
-st.set_page_config(page_title="ASK Auxiliary Source of Knowledge", initial_sidebar_state="collapsed")
 st.markdown( """ <style> [data-testid="collapsedControl"] { display: none } </style> """, unsafe_allow_html=True, )
 
 

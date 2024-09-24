@@ -99,7 +99,6 @@ except Exception as e:
     st.stop() 
 
 
-
 def retrieval_context_excel_to_dict(file_path):
     ''' 
     Reads an Excel file into a dictionary of dictionaries. 

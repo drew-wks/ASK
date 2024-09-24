@@ -3,8 +3,16 @@
         "main"
     ],
     "workbench.colorCustomizations": {
-        "#activityBar.background": "#323330",
-        "#activityBar.foreground": "#F0DB4F"
+        "activityBar.background#": "#FFE873",
+        "activityBar.foreground#": "#306998",
+        "statusBar.background": "#306998",
+        "statusBar.foreground": "#FFE873"
     },
-    "CodeGPT.apiKey": "CodeGPT Plus Beta"
+    "CodeGPT.apiKey": "CodeGPT Plus Beta",
+    "python.testing.pytestEnabled": true,
+    "python.testing.pytestArgs": [
+        "-m", "pytest"
+    ],
+    "python.testing.unittestEnabled": false,
+    "python.testing.nosetestsEnabled": false
 }

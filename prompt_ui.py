@@ -1,4 +1,4 @@
-import streamlit as st 
+import streamlit as st
 from trubrics.integrations.streamlit import FeedbackCollector
 import inference as ASK # both scripts must be in same directory for this to work
 from inference import config

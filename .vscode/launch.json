@@ -8,6 +8,15 @@
             "module": "streamlit",
             "args": ["run", "${file}"],
             "cwd": "${workspaceFolder}"
-        }
+        },
+        {
+            "name": "Python: Run Tests",
+            "type": "python",
+            "request": "launch",
+            "module": "pytest",  
+            "args": [],
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
     ]
 }
