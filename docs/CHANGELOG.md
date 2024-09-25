@@ -2,6 +2,15 @@
 # Project ASK Change Log
 All notable changes to this project will be documented in this file.  
 
+## [0.6.2] - 2024-09-25
+### Features
+- Renamed prompt_ui.py (ui.py), inference.py (rag.py) and refactored to keep clean. 
+- Rag logic is now in rag.py
+- Openai status functions are now in utils.py
+- Implemented caching to improve speed for various clients: truberics, qdrant, lc, retriever, and library list
+- Implemented test scripts
+
+
 ## [0.6.1] - 2024-09-07
 ### Features
 - Add additional metadata keys and values into library data, including effective date
