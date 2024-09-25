@@ -10,7 +10,6 @@ import utils
 
 parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, parent_dir)
-# import inference as ASK
 
 
 st.set_page_config(page_title="ASK Library", initial_sidebar_state="collapsed")
@@ -49,7 +48,7 @@ st.image("https://raw.githubusercontent.com/dvvilkins/ASK/main/images/ASK_logoty
 
 back = st.button("< Back to App", type="primary")
 if back:
-    switch_page("prompt_ui")
+    switch_page("ui")
 
 
 tab1, tab2, tab3, tab4, tab5 = st.tabs(["Overview", "Library", "FAQs", "Product Roadmap", "Feedback"])

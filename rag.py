@@ -33,70 +33,39 @@ config = {
     "chain_type": "stuff", # a LangChain parameter
 }
 
-qdrant_collection_name = "ASK_vectorstore"
-qdrant_path = "/tmp/local_qdrant" # Only required for local instance /private/tmp/local_qdrant
+
 openai.api_key = st.secrets["OPENAI_API_KEY"] # Use this version for streamlit
 llm=ChatOpenAI(model=config["model"], temperature=config["temperature"]) #keep outside the function so it's accessible elsewhere in this notebook
-
-
 query = []
 
-# Initialize the vector database and langchain clients
 
-def qdrant_connect_local():
-    print("attempting to assign qdrant local client")
+@st.cache_resource
+def get_retriever():
+    '''Creates and caches the document retriever and Qdrant client.'''
+
+    api_key = st.secrets["QDRANT_API_KEY"]
+    url = st.secrets["QDRANT_URL"]
+    client = QdrantClient(url=url, prefer_grpc=True, api_key=api_key) # cloud instance
+    # client = QdrantClient(path="/tmp/local_qdrant" )  # local instance: /private/tmp/local_qdrant
     
-    if 'client' in globals():
-        print(f"found a global qdrant client has been assigned")
-        return globals()['client']  # Return the existing client
-    client = QdrantClient(path=qdrant_path)  # Only required for a local instance
-    return client
-
-
-def qdrant_connect_cloud(api_key, url):
-    print("attempting to assign qdrant cloud client")
-    
-    if 'client' in globals():
-        print(f"found a global qdrant client has been assigned")
-        return globals()['client']  # Return the existing client
-    client = QdrantClient(
-        url=url, 
-        prefer_grpc=True,
-        api_key=api_key,
-    )
-    return client
-
-
-def create_langchain_qdrant(client):
-    '''create a langchain vectorstore object'''
+    # Create a Qdrant vectorstore for Langchain
     qdrant = Qdrant(
         client=client, 
-        collection_name=qdrant_collection_name, 
+        collection_name="ASK_vectorstore", 
         embeddings=config["embedding"]
     )
-    return qdrant
 
-
-def init_retriever_and_generator(qdrant):
-    '''initialize a document retriever and response generator'''
     retriever = qdrant.as_retriever(
         search_type=config["search_type"], 
-        search_kwargs={'k': config["k"], "fetch_k": config["fetch_k"], "lambda_mult": config["lambda_mult"], "filter": None}, # filter documents by metadata
+        search_kwargs={
+            'k': config["k"], 
+            "fetch_k": config["fetch_k"], 
+            "lambda_mult": config["lambda_mult"], 
+            "filter": None
+        }
     )
+    
     return retriever
-
-
-try:
-    # Cache the Qdrant client connection for performance optimization
-    qdrant_connect_cloud_cached = st.cache_resource(qdrant_connect_cloud)
-    api_key = st.secrets.QDRANT_API_KEY
-    url = st.secrets.QDRANT_URL
-    client = qdrant_connect_cloud_cached(api_key, url) # alt qdrant_connect_cloud to see changes
-    qdrant = create_langchain_qdrant(client)
-    retriever = init_retriever_and_generator(qdrant)
-except Exception as e:
-    st.error(f"An error occurred while setting up the Qdrant client: {e}")
-    st.stop() 
 
 
 def retrieval_context_excel_to_dict(file_path):

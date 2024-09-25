@@ -2,12 +2,7 @@
     "githubPullRequests.ignoredPullRequestBranches": [
         "main"
     ],
-    "workbench.colorCustomizations": {
-        "activityBar.background#": "#FFE873",
-        "activityBar.foreground#": "#306998",
-        "statusBar.background": "#306998",
-        "statusBar.foreground": "#FFE873"
-    },
+    "workbench.colorCustomizations": {},
     "CodeGPT.apiKey": "CodeGPT Plus Beta",
     "python.testing.pytestEnabled": true,
     "python.testing.pytestArgs": [

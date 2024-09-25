@@ -1,15 +1,20 @@
-import requests
 import os
 import re
 import datetime
+import requests
+import openai
+from openai.error import RateLimitError
 import pandas as pd
 import streamlit as st 
 from trubrics.integrations.streamlit import FeedbackCollector
 
 
-# Set up the Truberics feedback collector. feedback is accessible at https://trubrics.streamlit.app/?ref=blog.streamlit.io
+
 @st.cache_data
 def get_feedback_collector():
+    '''
+    Set up the Truberics feedback collector. Feedback is here https://trubrics.streamlit.app/?ref=blog.streamlit.io
+    '''
     return FeedbackCollector(
         project="default",
         email=st.secrets["TRUBRICS_EMAIL"],
@@ -17,6 +22,7 @@ def get_feedback_collector():
     )
 
 
+@st.cache_data
 def get_openai_api_status():
     '''Notify user if OpenAI is down so they don't blame the app'''
 
@@ -35,19 +41,42 @@ def get_openai_api_status():
             (component for component in components if component.get('name', '').lower() == 'api'), None)
 
         if api_component:
-            status_message = api_component.get('status', '')
+            status_message = api_component.get('status', 'unknown')
+            if status_message != 'operational':
+                return f"API status: {status_message}"
+            else:
+                return "API is operational"
         else:
-            status_message = 'API component not found'
+            return 'API component not found'
 
     except requests.exceptions.HTTPError as http_err:
-        status_message = f'HTTP error occurred: {repr(http_err)}'
+        return f"HTTP error occurred: {repr(http_err)}"
     except Exception as err:
-        status_message = f'Other error occurred: {repr(err)}'
-
-    return status_message
+        return f"Error checking API status: {repr(err)}"
 
 
+@st.cache_data
+def check_openai_rate_limit():
+    '''Check if OpenAI API account is in good standing and not hitting rate limits'''
+    try:
+        # Dummy request to OpenAI to test rate limit (replace with a lightweight request)
+        openai.Engine.list()  # Safe and lightweight API call to check account status
+        return "Account is in good standing"
+    
+    except RateLimitError:
+        return "Rate limit reached. Tell Drew to go fund his account!"
+    
+    except openai.error.AuthenticationError:
+        return "Authentication failed. Check OpenAI API key."
+    
+    except openai.error.OpenAIError as e:
+        return f"OpenAI error: {e}"
 
+    except Exception as e:
+        return f"Unexpected error: {e}"
+        
+
+@st.cache_data
 def get_library_doc_catalog_excel_and_date():
     '''Gets the most recent catalog of library documents for the user to review'''
 

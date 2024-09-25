@@ -1,21 +1,19 @@
 import streamlit as st
-# Collapse the sidebar and hide the sidebar collapse button
+
+# Collapse the sidebar
 st.set_page_config(page_title="ASK Auxiliary Source of Knowledge", initial_sidebar_state="collapsed")
 
 
-from trubrics.integrations.streamlit import FeedbackCollector
-import rag_qdrant_lc as rag # both scripts must be in same directory for this to work
-from rag_qdrant_lc import config
+import rag
 import utils
 import datetime, time
 from streamlit_extras.stylable_container import stylable_container
-import openai
 
 
+
+# Hide Streamlit's default UI elements: Sidebar button (doesn't work), Main menu, footer, and header
 st.markdown( """ <style> [data-testid="collapsedControl"] { display: none } </style> """, unsafe_allow_html=True, )
 
-
-# Hide Streamlit's default UI elements: Main menu, footer, and header
 hide_streamlit_ui = """
             <style>
             #MainMenu {visibility: hidden;}
@@ -41,11 +39,18 @@ st.markdown("""
 
 st.image("https://raw.githubusercontent.com/dvvilkins/ASK/main/images/ASK_logotype_color.png?raw=true", use_column_width="always")
 
+
 # Check Open AI service status
 api_status_message = utils.get_openai_api_status()
 if "operational" not in api_status_message:
     st.error(f"ASK is currently down due to OpenAI {api_status_message}.")
-else: st.write("#### Get answers to USCG Auxiliary questions from authoritative sources.")
+else: 
+    # Check OpenAI rate limit/account status
+    account_status_message = utils.check_openai_rate_limit()
+    if "good standing" in account_status_message:
+        st.write("#### Get answers to USCG Auxiliary questions from authoritative sources.")
+    else:
+        st.error("ASK has run out of Open AI credits. Tell Drew to go fund his account! uscgaux.drew@wks.us")    
 
 
 # Get the library catalog
@@ -71,23 +76,15 @@ user_question = st.text_input("Type your question or task here", max_chars=200)
 if user_question:
     collector = utils.get_feedback_collector()
     query = rag.query_maker(user_question)
+    retriever = rag.get_retriever()
     with st.status("Checking documents...", expanded=False) as status:
-        try:
-            if query == "pledge":
-                response = rag.rag_dummy(query, retriever)  # rag.rag_dummy for UNIT TESTING
-            else:
-                response = rag.rag(query, retriever)
+        if query == "pledge":
+            response = rag.rag_dummy(query, retriever)  # rag.rag_dummy for UNIT TESTING
+        else:
+            response = rag.rag(query, retriever)
 
-            short_source_list = rag.create_short_source_list(response)
-            long_source_list = rag.create_long_source_list(response)
-
-        except openai.error.RateLimitError:
-            print("ASK has run out of Open AI credits. Tell Drew to go fund his account! uscgaux.drew@wks.us")
-            response = None  
-
-        except Exception as e:
-            print(f"An error occurred: {e} Please try ASK again later")
-            response = None  
+        short_source_list = rag.create_short_source_list(response)
+        long_source_list = rag.create_long_source_list(response)
 
         examples.empty()  
         st.info(f"**Question:** *{user_question}*\n\n ##### Response:\n{response['result']}\n\n **Sources:**  \n{short_source_list}\n **Note:** \n ASK can make mistakes. Verify the sources and check your local policies.")

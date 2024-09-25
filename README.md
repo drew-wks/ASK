@@ -80,7 +80,7 @@ Estimated year one costs are given below based on the recommended configuration.
  <img align="center" src="https://raw.githubusercontent.com/drew-wks/ASK/main/images/costs.png" alt="costs" width="50%"/>
 
 ## Github Repo Contents
-The streamlit app is a multi-page app with the TOC hidden. Streamlit runs off of prompt_ui.py. ASK_inference.py contains most of the retrieval and inference code.  
+The streamlit app is a multi-page app with the TOC hidden. Streamlit runs off of ui.py. rag.py contains most of the retrieval and inference code.  
 Efforts were taken to free up as much screen real estate as possible for small mobile screens. This includes:
   - Creating a rich info area located on a separate page of a multipage app and hiding the TOC
   - Linking to other pages with a hyperlink rather than a button that takes up vertical space
@@ -101,7 +101,7 @@ Testing
 2. Open the project in VS Code.
 3. Set up your local environment and python interpreter 
 4. Add your streamlit secrets into .secrets.toml
-5. Select the prompt_ui.py file
+5. Select the ui.py file
 6. Go to the "Run and Debug" panel in VS Code (Ctrl+Shift+D or Cmd+Shift+D).
 7. Select "Run Streamlit App" and press the green play button to start
 8. The Streamlit user interface will load in the default browser
