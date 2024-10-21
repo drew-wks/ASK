@@ -48,7 +48,7 @@ st.image("https://raw.githubusercontent.com/dvvilkins/ASK/main/images/ASK_logoty
 
 back = st.button("< Back to App", type="primary")
 if back:
-    switch_page("ui")
+    switch_page("prompt_ui")
 
 
 tab1, tab2, tab3, tab4, tab5 = st.tabs(["Overview", "Library", "FAQs", "Product Roadmap", "Feedback"])
