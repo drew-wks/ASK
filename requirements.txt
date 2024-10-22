@@ -5,7 +5,7 @@ trubrics[streamlit]==1.6.1
 langchain==0.0.315
 logging
 qdrant-client   # testing removing this for pydantic issue ==1.6.3
-tiktoken==0.4
+tiktoken==0.5.2
 streamlit_extras
 datetime # used in seveaal places to create a delay
 pandas
@@ -13,5 +13,7 @@ pytest
 openpyxl # used to import the library.xlsx file
 selenium # needed to check for app suspension due to inactivity
 webdriver-manager  # needed to check for app suspension due to inactivity
+setuptools>=42
+wheel
 
 # TODO figure out which package is using Pydantic and update it. class-based `config` is deperecated. Also, json_encoders
