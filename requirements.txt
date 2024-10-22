@@ -5,7 +5,7 @@ trubrics[streamlit]==1.6.1
 langchain==0.0.315
 logging
 qdrant-client   # testing removing this for pydantic issue ==1.6.3
-tiktoken==0.5.1
+tiktoken==0.4
 streamlit_extras
 datetime # used in seveaal places to create a delay
 pandas
