@@ -2,8 +2,6 @@ import os
 import re
 import datetime
 import requests
-import openai
-from openai.error import RateLimitError
 import pandas as pd
 import streamlit as st 
 from trubrics.integrations.streamlit import FeedbackCollector
@@ -54,26 +52,6 @@ def get_openai_api_status():
     except Exception as err:
         return f"Error checking API status: {repr(err)}"
 
-
-@st.cache_data
-def check_openai_rate_limit():
-    '''Check if OpenAI API account is in good standing and not hitting rate limits'''
-    try:
-        # Dummy request to OpenAI to test rate limit (replace with a lightweight request)
-        openai.Engine.list()  # Safe and lightweight API call to check account status
-        return "Account is in good standing"
-    
-    except RateLimitError:
-        return "Rate limit reached. Tell Drew to go fund his account!"
-    
-    except openai.error.AuthenticationError:
-        return "Authentication failed. Check OpenAI API key."
-    
-    except openai.error.OpenAIError as e:
-        return f"OpenAI error: {e}"
-
-    except Exception as e:
-        return f"Unexpected error: {e}"
         
 
 @st.cache_data

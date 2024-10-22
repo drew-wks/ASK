@@ -91,11 +91,7 @@ if user_question:
                 response = ASK.rag(query, retriever)
 
             short_source_list = ASK.create_short_source_list(response)
-            long_source_list = ASK.create_long_source_list(response)
-
-        except openai.error.RateLimitError:
-            print("ASK has run out of Open AI credits. Tell Drew to go fund his account! uscgaux.drew@wks.us")
-            response = None  
+            long_source_list = ASK.create_long_source_list(response) 
 
         except Exception as e:
             print(f"An error occurred: {e} Please try ASK again later")

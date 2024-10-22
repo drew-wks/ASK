@@ -45,12 +45,7 @@ api_status_message = utils.get_openai_api_status()
 if "operational" not in api_status_message:
     st.error(f"ASK is currently down due to OpenAI {api_status_message}.")
 else: 
-    # Check OpenAI rate limit/account status
-    account_status_message = utils.check_openai_rate_limit()
-    if "good standing" in account_status_message:
-        st.write("#### Get answers to USCG Auxiliary questions from authoritative sources.")
-    else:
-        st.error("ASK has run out of Open AI credits. Tell Drew to go fund his account! uscgaux.drew@wks.us")    
+    st.write("#### Get answers to USCG Auxiliary questions from authoritative sources.")
 
 
 # Get the library catalog
