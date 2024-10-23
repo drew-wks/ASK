@@ -36,17 +36,10 @@ query = []
 def get_retriever():
     '''Creates and caches the document retriever and Qdrant client.'''
 
-    api_key = st.secrets["QDRANT_API_KEY"]
-    url = st.secrets["QDRANT_URL"]
-    client = QdrantClient(url=url, prefer_grpc=True, api_key=api_key) # cloud instance
+    client = QdrantClient(url=st.secrets["QDRANT_URL"], prefer_grpc=True, api_key=st.secrets["QDRANT_API_KEY"]) # cloud instance
     # client = QdrantClient(path="/tmp/local_qdrant" )  # local instance: /private/tmp/local_qdrant
     
-    # Create a Qdrant vectorstore for Langchain
-    qdrant = Qdrant(
-        client=client, 
-        collection_name="ASK_vectorstore", 
-        embeddings=config["embedding"]
-    )
+    qdrant = Qdrant(client=client, collection_name="ASK_vectorstore", embeddings=config["embedding"])
 
     retriever = qdrant.as_retriever(
         search_type=config["search_type"], 
@@ -65,10 +58,11 @@ def retrieval_context_excel_to_dict(file_path):
     ''' 
     Reads an Excel file into a dictionary of dictionaries. 
 
-    Each worksheet is read as its own dictionary, where 
-    the values in the first column are the keys and the 
-    values in the second column are the values. If a 
-    worksheet has fewer than two columns, it will be skipped.
+
+    Each worksheet is read as its own dictionary, the first 
+    column becomes the keys and the second column the values. 
+    A worksheet with less than two columns will be skipped.
+    
     
     Args:
         file_path (str): The path to the Excel file.
@@ -93,52 +87,47 @@ def retrieval_context_excel_to_dict(file_path):
     return dict
 
 
+def enrich_query(user_question, acronyms_dict, terms_dict):
+    '''
+    Dynamically enriches the user question using acronyms and jargon terms.
+    
+    - Replaces acronyms with their full definition from the dictionary.
+    - Appends additional information for specific terms or jargon
+    '''
+    enriched_question = user_question
+
+    # Replace acronyms with full forms
+    for acronym, full_form in acronyms_dict.items():
+        enriched_question = enriched_question.replace(acronym, full_form)
+
+    # Append additional information for jargon terms
+    for term, explanation in terms_dict.items():
+        if term in enriched_question:
+            enriched_question += f" ({explanation})"
+
+    return enriched_question
+
 
 def query_maker(user_question):
-    '''Modifies the user's question by adding context from acronym definitions and jargon explanations.
+    '''Modifies the user's question by adding context from acronym definitions and jargon explanations.'''
 
-    This function retrieves two dictionaries, 'acronyms' and 'terms', from an Excel file and uses them to modify the user's question.
-    
-    - The 'acronyms' dictionary maps acronyms to their full definitions, which are used to replace acronyms in the question.
-    - The 'terms' dictionary provides additional information for specific terms or jargon, which are appended to the user's question when those terms are identified.
-
-    The Excel file containing the 'acronyms' and 'terms' dictionaries is parsed by the 'retrieval_context_excel_to_dict' function, which processes the file and converts relevant sheets into dictionaries.
-    '''
-
+    # Load acronym and terms dictionaries
     retrieval_context_dict = retrieval_context_excel_to_dict('config/retrieval_context.xlsx')
-    acronyms_dict = retrieval_context_dict.get("acronyms", None)
-    acronyms_json = json.dumps(acronyms_dict, indent=4)
-    terms_dict = retrieval_context_dict.get("terms", None)
-    terms_json = json.dumps(terms_dict, indent=4)
+    acronyms_dict = retrieval_context_dict.get("acronyms", {})
+    terms_dict = retrieval_context_dict.get("terms", {})
+
+    # Enrich the user question
+    enriched_question = enrich_query(user_question, acronyms_dict, terms_dict)
 
     system_message = """
-    Your task is to modify the user's question based on two lists: 'acronym_json' and 'terms_json'. Each list contains terms and their associated additional information. Follow these instructions:
-
-    - Review the user's question and identify if any acronyms from 'acronym_json' or phrases in 'terms_json' appear in it.
-    - If an acronym from 'acronym_json' replace the term with the associated additional information.
-    - If a phrase from 'terms_json' appears in the question, append its associated additional information to the end of the question.
-    - Do not remove or alter any other part of the original question.
-    - Do not provide an answer to the question.
-    - If no terms from either list are found in the question, leave the question as is.
-
-    Example:
-    - Question: How do I get a VE certification?
-    - Your response: How do I get a vessel examiner certification? Certification includes information about initial qualification.
-
-    - Question: What are the requirements for pilot training?
-    - Your response: What are the requirements for pilot training? Pilot is a position in the aviation program.
-
-        - Question: What is required to stay current in the Auxiliary?
-    - Your response: What is required to stay current in the Auxiliary? To be in the Auxiliary, members are required to maintain the Core Training (AUXCT), undego an annual uniform inspection, and pay annual dues.
+    Your task is to modify the user's question based on two lists: 'acronyms' and 'terms'. Each list contains terms and their associated additional information. Use the enriched question to answer. If you don't know the answer, just say I don't know, don't make one up.
     """
-
-    user_message = f"User question: {user_question}```acronyms_json: {acronyms_json}\n\nterms_json: {terms_json}```"
 
     messages = [
         {'role': 'system', 'content': system_message},
-        {'role': 'user', 'content': user_message},
+        {'role': 'user', 'content': enriched_question},
     ]
-    
+
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
         messages=messages,

@@ -40,3 +40,7 @@ Things I plan to do over the coming months to continue to improve ASK
 [x] Get Streamlit working faster via st.session_state and st.cache_resource
 [x] Incorporate better visual status into UI  
 [x] Add a warning when the underlying LLM (e.g., OpenAI) is down  
+
+
+##### Code and Platform Simplification: make ASK easier to maintain and extend
+[ ] Use LangChain's prompt templates with dynamic enrichment rather than manually parsing Excel files.
