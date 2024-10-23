@@ -13,7 +13,7 @@ import pandas as pd
 
 from langchain.embeddings import OpenAIEmbeddings
 
-openai_api_key = st.secrets["OPENAI_API_KEY"]
+openai_api_key = st.secrets["OPENAI_API_KEY"] #  The LangChain object OpenAIEmbeddings expects the API key to be passed as a parameter.
 
 config = {
     "embedding": OpenAIEmbeddings(openai_api_key=openai_api_key),
@@ -28,7 +28,7 @@ config = {
     "chain_type": "stuff", # a LangChain parameter
 }
 
-# openai.api_key = st.secrets["OPENAI_API_KEY"] # TODO Remove once confirmed no longer used
+openai.api_key = st.secrets["OPENAI_API_KEY"] # required for openai.ChatCompletion.create()
 
 llm=ChatOpenAI(model=config["model"], temperature=config["temperature"]) #keep outside the function so it's accessible elsewhere in this notebook
 query = []
