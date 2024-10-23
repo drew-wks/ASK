@@ -13,10 +13,8 @@ import pandas as pd
 
 from langchain.embeddings import OpenAIEmbeddings
 
-openai_api_key = st.secrets["OPENAI_API_KEY"] #  The LangChain object OpenAIEmbeddings expects the API key to be passed as a parameter.
-
 config = {
-    "embedding": OpenAIEmbeddings(openai_api_key=openai_api_key),
+    "embedding": OpenAIEmbeddings(openai_api_key=st.secrets["OPENAI_API_KEY"]), # langchain
     "embedding_dims": 1536,
     "search_type": "mmr",
     "k": 5,
@@ -141,7 +139,9 @@ def query_maker(user_question):
         {'role': 'user', 'content': user_message},
     ]
 
-    response = openai.ChatCompletion.create(
+    client = openai.Client(api_key=st.secrets["OPENAI_API_KEY"])
+    
+    response = client.chat.completions.create(
         model=config["model"],
         messages=messages,
         temperature=config["temperature"],
