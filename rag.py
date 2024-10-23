@@ -138,13 +138,11 @@ def query_maker(user_question):
         {'role': 'system', 'content': system_message},
         {'role': 'user', 'content': user_message},
     ]
-
-    client = openai.Client(api_key=st.secrets["OPENAI_API_KEY"])
     
-    response = client.chat.completions.create(
-        model=config["model"],
+    response = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",
         messages=messages,
-        temperature=config["temperature"],
+        temperature=0.7,
         max_tokens=2000,
     )
 
@@ -272,8 +270,4 @@ if __name__ == "__main__":
     short_source_list = create_short_source_list(response)
     long_source_list = create_long_source_list(response)
     query_length, source_length, result_length, total_tokens = count_tokens(response)
-
-
-
-
 
