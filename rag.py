@@ -10,18 +10,13 @@ import tiktoken
 import streamlit as st
 import openai
 import pandas as pd
-import utils
-
-
-'''
-from dotenv import load_dotenv, find_dotenv
-_ = load_dotenv(find_dotenv()) # read local .env file
-'''
 
 from langchain.embeddings import OpenAIEmbeddings
 
+openai_api_key = st.secrets["OPENAI_API_KEY"]
+
 config = {
-    "embedding": OpenAIEmbeddings(),  # includes a pull of the open api key
+    "embedding": OpenAIEmbeddings(openai_api_key=openai_api_key),
     "embedding_dims": 1536,
     "search_type": "mmr",
     "k": 5,
@@ -33,8 +28,8 @@ config = {
     "chain_type": "stuff", # a LangChain parameter
 }
 
+# openai.api_key = st.secrets["OPENAI_API_KEY"] # TODO Remove once confirmed no longer used
 
-openai.api_key = st.secrets["OPENAI_API_KEY"] # Use this version for streamlit
 llm=ChatOpenAI(model=config["model"], temperature=config["temperature"]) #keep outside the function so it's accessible elsewhere in this notebook
 query = []
 
@@ -64,7 +59,7 @@ def get_retriever():
             "filter": None
         }
     )
-    
+
     return retriever
 
 
