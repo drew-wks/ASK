@@ -70,14 +70,10 @@ user_feedback = " "
 user_question = st.text_input("Type your question or task here", max_chars=200)
 if user_question:
     collector = utils.get_feedback_collector()
-    query = rag.query_maker(user_question)
+    query = rag.enrich_question_via_code(user_question)
     retriever = rag.get_retriever()
     with st.status("Checking documents...", expanded=False) as status:
-        if query == "pledge":
-            response = rag.rag_dummy(query, retriever)  # rag.rag_dummy for UNIT TESTING
-        else:
-            response = rag.rag(query, retriever)
-
+        response = rag.rag(query, retriever)
         short_source_list = rag.create_short_source_list(response)
         long_source_list = rag.create_long_source_list(response)
 
