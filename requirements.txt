@@ -1,13 +1,13 @@
-streamlit
-st-click-detector
+streamlit==1.39.0
+st-click-detector==0.1.3
+streamlit-toggle-switch==1.0.2
 openai==0.27.8
 trubrics[streamlit]==1.6.1
 langchain==0.0.315
 qdrant-client==1.6.3
 tiktoken==0.5.1
-streamlit_extras
-datetime
-pandas
-openpyxl # used to import the library.xlsx file
-pypdf
-#ipykernal
+streamlit-extras==0.5.0
+datetime==5.5
+pandas==2.2.3
+openpyxl==3.1.5 # used to import the library.xlsx file
+pypdf==5.0.1
