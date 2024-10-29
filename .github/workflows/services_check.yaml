@@ -1,5 +1,6 @@
 name: Services check
-
+# Prevents the free Qdrant Cloud service from going into suspend
+# mode and confirms the Streamlit UI is up and running
 on:
   schedule:
     - cron: '0 13 * * 1,5'
@@ -9,6 +10,7 @@ on:
 
 jobs:
   check_services:
+    if: github.ref == 'refs/heads/main'  # update with your branch name
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
