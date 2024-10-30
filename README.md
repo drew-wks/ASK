@@ -1,6 +1,7 @@
-![Development Branch](https://img.shields.io/badge/status-development-blue)
+| ![Development Branch](https://img.shields.io/badge/branch-development-blue?style=for-the-badge) |
+|---|
+| **This is a development branch. Features here may be experimental and not fully stable.** |
 
-**Note: This branch is in active development. Features and updates here may be experimental and are not guaranteed to be stable.**
 
 ![Logo](https://raw.githubusercontent.com/drew-wks/ASK/main/images/ASK_logotype_color.png?raw=true)
 
