@@ -1,14 +1,14 @@
 #### ASK Feature Roadmap
-Things I plan to do over the coming months to continue to improve ASK  
+Planned improvements for ASK over the coming months  
 
 
 ##### Speed and Accuracy: continue to improve the results
 [x] Explore better prompts through prompt templates   
-[x] Tune retrieval hyperparamters such as lambda, k-means 
+[x] Tune retrieval hyperparameters such as lambda, k-means 
 [x] Tag documents with effective date  
 [x] Insert a pre-prompting/inference step to ensure all relevant docs are retrieved
 [ ] Incorporate search filtering (hybrid search) capability, possible via sparce vectors
-[ ] Test search filteirng Include effective date in retrieval and explore giving greater to weight to more recent documents: currently assessing 
+[ ] Test search filtering Include effective date in retrieval and explore giving greater to weight to more recent documents: currently assessing 
 [ ] Test new document pre-processing approaches that can preseve semantic meaning contained in its hierarchical structure (e.g., unstructured.io)
 [ ] Test new document pre-processing approaches that can parse table and image info
 [ ] Reason through contradictions in corpus docs (e.g., conflicting policies)
@@ -17,7 +17,7 @@ Things I plan to do over the coming months to continue to improve ASK
 
 ##### Evaluation & Observability: tooling to measure and assess performance  
 [x] Select instrumentation provider: wandb, Neptune, Trubrics    
-[x] Implement Truberics for logging prompts and human feedback
+[x] Implement Trubrics for logging prompts and human feedback
 [ ] Evaluate Neptune platform for incorporating [RAG quality metrics](https://docs.rungalileo.io/galileo/gen-ai-studio-products/galileo-guardrail-metrics#rag-quality-metrics) 
 [ ] Add tokens usage and RAG query parameters to Truberics logs
 
