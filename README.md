@@ -1,6 +1,6 @@
 | ![Development Branch](https://img.shields.io/badge/branch-development-blue?style=for-the-badge) |
 |---|
-|>->->-> **This is a development branch. Features here may be experimental and not fully stable.** <-<-<-<|
+|<span style="color: blue;">>->->-> **This is a development branch. Features here may be experimental and not fully stable.** <-<-<-<-</span>|
 
 
 ![Logo](https://raw.githubusercontent.com/drew-wks/ASK/main/images/ASK_logotype_color.png?raw=true)
