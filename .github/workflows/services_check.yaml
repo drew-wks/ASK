@@ -7,10 +7,14 @@ on:
     # GitHub's scheduler runs jobs on a fixed daily or weekly schedule. 
     # This runs at 13:00 on every Monday and Friday
   workflow_dispatch:  # enables ability to run manually 
+  push:
+    branches:
+      - main
+      - v1
+      - test
 
 jobs:
   check_services:
-    if: github.ref == 'refs/heads/main'  # update with your branch name
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

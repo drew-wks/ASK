@@ -1,20 +1,23 @@
-name: Empty github commit (triggers Streamlit update)
+name: Empty GitHub Commit (triggers Streamlit update)
 # Prevents app from going into inactive mode by making an empty
 # commit, thus triggering an update on Streamlit Community Cloud
-
+# applies to multiple branches as specified below
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 15 * * *'
-    # Daily at 3pm
+    - cron: '0 15 * * *'  # Daily at 3pm
+  push:
+    branches:
+      - main
+      - v1
+      - test
 
 permissions:
   contents: write
   
 jobs:
   Empty_commit_job:
-    if: github.ref == 'refs/heads/main'  # update with your branch name
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
