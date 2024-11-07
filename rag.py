@@ -4,7 +4,7 @@ import pandas as pd
 import openai
 import json
 from qdrant_client import QdrantClient
-# from langchain_community.chat_models import ChatOpenAI
+from langchain_community.chat_models import ChatOpenAI
 from langchain.vectorstores import Qdrant
 from langchain.chains import RetrievalQA, StuffDocumentsChain, LLMChain
 from langchain.prompts import PromptTemplate, SystemMessagePromptTemplate

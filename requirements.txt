@@ -3,8 +3,8 @@ st-click-detector
 openai>=1
 trubrics[streamlit]==1.6.1
 langchain==0.3.4
-langchain-openai==0.2.6
-logging
+# langchain-openai==0.2.6
+langchain-community==0.2.18
 qdrant-client   # testing removing this for pydantic issue ==1.6.3
 tiktoken==0.7
 streamlit_extras

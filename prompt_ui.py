@@ -51,7 +51,7 @@ except Exception as e:
     st.stop() 
 
 
-st.image("https://raw.githubusercontent.com/dvvilkins/ASK/main/images/ASK_logotype_color.png?raw=true", use_column_width="always")
+st.image("https://raw.githubusercontent.com/dvvilkins/ASK/main/images/ASK_logotype_color.png?raw=true", use_container_width=True)
 
 # Check Open AI service status
 api_status_message = utils.get_openai_api_status()

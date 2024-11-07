@@ -3,6 +3,8 @@
         "main"
     ],
     "workbench.colorCustomizations": {
+        "#activityBar.background": "#323330",
+        "#activityBar.foreground": "#F0DB4F",
         "activityBar.background#": "#FFE873",
         "activityBar.foreground#": "#306998",
         "statusBar.background": "#306998",

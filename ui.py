@@ -37,7 +37,7 @@ st.markdown("""
         """, unsafe_allow_html=True)
 
 
-st.image("https://raw.githubusercontent.com/dvvilkins/ASK/main/images/ASK_logotype_color.png?raw=true", use_column_width="always")
+st.image("https://raw.githubusercontent.com/dvvilkins/ASK/main/images/ASK_logotype_color.png?raw=true", use_container_width=True)
 
 
 # Check Open AI service status
