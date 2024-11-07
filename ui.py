@@ -1,3 +1,4 @@
+import time
 import streamlit as st
 
 # Collapse the sidebar
@@ -6,7 +7,6 @@ st.set_page_config(page_title="ASK Auxiliary Source of Knowledge", initial_sideb
 
 import rag
 import utils
-import datetime, time
 from streamlit_extras.stylable_container import stylable_container
 
 

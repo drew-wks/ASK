@@ -3,7 +3,7 @@ from trubrics.integrations.streamlit import FeedbackCollector
 import inference as ASK # both scripts must be in same directory for this to work
 from inference import config
 import utils
-import datetime, time
+import time
 from streamlit_extras.stylable_container import stylable_container
 import openai
 
