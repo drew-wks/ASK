@@ -1,7 +1,6 @@
+import os
 import pandas as pd
 import re
-import os
-from dotenv import load_dotenv, find_dotenv
 from typing import List
 from typing_extensions import Annotated, TypedDict
 import streamlit as st
@@ -28,7 +27,7 @@ qdrant_path = "/tmp/local_qdrant"
 # Langchain and OpenAI
 OPENAI_API_KEY = st.secrets["OPENAI_API_KEY"] # for langchain_openai.OpenAIEmbeddings
 
-config = {
+CONFIG = {
     "embedding": OpenAIEmbeddings(),
     "embedding_dims": 1536,
     "search_type": "mmr",
@@ -41,10 +40,10 @@ config = {
 }
 
 # keep outside the function so it's accessible elsewhere in this notebook
-llm = ChatOpenAI(model=config["model"], temperature=config["temperature"])
+llm = ChatOpenAI(model=CONFIG["model"], temperature=CONFIG["temperature"])
 
 
-#@st.cache_resource
+@st.cache_resource
 def get_retriever():
     '''Creates and caches the document retriever and Qdrant client.'''
 
@@ -59,13 +58,13 @@ def get_retriever():
     qdrant = QdrantVectorStore(
         client=client,
         collection_name=qdrant_collection_name,
-        embedding=config["embedding"]
+        embedding=CONFIG["embedding"]
     )
 
     retriever = qdrant.as_retriever(
-        search_type=config["search_type"],
-        search_kwargs={'k': config["k"], "fetch_k": config["fetch_k"],
-                       "lambda_mult": config["lambda_mult"], "filter": None},  # filter documents by metadata
+        search_type=CONFIG["search_type"],
+        search_kwargs={'k': CONFIG["k"], "fetch_k": CONFIG["fetch_k"],
+                       "lambda_mult": CONFIG["lambda_mult"], "filter": None},  # filter documents by metadata
     )
 
     return retriever
@@ -117,7 +116,7 @@ def create_prompt():
 #@st.cache_data
 def enrich_question_via_code(user_question: str) -> str:
     retrieval_context_dict = get_retrieval_context(
-        'config/retrieval_context.xlsx')
+        'CONFIG/retrieval_context.xlsx')
     acronyms_dict = retrieval_context_dict.get("acronyms", {})
     terms_dict = retrieval_context_dict.get("terms", {})
 
