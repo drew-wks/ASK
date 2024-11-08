@@ -1,53 +1,41 @@
-# %% [markdown]
-# Assumes Langchain v.0.3.4
-# 
-
-# %%
-# %pip install --upgrade --quiet langchain-openai
-# %pip install langchain-qdrant
-# % pip install streamlit
-
-# %%
-import streamlit as st
 import pandas as pd
 import re
+import os
+from dotenv import load_dotenv, find_dotenv
+from typing import List
+from typing_extensions import Annotated, TypedDict
+import streamlit as st
+from qdrant_client import QdrantClient
+from langchain_qdrant import QdrantVectorStore
+from langchain_openai import OpenAIEmbeddings, ChatOpenAI
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.runnables import RunnablePassthrough
 
-# %% [markdown]
+
 # ### Langsmith
 # accessible [here](https://smith.langchain.com/o/3941ecea-6957-508c-9f4f-08ed62dc7d61/projects/p/0aea481f-080e-45eb-bae1-2ae8ee246bd9)
 
-# %%
-# LANGSMITH CONFIG
-#
+# CONFIGS
+#Langsmith
 # These have to be set as environmental variables to be accessed behind the scenes
-import os
-from dotenv import load_dotenv, find_dotenv
-
 env_path = find_dotenv()
 load_dotenv(env_path)
-
-# os.environ["LANGCHAIN_TRACING_V2"] = st.secrets["LANGCHAIN_TRACING_V2"]
-# os.environ["LANGCHAIN_PROJECT"] = st.secrets["LANGCHAIN_PROJECT"]
 
 os.environ["LANGCHAIN_API_KEY"] = st.secrets["LANGCHAIN_API_KEY"]
 os.environ["LANGCHAIN_TRACING_V2"] = "true"
 os.environ["LANGCHAIN_PROJECT"] = "ASK_main"
 
-# %%
-# required for langchain_openai.OpenAIEmbeddings
-OPENAI_API_KEY = st.secrets["OPENAI_API_KEY"]
-# open_api_key = st.secrets["OPENAI_API_KEY"]
+#Qdrant
+QDRANT_URL = st.secrets["QDRANT_URL"]
+QDRANT_API_KEY = st.secrets["QDRANT_API_KEY"]
+qdrant_collection_name = "ASK_vectorstore"
+qdrant_path = "/tmp/local_qdrant"
 
-# %%
-from qdrant_client import QdrantClient
-# from langchain.vectorstores import Qdrant Deprecated
-from langchain_qdrant import QdrantVectorStore
-from langchain_openai import OpenAIEmbeddings
 
-# %%
+# Langchain and OpenAI
+OPENAI_API_KEY = st.secrets["OPENAI_API_KEY"] # for langchain_openai.OpenAIEmbeddings
+
 config = {
-    # langchain. No longer needs the API key parameter in 0.3.4
-    # install ``langchain_openai`` and set``OPENAI_API_KEY`
     "embedding": OpenAIEmbeddings(),
     "embedding_dims": 1536,
     "search_type": "mmr",
@@ -57,32 +45,20 @@ config = {
     "score_threshold": 0.5,
     "model": "gpt-3.5-turbo-16k",
     "temperature": 0.7,
-    "chain_type": "stuff",  # a LangChain parameter
 }
-
-qdrant_collection_name = "ASK_vectorstore"
-qdrant_path = "/tmp/local_qdrant"
-
-# %%
-from langchain_openai import ChatOpenAI
-from langchain_core.prompts import ChatPromptTemplate
-from typing import List
-from langchain_core.runnables import RunnablePassthrough
-from typing_extensions import Annotated, TypedDict
 
 # keep outside the function so it's accessible elsewhere in this notebook
 llm = ChatOpenAI(model=config["model"], temperature=config["temperature"])
-query = []
 
-# %%
-@st.cache_resource
+
+#@st.cache_resource
 def get_retriever():
     '''Creates and caches the document retriever and Qdrant client.'''
 
     client = QdrantClient(
-        url=st.secrets["QDRANT_URL"],
+        url=QDRANT_URL,
         prefer_grpc=True,
-        api_key=st.secrets["QDRANT_API_KEY"]
+        api_key=QDRANT_API_KEY,
     )  # cloud instance
     # client = QdrantClient(path="/tmp/local_qdrant" )  # local instance: /private/tmp/local_qdrant
 
@@ -101,10 +77,8 @@ def get_retriever():
 
     return retriever
 
-# %% [markdown]
-# ## 3. Create your optional user question enrichment
 
-# %%
+
 # Define schema for response
 class AnswerWithSources(TypedDict):
     """An answer to the question, with sources."""
@@ -117,7 +91,7 @@ class AnswerWithSources(TypedDict):
 
 
 # Cache data retrieval function
-@st.cache_data
+#@st.cache_data
 def get_retrieval_context(file_path: str):
     '''Reads the worksheets Excel file into a dictionary of dictionaries.'''
     xls = pd.ExcelFile(file_path)
@@ -131,7 +105,7 @@ def get_retrieval_context(file_path: str):
 
 
 # Cache the prompt creation
-@st.cache_resource
+#@st.cache_resource
 def create_prompt():
     system_prompt = (
         "Use the following pieces of context to answer the users question. "
@@ -147,7 +121,7 @@ def create_prompt():
 
 
 # Cache enrichment function to use cached context
-@st.cache_data
+#@st.cache_data
 def enrich_question_via_code(user_question: str) -> str:
     retrieval_context_dict = get_retrieval_context(
         'config/retrieval_context.xlsx')
@@ -172,7 +146,7 @@ def format_docs(docs):
 
 
 # Caching the RAG pipeline setup as a resource
-@st.cache_resource
+# @st.cache_resource
 def create_rag_pipeline():
     prompt = create_prompt()
     rag_chain_from_docs = (
@@ -186,6 +160,7 @@ def create_rag_pipeline():
     retrieve_docs = (lambda x: x["input"]) | get_retriever()
     return RunnablePassthrough.assign(context=retrieve_docs).assign(answer=rag_chain_from_docs)
 
+query = [] # I don't think this is needed anymore
 
 # RAG invocation
 def rag(user_question):
@@ -194,125 +169,33 @@ def rag(user_question):
     return response
 
 
-user_question = "what is required to wear the VE insignia?"
-response = rag(user_question)
-response
+def create_short_source_list(response):
+    markdown_list = []
+    
+    for i, doc in enumerate(response['context'], start=1):
+        page_content = doc.page_content
+        source = doc.metadata['source']
+        short_source = source.split('/')[-1].split('.')[0]
+        page = doc.metadata['page']
+        markdown_list.append(f"*{short_source}*, page {page}\n")
 
-# %%
-
-
-# %% [markdown]
-# ## 3. Create the pipeline using LCEL
-
-# %% [markdown]
-# ### Custom LCEL implementation which allows you the option of only returning sources that were actually used in the response
-# 
-
-# %% [markdown]
-# It works by building up a dict with the input query,
-# then add the retrieved docs in the `"context"` key;
-# Feed both the query and context into a RAG chain and add the result to the dict.
-# 
-# We use the model's tool-calling features to generate structured output, consisting of an answer and list of sources. The schema for the response is represented in the `AnswerWithSources` TypedDict, below.
-# We remove the `StrOutputParser()`, as we expect `dict` output in this scenario.
-# Note that `result` is a dict with keys `"input"`, `"context"`, and `"answer"`:
-# 
-
-# %%
+    short_source_list = '\n'.join(markdown_list)
+    
+    return short_source_list
 
 
 
-
-# %% [markdown]
-# THis outputs the model's response as well as the subset of retrieved information that it used to infer its response.
-# 
-# Note that the `answer` element in the `response` disctionary is itself a dictionary containing `answer` and `source` keys
-# 
-
-# %% [markdown]
-# ## 4. Run the RAG
-
-# %%
-'''
-user_question = "How long can someone be VNACO in the Auxiliary?"
-user_question = enrich_question_via_code(user_question)
-retriever = get_retriever()
-response = chain.invoke({"input": user_question})
-'''
-
-# %%
-response
-
-# %%
-response = chain.invoke(
-    {"input": user_question})
-response
-
-# %%
-import json
-
-print(json.dumps(response["answer"], indent=2))
-
-# %% [markdown]
-# ### Since the response object also contains-- the original query, all the retrieved docs, the LLM response, and the sources used by the model to generate its answer-- we can also list the titles of the retrieved documents and the source page content
-# 
-
-# %%
-'''
-    item.page_content
-    item.metadata['source']
-    item.metadata['page']
-'''
-print("Sources:")
-for item in response["context"]:
-    print(
-        f"{item.metadata['source']} page {item.metadata['page']}" + "\n")
-
-# %% [markdown]
-# ### THis one is formatted in the same way as the short source list in ASK
-# 
-
-# %%
-markdown_list = []
-
-for i, doc in enumerate(response['context'], start=1):
-    page_content = doc.page_content
-    source = doc.metadata['source']
-    short_source = source.split('/')[-1].split('.')[0]
-    page = doc.metadata['page']
-    markdown_list.append(f"*{short_source}*, page {page}\n")
-
-short_source_list = '\n'.join(markdown_list)
-print(short_source_list)
-
-# %% [markdown]
-# ### THis one is formatted in the same way as the long source list in ASK
-# 
-
-# %%
-markdown_list = []
-
-for i, doc in enumerate(response['context'], start=1):
-    page_content = doc.page_content
-    source = doc.metadata['source']
-    short_source = source.split('/')[-1].split('.')[0]
-    page = doc.metadata['page']
-    markdown_list.append(
-        f"**Reference {i}:**    *{short_source}*, page {page}   {page_content}\n")
-
-long_source_list = '\n'.join(markdown_list)
-print(long_source_list)
-
-# %% [markdown]
-# ### For reference, here's the full response object. You can see it contains the original query all the retrieved docs, the LLM response, and the sources used by the model to generate its answer.
-# 
-
-# %%
-import json
-
-print(json.dumps(response, indent=2, default=str))
-
-# %%
-
-
+def create_long_source_list(response):
+    markdown_list = []
+    
+    for i, doc in enumerate(response['context'], start=1):
+        page_content = doc.page_content  
+        source = doc.metadata['source']  
+        short_source = source.split('/')[-1].split('.')[0]  
+        page = doc.metadata['page']  
+        markdown_list.append(f"**Reference {i}:**    *{short_source}*, page {page}  \n   {page_content}\n")
+    
+    long_source_list = '\n'.join(markdown_list)
+    
+    return long_source_list
 

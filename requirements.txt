@@ -16,7 +16,6 @@ requests==2.32.3 #  for GitHub Actions. used to access qdrant
 selenium==4.25 #  for GitHub Actions. needed to check for app Streamlit suspension due to inactivity
 webdriver-manager==4.0.2  #  for GitHub Actions. Check for Streamlit app suspension due to inactivity
 setuptools>=42
-wheel
 
 
 # TODO figure out which package is using Pydantic and update it. class-based `config` is deperecated. Also, json_encoders

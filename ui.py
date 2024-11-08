@@ -70,30 +70,28 @@ user_feedback = " "
 user_question = st.text_input("Type your question or task here", max_chars=200)
 if user_question:
     collector = utils.get_feedback_collector()
-    query = rag.enrich_question_via_model(user_question)
-    retriever = rag.get_retriever()
     with st.status("Checking documents...", expanded=False) as status:
-        response = rag.rag(query, retriever)
+        response = rag.rag(user_question)
         short_source_list = rag.create_short_source_list(response)
         long_source_list = rag.create_long_source_list(response)
 
         examples.empty()  
-        st.info(f"**Question:** *{user_question}*\n\n ##### Response:\n{response['result']}\n\n **Sources:**  \n{short_source_list}\n **Note:** \n ASK can make mistakes. Verify the sources and check your local policies.")
+        st.info(f"**Question:** *{user_question}*\n\n ##### Response:\n{response['answer']['answer']}\n\n **Sources:**  \n{short_source_list}\n **Note:** \n ASK can make mistakes. Verify the sources and check your local policies.")
 
     status.update(label=":blue[**Response**]", expanded=True)
 
     with st.status("Compiling references...", expanded=False) as status:
         time.sleep(1)
         st.write(long_source_list)
-        st.write(query)
+        st.write(user_question)
         status.update(label=":blue[CLICK HERE FOR FULL SOURCE DETAILS]", expanded=False)
 
             
     # Send the prompt used and any feedback to Trubrics feedback collector
     collector.log_prompt(
         config_model={"model": "gpt-3.5-turbo"},
-        prompt=query,
-        generation=response['result'],
+        prompt=user_question,
+        generation=response['answer']['answer'],
         )
     collector.st_feedback(
         component="default",
