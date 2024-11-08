@@ -16,11 +16,7 @@ from langchain_core.runnables import RunnablePassthrough
 # accessible [here](https://smith.langchain.com/o/3941ecea-6957-508c-9f4f-08ed62dc7d61/projects/p/0aea481f-080e-45eb-bae1-2ae8ee246bd9)
 
 # CONFIGS
-#Langsmith
-# These have to be set as environmental variables to be accessed behind the scenes
-env_path = find_dotenv()
-load_dotenv(env_path)
-
+#Langsmith: must be set as environmental variables to be accessed behind the scenes
 os.environ["LANGCHAIN_API_KEY"] = st.secrets["LANGCHAIN_API_KEY"]
 os.environ["LANGCHAIN_TRACING_V2"] = "true"
 os.environ["LANGCHAIN_PROJECT"] = "ASK_main"
