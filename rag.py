@@ -12,9 +12,6 @@ from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.runnables import RunnablePassthrough
 
 
-# ### Langsmith
-# accessible [here](https://smith.langchain.com/o/3941ecea-6957-508c-9f4f-08ed62dc7d61/projects/p/0aea481f-080e-45eb-bae1-2ae8ee246bd9)
-
 # CONFIGS
 #Langsmith: must be set as environmental variables to be accessed behind the scenes
 os.environ["LANGCHAIN_API_KEY"] = st.secrets["LANGCHAIN_API_KEY"]
