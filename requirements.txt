@@ -1,12 +1,13 @@
 streamlit
 st-click-detector
-openai>=1
-trubrics[streamlit]==1.6.1
-langchain==0.3.4
-# langchain-openai==0.2.6
-langchain-community==0.2.18
+openai
+trubrics[streamlit]
+langchain
+langchain-openai
+langchain_qdrant
+langchain-community
 qdrant-client   # testing removing this for pydantic issue ==1.6.3
-tiktoken==0.7
+tiktoken
 streamlit_extras
 pandas
 pytest

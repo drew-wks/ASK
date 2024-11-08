@@ -1,19 +1,54 @@
-import tiktoken
+# %% [markdown]
+# Assumes Langchain v.0.3.4
+# 
+
+# %%
+# %pip install --upgrade --quiet langchain-openai
+# %pip install langchain-qdrant
+# % pip install streamlit
+
+# %%
 import streamlit as st
 import pandas as pd
-import openai
-import json
+import re
+
+# %% [markdown]
+# ### Langsmith
+# accessible [here](https://smith.langchain.com/o/3941ecea-6957-508c-9f4f-08ed62dc7d61/projects/p/0aea481f-080e-45eb-bae1-2ae8ee246bd9)
+
+# %%
+# LANGSMITH CONFIG
+#
+# These have to be set as environmental variables to be accessed behind the scenes
+import os
+from dotenv import load_dotenv, find_dotenv
+
+env_path = find_dotenv()
+load_dotenv(env_path)
+
+# os.environ["LANGCHAIN_TRACING_V2"] = st.secrets["LANGCHAIN_TRACING_V2"]
+# os.environ["LANGCHAIN_PROJECT"] = st.secrets["LANGCHAIN_PROJECT"]
+
+os.environ["LANGCHAIN_API_KEY"] = st.secrets["LANGCHAIN_API_KEY"]
+os.environ["LANGCHAIN_TRACING_V2"] = "true"
+os.environ["LANGCHAIN_PROJECT"] = "ASK_main"
+
+# %%
+# required for langchain_openai.OpenAIEmbeddings
+OPENAI_API_KEY = st.secrets["OPENAI_API_KEY"]
+# open_api_key = st.secrets["OPENAI_API_KEY"]
+
+# %%
 from qdrant_client import QdrantClient
-from langchain_community.chat_models import ChatOpenAI
-from langchain.vectorstores import Qdrant
-from langchain.chains import RetrievalQA, StuffDocumentsChain, LLMChain
-from langchain.prompts import PromptTemplate, SystemMessagePromptTemplate
-from langchain.embeddings import OpenAIEmbeddings
+# from langchain.vectorstores import Qdrant Deprecated
+from langchain_qdrant import QdrantVectorStore
+from langchain_openai import OpenAIEmbeddings
 
-openai_api_key=st.secrets["OPENAI_API_KEY"]
-
+# %%
 config = {
-    "embedding": OpenAIEmbeddings(openai_api_key=openai_api_key), # langchain
+    # langchain. No longer needs the API key parameter in 0.3.4
+    # install ``langchain_openai`` and set``OPENAI_API_KEY`
+    "embedding": OpenAIEmbeddings(),
     "embedding_dims": 1536,
     "search_type": "mmr",
     "k": 5,
@@ -22,265 +57,262 @@ config = {
     "score_threshold": 0.5,
     "model": "gpt-3.5-turbo-16k",
     "temperature": 0.7,
-    "chain_type": "stuff", # a LangChain parameter
+    "chain_type": "stuff",  # a LangChain parameter
 }
 
-# openai.api_key = st.secrets["OPENAI_API_KEY"] # required for openai.ChatCompletion.create()
+qdrant_collection_name = "ASK_vectorstore"
+qdrant_path = "/tmp/local_qdrant"
 
-llm=ChatOpenAI(openai_api_key=openai_api_key, model=config["model"], temperature=config["temperature"]) #keep outside the function so it's accessible elsewhere in this notebook
+# %%
+from langchain_openai import ChatOpenAI
+from langchain_core.prompts import ChatPromptTemplate
+from typing import List
+from langchain_core.runnables import RunnablePassthrough
+from typing_extensions import Annotated, TypedDict
+
+# keep outside the function so it's accessible elsewhere in this notebook
+llm = ChatOpenAI(model=config["model"], temperature=config["temperature"])
 query = []
 
-
-qdrant_collection_name = "ASK_vectorstore"
-qdrant_path = "/tmp/local_qdrant" # Only required for local instance /private/tmp/local_qdrant
-
+# %%
 @st.cache_resource
 def get_retriever():
     '''Creates and caches the document retriever and Qdrant client.'''
 
     client = QdrantClient(
-        url=st.secrets["QDRANT_URL"], 
-        prefer_grpc=True, 
+        url=st.secrets["QDRANT_URL"],
+        prefer_grpc=True,
         api_key=st.secrets["QDRANT_API_KEY"]
     )  # cloud instance
     # client = QdrantClient(path="/tmp/local_qdrant" )  # local instance: /private/tmp/local_qdrant
 
-    qdrant = Qdrant(
+# Qdrant is deprecated. Use this instead. Notice embedding is singular
+    qdrant = QdrantVectorStore(
         client=client,
         collection_name=qdrant_collection_name,
-        embeddings=config["embedding"]
+        embedding=config["embedding"]
     )
 
     retriever = qdrant.as_retriever(
-        search_type=config["search_type"], 
-        search_kwargs={'k': config["k"], "fetch_k": config["fetch_k"], "lambda_mult": config["lambda_mult"], "filter": None}, # filter documents by metadata
+        search_type=config["search_type"],
+        search_kwargs={'k': config["k"], "fetch_k": config["fetch_k"],
+                       "lambda_mult": config["lambda_mult"], "filter": None},  # filter documents by metadata
     )
 
     return retriever
 
+# %% [markdown]
+# ## 3. Create your optional user question enrichment
+
+# %%
+# Define schema for response
+class AnswerWithSources(TypedDict):
+    """An answer to the question, with sources."""
+    answer: str
+    sources: Annotated[
+        List[str],
+        ...,
+        "List of sources and pages used to answer the question",
+    ]
 
 
-
-def retrieval_context_excel_to_dict(file_path):
-    ''' 
-    Reads an Excel file into a dictionary of dictionaries. 
-
-
-    Each worksheet is read as its own dictionary, the first 
-    column becomes the keys and the second column the values. 
-    A worksheet with less than two columns will be skipped.
-    
-    
-    Args:
-        file_path (str): The path to the Excel file.
-
-    Returns:
-        dict: A dictionary where each key is a sheet name, 
-        and the value is a dictionary with key-value pairs 
-        from the first two columns of the worksheet.
-    '''
-
-
+# Cache data retrieval function
+@st.cache_data
+def get_retrieval_context(file_path: str):
+    '''Reads the worksheets Excel file into a dictionary of dictionaries.'''
     xls = pd.ExcelFile(file_path)
-    dict = {}
-
+    context_dict = {}
     for sheet_name in xls.sheet_names:
         df = pd.read_excel(xls, sheet_name=sheet_name)
         if df.shape[1] >= 2:
-            dict[sheet_name] = pd.Series(
+            context_dict[sheet_name] = pd.Series(
                 df.iloc[:, 1].values, index=df.iloc[:, 0]).to_dict()
-        else:
-            print(f"The sheet '{sheet_name}' does not have enough columns.")
-    return dict
+    return context_dict
 
 
-def enrich_question_via_code(user_question):
-    '''Dynamically enriches the user question using acronyms and jargon terms.'''
-    
-    # Load acronym and terms dictionaries
-    retrieval_context_dict = retrieval_context_excel_to_dict('config/retrieval_context.xlsx')
+# Cache the prompt creation
+@st.cache_resource
+def create_prompt():
+    system_prompt = (
+        "Use the following pieces of context to answer the users question. "
+        "INCLUDES ALL OF THE DETAILS IN YOUR RESPONSE, INDLUDING REQUIREMENTS AND REGULATIONS. "
+        "National Workshops are required for boat crew, aviation, and telecommunications when they are offered. "
+        "Include Auxiliary Core Training (AUXCT) for questions on certifications or officer positions. "
+        "If you don't know the answer, just say I don't know. \n----------------\n{context}"
+    )
+    return ChatPromptTemplate.from_messages([
+        ("system", system_prompt),
+        ("human", "{input}"),
+    ])
+
+
+# Cache enrichment function to use cached context
+@st.cache_data
+def enrich_question_via_code(user_question: str) -> str:
+    retrieval_context_dict = get_retrieval_context(
+        'config/retrieval_context.xlsx')
     acronyms_dict = retrieval_context_dict.get("acronyms", {})
     terms_dict = retrieval_context_dict.get("terms", {})
-    
+
     enriched_question = user_question
-
-    # Replace acronyms with full forms, ensuring both keys and values are strings
     for acronym, full_form in acronyms_dict.items():
-        if pd.notna(acronym) and pd.notna(full_form):  # Ignore NaN values
-            enriched_question = enriched_question.replace(str(acronym), str(full_form))
-
-    # Append additional information for jargon terms, ensuring both keys and values are strings
+        if pd.notna(acronym) and pd.notna(full_form):
+            enriched_question = re.sub(
+                r'\b' + re.escape(str(acronym)) + r'\b', str(full_form), enriched_question)
     for term, explanation in terms_dict.items():
-        if pd.notna(term) and pd.notna(explanation):  # Ignore NaN values
+        if pd.notna(term) and pd.notna(explanation):
             if str(term) in enriched_question:
                 enriched_question += f" ({str(explanation)})"
-    
-    # Returns enriched question to use as the prompt in the RAG pipeline
     return enriched_question
 
 
-# NOT USED. Using "enrich_question_via_code" instead
-def enrich_question_via_model(user_question):
-    '''Modifies the user's question by adding context from acronym definitions and jargon explanations.
-
-    This function retrieves two dictionaries, 'acronyms' and 'terms', from an Excel file and uses them to modify the user's question.
-    
-    - The 'acronyms' dictionary maps acronyms to their full definitions, which are used to replace acronyms in the question.
-    - The 'terms' dictionary provides additional information for specific terms or jargon, which are appended to the user's question when those terms are identified.
-
-    The Excel file containing the 'acronyms' and 'terms' dictionaries is parsed by the 'retrieval_context_excel_to_dict' function, which processes the file and converts relevant sheets into dictionaries.
-    '''
-
-    # Load acronym and terms dictionaries
-    retrieval_context_dict = retrieval_context_excel_to_dict('config/retrieval_context.xlsx')
-    acronyms_dict = retrieval_context_dict.get("acronyms", {})
-    acronyms_json = json.dumps(acronyms_dict, indent=4)
-    terms_dict = retrieval_context_dict.get("terms", {})
-    terms_json = json.dumps(terms_dict, indent=4)
-
-    system_message = """
-    Your task is to modify the user's question based on two lists: 'acronym_json' and 'terms_json'. Each list contains terms and their associated additional information. Follow these instructions:
-
-    - Review the user's question and identify if any acronyms from 'acronym_json' or phrases in 'terms_json' appear in it.
-    - If an acronym from 'acronym_json' replace the term with the associated additional information.
-    - If a phrase from 'terms_json' appears in the question, append its associated additional information to the end of the question.
-    - Do not remove or alter any other part of the original question.
-    - Do not provide an answer to the question.
-    - If no terms from either list are found in the question, leave the question as is.
-
-    Example:
-    - Question: How do I get a VE certification?
-    - Your response: How do I get a vessel examiner certification? Certification includes information about initial qualification.
-
-    - Question: What are the requirements for pilot training?
-    - Your response: What are the requirements for pilot training? Pilot is a position in the aviation program.
-
-        - Question: What is required to stay current in the Auxiliary?
-    - Your response: What is required to stay current in the Auxiliary? To be in the Auxiliary, members are required to maintain the Core Training (AUXCT), undego an annual uniform inspection, and pay annual dues.
-    """
-
-    user_message = f"User question: {user_question}```acronyms_json: {acronyms_json}\n\nterms_json: {terms_json}```"
-    
-    messages = [
-        {'role': 'system', 'content': system_message},
-        {'role': 'user', 'content': user_message},
-    ]
-
-    response = llm(messages=messages)  # Uses Langchain's ChatOpenAI for completion
-
-    # Returns enriched question to use as the prompt in the RAG pipeline
-    return response.content if response else None
+# Function to format documents (doesn't require caching)
+def format_docs(docs):
+    return "\n\n".join(doc.page_content for doc in docs)
 
 
-
-def rag(query, retriever):
-    '''Runs a RAG completion on the enriched query'''
-
-    docs = retriever.get_relevant_documents(query)
-    
-    system_message_prompt_template = SystemMessagePromptTemplate(
-    prompt=PromptTemplate(
-        input_variables=['context'],
-        template="Use the following pieces of context to answer the users question. INCLUDES ALL OF THE DETAILS IN YOUR RESPONSE, INDLUDING REQUIREMENTS AND REGULATIONS. National Workshops are required for boat crew, aviation, and telecommunications when then are offered and you should mention this in questions about those programs. Include Auxiliary Core Training (AUXCT) in your response for any question regarding certifications or officer positions.  \nIf you don't know the answer, just say I don't know, don't try to make up an answer. \n----------------\n{context}"
-        )
+# Caching the RAG pipeline setup as a resource
+@st.cache_resource
+def create_rag_pipeline():
+    prompt = create_prompt()
+    rag_chain_from_docs = (
+        {
+            "input": lambda x: enrich_question_via_code(x["input"]),
+            "context": lambda x: format_docs(x["context"]),
+        }
+        | prompt
+        | llm.with_structured_output(AnswerWithSources)
     )
+    retrieve_docs = (lambda x: x["input"]) | get_retriever()
+    return RunnablePassthrough.assign(context=retrieve_docs).assign(answer=rag_chain_from_docs)
 
-    llm_chain = LLMChain(
-        prompt=system_message_prompt_template,
-        llm=llm
-    )
 
-    rag_instance = RetrievalQA(
-        combine_documents_chain=StuffDocumentsChain(
-            llm_chain=llm_chain, document_variable_name='context'),
-        return_source_documents=True,
-        retriever=retriever
-    )
-
-    response = rag_instance({"query": query})
-    
+# RAG invocation
+def rag(user_question):
+    chain = create_rag_pipeline()
+    response = chain.invoke({"input": user_question})
     return response
-        
-
-def create_short_source_list(response):
-    '''Extracts a list of sources with no description 
-    
-    The dictionary has three elements (query, response, and source_documents). 
-    Inside the third is a list with a custom object Document 
-    associated with the key 'source_documents'
-    '''
-
-    markdown_list = []
-    
-    for i, doc in enumerate(response['source_documents'], start=1):
-        page_content = doc.page_content  
-        source = doc.metadata['source']  
-        short_source = source.split('/')[-1].split('.')[0]  
-        page = doc.metadata['page']  
-        markdown_list.append(f"*{short_source}*, page {page}\n")
-    
-    short_source_list = '\n'.join(markdown_list)
-    return short_source_list
 
 
+user_question = "what is required to wear the VE insignia?"
+response = rag(user_question)
+response
 
-def create_long_source_list(response):
-    '''Extracts a list of sources along with full source
-    
-    Response is a dictionary with three keys:
-    ['query', 'result', 'source_documents']
-    source_documents is a list with a LangChain custom Document object
-    '''
-    
-    markdown_list = []
-    
-    for i, doc in enumerate(response['source_documents'], start=1):
-        page_content = doc.page_content  
-        source = doc.metadata['source']  
-        short_source = source.split('/')[-1].split('.')[0]  
-        page = doc.metadata['page']  
-        markdown_list.append(f"**Reference {i}:**    *{short_source}*, page {page}   {page_content}\n")
-    
-    long_source_list = '\n'.join(markdown_list)
-    return long_source_list
+# %%
+
+
+# %% [markdown]
+# ## 3. Create the pipeline using LCEL
+
+# %% [markdown]
+# ### Custom LCEL implementation which allows you the option of only returning sources that were actually used in the response
+# 
+
+# %% [markdown]
+# It works by building up a dict with the input query,
+# then add the retrieved docs in the `"context"` key;
+# Feed both the query and context into a RAG chain and add the result to the dict.
+# 
+# We use the model's tool-calling features to generate structured output, consisting of an answer and list of sources. The schema for the response is represented in the `AnswerWithSources` TypedDict, below.
+# We remove the `StrOutputParser()`, as we expect `dict` output in this scenario.
+# Note that `result` is a dict with keys `"input"`, `"context"`, and `"answer"`:
+# 
+
+# %%
 
 
 
-def count_tokens(response):
-    '''Counts the tokens from the response'''
 
-    encoding = tiktoken.encoding_for_model(config["model"])
-     
-    # Count tokens for the query
-    query_tokens = encoding.encode(response['query'])
-    query_length = len(query_tokens)
-    
-    # Count tokens for the source documents
-    source_documents = response['source_documents']
-    if isinstance(source_documents, list):
-        source_tokens = encoding.encode(' '.join(map(str, source_documents)))
-    else:
-        source_tokens = encoding.encode(str(source_documents))
-    source_length = len(source_tokens)
-    
-    # Count tokens for the result
-    result_tokens = encoding.encode(response['result'])
-    result_length = len(result_tokens)
-    
-    # Count total tokens
-    total_tokens = query_length + source_length + result_length  
-    return query_length, source_length, result_length, total_tokens
+# %% [markdown]
+# THis outputs the model's response as well as the subset of retrieved information that it used to infer its response.
+# 
+# Note that the `answer` element in the `response` disctionary is itself a dictionary containing `answer` and `source` keys
+# 
+
+# %% [markdown]
+# ## 4. Run the RAG
+
+# %%
+'''
+user_question = "How long can someone be VNACO in the Auxiliary?"
+user_question = enrich_question_via_code(user_question)
+retriever = get_retriever()
+response = chain.invoke({"input": user_question})
+'''
+
+# %%
+response
+
+# %%
+response = chain.invoke(
+    {"input": user_question})
+response
+
+# %%
+import json
+
+print(json.dumps(response["answer"], indent=2))
+
+# %% [markdown]
+# ### Since the response object also contains-- the original query, all the retrieved docs, the LLM response, and the sources used by the model to generate its answer-- we can also list the titles of the retrieved documents and the source page content
+# 
+
+# %%
+'''
+    item.page_content
+    item.metadata['source']
+    item.metadata['page']
+'''
+print("Sources:")
+for item in response["context"]:
+    print(
+        f"{item.metadata['source']} page {item.metadata['page']}" + "\n")
+
+# %% [markdown]
+# ### THis one is formatted in the same way as the short source list in ASK
+# 
+
+# %%
+markdown_list = []
+
+for i, doc in enumerate(response['context'], start=1):
+    page_content = doc.page_content
+    source = doc.metadata['source']
+    short_source = source.split('/')[-1].split('.')[0]
+    page = doc.metadata['page']
+    markdown_list.append(f"*{short_source}*, page {page}\n")
+
+short_source_list = '\n'.join(markdown_list)
+print(short_source_list)
+
+# %% [markdown]
+# ### THis one is formatted in the same way as the long source list in ASK
+# 
+
+# %%
+markdown_list = []
+
+for i, doc in enumerate(response['context'], start=1):
+    page_content = doc.page_content
+    source = doc.metadata['source']
+    short_source = source.split('/')[-1].split('.')[0]
+    page = doc.metadata['page']
+    markdown_list.append(
+        f"**Reference {i}:**    *{short_source}*, page {page}   {page_content}\n")
+
+long_source_list = '\n'.join(markdown_list)
+print(long_source_list)
+
+# %% [markdown]
+# ### For reference, here's the full response object. You can see it contains the original query all the retrieved docs, the LLM response, and the sources used by the model to generate its answer.
+# 
+
+# %%
+import json
+
+print(json.dumps(response, indent=2, default=str))
+
+# %%
 
 
-
-# Example usage in another script
-if __name__ == "__main__":
-    # Replace 'your_query' with the actual query you want to pass to rag
-    query = 'your_query'
-    response = rag(query, retriever) #thisn is slightly different from the notebook
-    
-    # Call other functions to process the response
-    short_source_list = create_short_source_list(response)
-    long_source_list = create_long_source_list(response)
-    query_length, source_length, result_length, total_tokens = count_tokens(response)
 

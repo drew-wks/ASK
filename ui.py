@@ -70,7 +70,7 @@ user_feedback = " "
 user_question = st.text_input("Type your question or task here", max_chars=200)
 if user_question:
     collector = utils.get_feedback_collector()
-    query = rag.enrich_question_via_code(user_question)
+    query = rag.enrich_question_via_model(user_question)
     retriever = rag.get_retriever()
     with st.status("Checking documents...", expanded=False) as status:
         response = rag.rag(query, retriever)
