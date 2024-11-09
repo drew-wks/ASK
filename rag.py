@@ -143,7 +143,7 @@ def create_rag_pipeline():
     prompt = create_prompt()
     rag_chain_from_docs = (
         {
-            "input": lambda x: enrich_question_via_code(x["input"]),
+            "input": lambda x: x["input"],
             "context": lambda x: format_docs(x["context"]),
         }
         | prompt
@@ -157,7 +157,8 @@ query = [] # I don't think this is needed anymore
 # RAG invocation
 def rag(user_question):
     chain = create_rag_pipeline()
-    response = chain.invoke({"input": user_question})
+    enriched_question = enrich_question_via_code(user_question)
+    response = chain.invoke({"input": enriched_question})
     return response
 
 
