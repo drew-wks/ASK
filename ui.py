@@ -54,38 +54,39 @@ num_items = len(df)
 
 
 st.markdown(f"ASK uses Artificial Intelligence (AI) to search over {num_items} Coast Guard Auxiliary references for answers. This is a working prototype for evaluation. Not an official USCG Auxiliary service. Learn more <a href='Library' target='_self'><b>here</b>.</a>", unsafe_allow_html=True)
-examples = st.empty()
-examples.write("""  
+example_questions = st.empty()
+example_questions.write("""  
     **ASK answers questions such as:**   
     *What are the requirements to run for FC?*  
     *How do I stay current in boat crew?*   
     *¿En que ocasiones es necesario un saludo militar?*   
     
 """)
-st.write("  ")
+st.write("  ") # adds a space between the example_questions and the input box
 
 
-# Accept a user query and run a RAG pipeline
-user_feedback = " "
+#necessary to prevent user interacting with status boxes to trigger a re-run of the query
+@st.cache_data(show_spinner=False)
+def run_cached_rag(question):
+    return rag.rag(question)
+
+# Main RAG pipeline
 user_question = st.text_input("Type your question or task here", max_chars=200)
 if user_question:
-    collector = utils.get_feedback_collector()
     with st.status("Checking documents...", expanded=False) as status:
-        response = rag.rag(user_question)
+        response = run_cached_rag(user_question)
         short_source_list = rag.create_short_source_list(response)
         long_source_list = rag.create_long_source_list(response)
-        examples.empty()  
+        example_questions.empty()  
         st.info(f"**Question:** *{user_question}*\n\n ##### Response:\n{response['answer']['answer']}\n\n **Sources:**  \n{short_source_list}\n **Note:** \n ASK can make mistakes. Verify the sources and check your local policies.")
     status.update(label=":blue[**Response**]", expanded=True)
 
-    with st.status("Compiling references...", expanded=False) as status:
-        time.sleep(1)
+    with st.status("CLICK HERE FOR FULL SOURCE DETAILS", expanded=False) as status:
         st.write(long_source_list)
         st.write(user_question)
-        status.update(label=":blue[CLICK HERE FOR FULL SOURCE DETAILS]", expanded=False)
 
-            
-    # Send the prompt used and any feedback to Trubrics feedback collector
+    # Trubrics feedback collector    
+    collector = utils.get_feedback_collector()
     collector.log_prompt(
         config_model={"model": "gpt-3.5-turbo"},
         prompt=user_question,
