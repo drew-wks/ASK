@@ -4,7 +4,11 @@
     ],
     "workbench.colorCustomizations": {
         "activityBar.background#": "#FFE873",
-        "activityBar.foreground#": "#306998"
+        "activityBar.foreground#": "#306998",
+        "#activityBar.background": "#323330",
+        "#activityBar.foreground": "#F0DB4F",
+        "statusBar.background": "#323330",
+        "statusBar.foreground": "#F0DB4F"
     },
     "python.testing.pytestEnabled": true,
     "python.testing.pytestArgs": [
