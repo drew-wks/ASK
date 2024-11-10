@@ -1,7 +1,4 @@
 {
-    "githubPullRequests.ignoredPullRequestBranches": [
-        "main"
-    ],
     "python.defaultInterpreterPath": "${workspaceFolder}/.venv-main/bin/python",
     "workbench.colorCustomizations": {
         "#activityBar.background": "#323330",
