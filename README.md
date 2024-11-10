@@ -110,4 +110,5 @@ Testing
 6. Go to the "Run and Debug" panel in VS Code (Ctrl+Shift+D or Cmd+Shift+D).
 7. Select "Run Streamlit App" and press the green play button to start
 8. The Streamlit user interface will load in the default browser
+9. 9. To run the tests, install pytest
 

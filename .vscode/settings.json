@@ -3,17 +3,13 @@
         "main"
     ],
     "workbench.colorCustomizations": {
-        "#activityBar.background": "#323330",
-        "#activityBar.foreground": "#F0DB4F",
         "activityBar.background#": "#FFE873",
-        "activityBar.foreground#": "#306998",
-        "statusBar.background": "#306998",
-        "statusBar.foreground": "#FFE873"
+        "activityBar.foreground#": "#306998"
     },
     "python.testing.pytestEnabled": true,
     "python.testing.pytestArgs": [
         "-m", "pytest"
     ],
     "python.testing.unittestEnabled": false,
-    "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python"
+    "python.defaultInterpreterPath": "${workspaceFolder}/.venv-main/bin/python",
 }
