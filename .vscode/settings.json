@@ -2,10 +2,6 @@
     "python.defaultInterpreterPath": "${workspaceFolder}/.venv-main/bin/python",
     "workbench.colorCustomizations": {
         "activityBar.background#": "#FFE873",
-        "activityBar.foreground#": "#306998",
-        "#activityBar.background": "#323330",
-        "#activityBar.foreground": "#F0DB4F",
-        "statusBar.background": "#323330",
-        "statusBar.foreground": "#F0DB4F"
+        "activityBar.foreground#": "#306998"
     },
 }
