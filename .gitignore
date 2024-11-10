@@ -20,7 +20,6 @@ local/
 
 # Streamlit
 .streamlit/secrets.toml
-.vscode
 
 # Folders of PDFs
 *pdfs*/
