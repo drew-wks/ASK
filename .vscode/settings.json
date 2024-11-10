@@ -1,7 +1,0 @@
-{
-    "python.defaultInterpreterPath": "${workspaceFolder}/.venv-main/bin/python",
-    "workbench.colorCustomizations": {
-        "activityBar.background#": "#FFE873",
-        "activityBar.foreground#": "#306998"
-    },
-}
