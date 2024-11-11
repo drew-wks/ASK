@@ -159,7 +159,7 @@ def rag(user_question):
     chain = create_rag_pipeline()
     enriched_question = enrich_question_via_code(user_question)
     response = chain.invoke({"input": enriched_question})
-    return response
+    return response, enriched_question
 
 
 def create_short_source_list(response):

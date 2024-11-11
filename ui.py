@@ -74,7 +74,7 @@ def run_cached_rag(question):
 user_question = st.text_input("Type your question or task here", max_chars=200)
 if user_question:
     with st.status("Checking documents...", expanded=False) as status:
-        response = run_cached_rag(user_question)
+        response, enriched_question = run_cached_rag(user_question)
         short_source_list = rag.create_short_source_list(response)
         long_source_list = rag.create_long_source_list(response)
         example_questions.empty()  
@@ -83,13 +83,13 @@ if user_question:
 
     with st.status("CLICK HERE FOR FULL SOURCE DETAILS", expanded=False) as status:
         st.write(long_source_list)
-        st.write(user_question)
+        st.write(enriched_question)
 
     # Trubrics feedback collector    
     collector = utils.get_feedback_collector()
     collector.log_prompt(
         config_model={"model": "gpt-3.5-turbo"},
-        prompt=user_question,
+        prompt=enriched_question,
         generation=response['answer']['answer'],
         )
     collector.st_feedback(
