@@ -71,18 +71,19 @@ def check_duplicates_in_xlsx(file_path, cols):
 
 
 
-def compute_pdf_id(pdf_path):
+def compute_pdf_id(pdf_path, return_string=True):
     '''
     Generates a unique ID from the content of the PDF file.
 
     The function extracts text from all pages of the PDF--ignoring metadata-- and 
     generates a unique ID that is deterministic using UUID v5, so the same content
-    will always geenreate the same ID
+    will always generate the same ID.
     example ID:  3b845a10-cb3a-5014-96d8-360c8f1bf63f 
     If the document is empty, then it sets the UUID to "EMPTY_DOCUMENT". 
     
     Args:
         pdf_path (str): Path to the PDF file.
+        return_string (bool): If True, returns the UUID as a string. (the default)
     
     Returns:
         str: UUID for the PDF content or "EMPTY_DOCUMENT" if the PDF is empty.
@@ -104,9 +105,10 @@ def compute_pdf_id(pdf_path):
     if not full_text.strip():
         return "EMPTY_DOCUMENT"
 
-    namespace = uuid.NAMESPACE_DNS
-    pdf_uuid = uuid.uuid5(namespace, full_text)
+    pdf_uuid = uuid.uuid5(uuid.NAMESPACE_DNS, full_text)
 
+    if return_string:
+        return str(pdf_uuid)
     return pdf_uuid
 
 
