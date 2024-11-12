@@ -33,17 +33,17 @@ def check_directory_exists(directory_path, create_if_not_exists=False):
 
 
 
-def check_duplicates_in_xlsx(metadata_file_path, cols):
+def check_duplicates_in_xlsx(file_path, cols):
     """
     Function to check for duplicates in specified columns of an Excel file.
     
     Args:
-        metadata_file_path (str): The path to the Excel file containing metadata.
+        file_path (str): The path to the Excel file containing metadata.
         cols (list): List of columns to check for duplicates.
     
     Example usage:
-        metadata_file_path = "./docs/metadata/metadata.xlsx"
-        cols = ['title', 'publication_number', 'document_id', 'file_name']
+        file_path = "./docs/metadata/metadata.xlsx"
+        cols = ['title', 'publication_number', 'pdf_id', 'file_name']
         
         check_duplicates_in_xlsx(metadata_file_path, cols)
     
@@ -52,7 +52,7 @@ def check_duplicates_in_xlsx(metadata_file_path, cols):
     """
     try:
         # Read the Excel file into a DataFrame
-        df = pd.read_excel(metadata_file_path)
+        df = pd.read_excel(file_path)
 
         # Iterate over each column and check for duplicates
         for column in cols:
