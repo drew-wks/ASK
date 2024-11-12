@@ -73,15 +73,15 @@ def run_cached_rag(question):
 # Main RAG pipeline
 user_question = st.text_input("Type your question or task here", max_chars=200)
 if user_question:
-    with st.status("Checking documents...", expanded=False) as status:
+    with st.status("Checking documents...", expanded=False) as response_container:
         response, enriched_question = run_cached_rag(user_question)
         short_source_list = rag.create_short_source_list(response)
         long_source_list = rag.create_long_source_list(response)
         example_questions.empty()  
         st.info(f"**Question:** *{user_question}*\n\n ##### Response:\n{response['answer']['answer']}\n\n **Sources:**  \n{short_source_list}\n **Note:** \n ASK can make mistakes. Verify the sources and check your local policies.")
-    status.update(label=":blue[**Response**]", expanded=True)
+    response_container.update(label=":blue[**Response**]", expanded=True)
 
-    with st.status("CLICK HERE FOR FULL SOURCE DETAILS", expanded=False) as status:
+    with st.status("CLICK HERE FOR FULL SOURCE DETAILS", expanded=False) as references_container:
         st.write(long_source_list)
         st.write(enriched_question)
 
