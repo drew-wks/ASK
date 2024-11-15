@@ -116,7 +116,7 @@ def create_prompt():
 #@st.cache_data
 def enrich_question_via_code(user_question: str) -> str:
     retrieval_context_dict = get_retrieval_context(
-        'config/retrieval_context.xlsx')
+        '../config/retrieval_context.xlsx')
     acronyms_dict = retrieval_context_dict.get("acronyms", {})
     terms_dict = retrieval_context_dict.get("terms", {})
 
