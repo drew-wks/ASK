@@ -1,11 +1,7 @@
-import datetime
-import requests
-import re
 import uuid
 import os
 from pypdf import PdfReader
 import pandas as pd
-from dateutil import parser
 
 
 
@@ -51,7 +47,7 @@ def check_duplicates_in_xlsx(file_path, cols):
         None
     """
     try:
-        # Read the Excel file into a DataFrame
+        # Read Excel into a DataFrame
         df = pd.read_excel(file_path)
 
         # Iterate over each column and check for duplicates

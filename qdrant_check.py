@@ -20,7 +20,6 @@ https://www.youtube.com/watch?v=2OwLb-aaiBQ
 import os
 import traceback
 from qdrant_client import QdrantClient, models
-import pprint
 import requests
 
 

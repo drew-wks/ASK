@@ -1,4 +1,3 @@
-import time
 import streamlit as st
 
 # Collapse the sidebar
@@ -11,7 +10,7 @@ from streamlit_extras.stylable_container import stylable_container
 
 
 
-# Hide Streamlit's default UI elements: Sidebar button (doesn't work), Main menu, footer, and header
+# Hide Streamlit's default UI elements: Main menu, footer, and header
 st.markdown( """ <style> [data-testid="collapsedControl"] { display: none } </style> """, unsafe_allow_html=True, )
 
 hide_streamlit_ui = """
@@ -24,7 +23,7 @@ hide_streamlit_ui = """
 st.markdown(hide_streamlit_ui, unsafe_allow_html=True)
 
 
-# Adjust the padding around the main content area for a cleaner layout
+# Adjust padding around the main content area for a cleaner layout
 st.markdown("""
         <style>
                 .block-container {
@@ -37,6 +36,7 @@ st.markdown("""
         """, unsafe_allow_html=True)
 
 
+# Banner image
 st.image("https://raw.githubusercontent.com/dvvilkins/ASK/main/images/ASK_logotype_color.png?raw=true", use_container_width=True)
 
 
@@ -53,6 +53,7 @@ df, last_update_date = utils.get_library_doc_catalog_excel_and_date()
 num_items = len(df)
 
 
+# Main app body copy
 st.markdown(f"ASK uses Artificial Intelligence (AI) to search over {num_items} Coast Guard Auxiliary references for answers. This is a working prototype for evaluation. Not an official USCG Auxiliary service. Learn more <a href='Library' target='_self'><b>here</b>.</a>", unsafe_allow_html=True)
 example_questions = st.empty()
 example_questions.write("""  
@@ -62,43 +63,35 @@ example_questions.write("""
     *¿En que ocasiones es necesario un saludo militar?*   
     
 """)
-st.write("  ") # adds a space between the example_questions and the input box
+st.write("  ")
 
 
-#necessary to prevent user interacting with status boxes to trigger a re-run of the query
+# Prevent user interactions from accidently triggering a re-run
 @st.cache_data(show_spinner=False)
 def run_cached_rag(question):
     return rag.rag(question)
 
+
 # Main RAG pipeline
 user_question = st.text_input("Type your question or task here", max_chars=200)
 if user_question:
+
+    # Create response container
     with st.status("Checking documents...", expanded=False) as response_container:
         response, enriched_question = run_cached_rag(user_question)
         short_source_list = rag.create_short_source_list(response)
         long_source_list = rag.create_long_source_list(response)
         example_questions.empty()  
         st.info(f"**Question:** *{user_question}*\n\n ##### Response:\n{response['answer']['answer']}\n\n **Sources:**  \n{short_source_list}\n **Note:** \n ASK can make mistakes. Verify the sources and check your local policies.")
+
+    # Open response container once responses are ready
     response_container.update(label=":blue[**Response**]", expanded=True)
 
+    # Create a container and fill with references
     with st.status("CLICK HERE FOR FULL SOURCE DETAILS", expanded=False) as references_container:
         st.write(long_source_list)
         st.write(enriched_question)
 
-    # Trubrics feedback collector    
-    collector = utils.get_feedback_collector()
-    collector.log_prompt(
-        config_model={"model": "gpt-3.5-turbo"},
-        prompt=enriched_question,
-        generation=response['answer']['answer'],
-        )
-    collector.st_feedback(
-        component="default",
-        feedback_type="thumbs",
-        open_feedback_label="[Optional] Provide additional feedback",
-        model="gpt-3.5-turbo",
-        prompt_id=None,
-        )
 
 
 # Lock the chat input container 50 pixels above bottom of viewport

@@ -11,54 +11,56 @@ from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.runnables import RunnablePassthrough
 
 
-# CONFIGS
-#Langsmith: must be set as environmental variables to be accessed behind the scenes
+# Config LangSmith
 os.environ["LANGCHAIN_API_KEY"] = st.secrets["LANGCHAIN_API_KEY"]
 os.environ["LANGCHAIN_TRACING_V2"] = "true"
 os.environ["LANGCHAIN_PROJECT"] = "ASK_main"
 
-#Qdrant
+# Config Qdrant
 QDRANT_URL = st.secrets["QDRANT_URL"]
 QDRANT_API_KEY = st.secrets["QDRANT_API_KEY"]
 qdrant_collection_name = "ASK_vectorstore"
 qdrant_path = "/tmp/local_qdrant"
 
 
-# Langchain and OpenAI
+# Config LangChain
 OPENAI_API_KEY = st.secrets["OPENAI_API_KEY"] # for langchain_openai.OpenAIEmbeddings
 
+# model="text-embedding-ada-002"
+# Misc configs for tracing
 CONFIG = {
-    "embedding": OpenAIEmbeddings(),
+    "qdrant_collection_name": "ASK_vectorstore",
+    "embedding_model": "text-embedding-ada-002",
     "embedding_dims": 1536,
     "search_type": "mmr",
     "k": 5,
-    'fetch_k': 20,   # fetch 30 docs then select 4
+    'fetch_k': 20,   # fetch 30 docs then select 5
     'lambda_mult': .7,    # 0= max diversity, 1 is min. default is 0.5
     "score_threshold": 0.5,
-    "model": "gpt-3.5-turbo-16k",
+    "generation_model": "gpt-3.5-turbo-16k",
     "temperature": 0.7,
 }
 
 # keep outside the function so it's accessible elsewhere in this notebook
-llm = ChatOpenAI(model=CONFIG["model"], temperature=CONFIG["temperature"])
+llm = ChatOpenAI(model=CONFIG["generation_model"], temperature=CONFIG["temperature"])
 
 
+# Create and cache the document retriever
 @st.cache_resource
 def get_retriever():
     '''Creates and caches the document retriever and Qdrant client.'''
 
+    # Qdnrat client cloud instance.
     client = QdrantClient(
         url=QDRANT_URL,
         prefer_grpc=True,
         api_key=QDRANT_API_KEY,
-    )  # cloud instance
-    # client = QdrantClient(path="/tmp/local_qdrant" )  # local instance: /private/tmp/local_qdrant
+    )  # For local, use QdrantClient(path="/tmp/local_qdrant")  # on mac: /private/tmp/local_qdrant
 
-# Qdrant is deprecated. Use this instead. Notice embedding is singular
     qdrant = QdrantVectorStore(
         client=client,
         collection_name=qdrant_collection_name,
-        embedding=CONFIG["embedding"]
+        embedding=OpenAIEmbeddings(model=CONFIG["embedding_model"]),
     )
 
     retriever = qdrant.as_retriever(
@@ -96,7 +98,7 @@ def get_retrieval_context(file_path: str):
     return context_dict
 
 
-# Cache the prompt creation
+# Cache the prompt template
 #@st.cache_resource
 def create_prompt():
     system_prompt = (
@@ -111,12 +113,14 @@ def create_prompt():
         ("human", "{input}"),
     ])
 
+# Path to prompt enrichment dictionaries
+config_path = os.path.join(os.path.dirname(__file__), 'config/retrieval_context.xlsx')
 
-# Cache enrichment function to use cached context
+
+# Define and cache the enrichment function to use cached context
 #@st.cache_data
-def enrich_question_via_code(user_question: str) -> str:
-    retrieval_context_dict = get_retrieval_context(
-        '../config/retrieval_context.xlsx')
+def enrich_question_via_code(user_question: str, filepath=config_path) -> str:
+    retrieval_context_dict = get_retrieval_context(filepath)
     acronyms_dict = retrieval_context_dict.get("acronyms", {})
     terms_dict = retrieval_context_dict.get("terms", {})
 
@@ -137,7 +141,7 @@ def format_docs(docs):
     return "\n\n".join(doc.page_content for doc in docs)
 
 
-# Caching the RAG pipeline setup as a resource
+# Define and cache the RAG pipeline setup
 # @st.cache_resource
 def create_rag_pipeline():
     prompt = create_prompt()
@@ -149,19 +153,20 @@ def create_rag_pipeline():
         | prompt
         | llm.with_structured_output(AnswerWithSources)
     )
-    retrieve_docs = (lambda x: x["input"]) | get_retriever()
+    retrieve_docs = (lambda x: x["input"]) | get_retriever().with_config(metadata=CONFIG)
     return RunnablePassthrough.assign(context=retrieve_docs).assign(answer=rag_chain_from_docs)
 
-query = [] # I don't think this is needed anymore
 
-# RAG invocation
+# Define the RAG pipeline
 def rag(user_question):
     chain = create_rag_pipeline()
     enriched_question = enrich_question_via_code(user_question)
     response = chain.invoke({"input": enriched_question})
+
+    # Response as LangChain Document object and enriched question
     return response, enriched_question
 
-
+# Extract short source list from response
 def create_short_source_list(response):
     markdown_list = []
     
@@ -177,7 +182,7 @@ def create_short_source_list(response):
     return short_source_list
 
 
-
+# Extract long source list from response
 def create_long_source_list(response):
     markdown_list = []
     
@@ -192,3 +197,18 @@ def create_long_source_list(response):
     
     return long_source_list
 
+
+
+if __name__ == "__main__":
+    # Example code to test the RAG pipeline directly
+    print("Starting RAG pipeline test")
+    
+    # Sample test question
+    user_question = "What are the requirements for boat crew certification?"
+    
+    # Run the RAG pipeline and get a response
+    response, enriched_question = rag(user_question)
+    
+    # Display the results
+    print("Enriched Question:", enriched_question)
+    print("Response:", response)

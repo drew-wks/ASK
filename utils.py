@@ -7,7 +7,6 @@ import streamlit as st
 from trubrics.integrations.streamlit import FeedbackCollector
 
 
-
 @st.cache_data
 def get_feedback_collector():
     '''
@@ -78,3 +77,11 @@ def get_library_doc_catalog_excel_and_date():
     last_update_date = datetime.datetime.fromtimestamp(modification_time).strftime('%d %B %Y')
     
     return df, last_update_date
+
+
+def main():
+    print("Running utils.py directly")
+    # You can include test code for utility functions here, if desired
+
+if __name__ == "__main__":
+    main()

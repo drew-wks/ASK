@@ -1,8 +1,7 @@
 streamlit
 st-click-detector
-openai
-trubrics[streamlit]
-langchain
+openai # dependency for langchain-openai
+langchain # not sure this is being used
 langchain-openai
 langchain_qdrant
 langchain-community
