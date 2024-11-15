@@ -19,19 +19,18 @@ os.environ["LANGCHAIN_PROJECT"] = "ASK_main"
 # Config Qdrant
 QDRANT_URL = st.secrets["QDRANT_URL"]
 QDRANT_API_KEY = st.secrets["QDRANT_API_KEY"]
-qdrant_collection_name = "ASK_vectorstore"
 qdrant_path = "/tmp/local_qdrant"
 
 
-# Config LangChain
+# Config langchain_openai
 OPENAI_API_KEY = st.secrets["OPENAI_API_KEY"] # for langchain_openai.OpenAIEmbeddings
 
-# model="text-embedding-ada-002"
+
 # Misc configs for tracing
 CONFIG = {
     "qdrant_collection_name": "ASK_vectorstore",
-    "embedding_model": "text-embedding-ada-002",
-    "embedding_dims": 1536,
+    "embedding_model": "text-embedding-ada-002", # alt: text-embedding-3-large
+    "embedding_dims": 1536, # alt: 1024
     "search_type": "mmr",
     "k": 5,
     'fetch_k': 20,   # fetch 30 docs then select 5
@@ -59,7 +58,7 @@ def get_retriever():
 
     qdrant = QdrantVectorStore(
         client=client,
-        collection_name=qdrant_collection_name,
+        collection_name=CONFIG["qdrant_collection_name"],
         embedding=OpenAIEmbeddings(model=CONFIG["embedding_model"]),
     )
 
