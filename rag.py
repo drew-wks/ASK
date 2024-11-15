@@ -21,10 +21,8 @@ QDRANT_URL = st.secrets["QDRANT_URL"]
 QDRANT_API_KEY = st.secrets["QDRANT_API_KEY"]
 qdrant_path = "/tmp/local_qdrant"
 
-
 # Config langchain_openai
 OPENAI_API_KEY = st.secrets["OPENAI_API_KEY"] # for langchain_openai.OpenAIEmbeddings
-
 
 # Misc configs for tracing
 CONFIG = {
@@ -39,6 +37,7 @@ CONFIG = {
     "generation_model": "gpt-3.5-turbo-16k",
     "temperature": 0.7,
 }
+
 
 # keep outside the function so it's accessible elsewhere in this notebook
 llm = ChatOpenAI(model=CONFIG["generation_model"], temperature=CONFIG["temperature"])
@@ -98,7 +97,6 @@ def get_retrieval_context(file_path: str):
 
 
 # Cache the prompt template
-#@st.cache_resource
 def create_prompt():
     system_prompt = (
         "Use the following pieces of context to answer the users question. "
