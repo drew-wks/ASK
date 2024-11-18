@@ -78,7 +78,7 @@ if user_question:
 
     # Create response container
     with st.status("Checking documents...", expanded=False) as response_container:
-        response, enriched_question = run_cached_rag(user_question)
+        response = run_cached_rag(user_question)
         short_source_list = rag.create_short_source_list(response)
         long_source_list = rag.create_long_source_list(response)
         example_questions.empty()  
@@ -90,7 +90,7 @@ if user_question:
     # Create a container and fill with references
     with st.status("CLICK HERE FOR FULL SOURCE DETAILS", expanded=False) as references_container:
         st.write(long_source_list)
-        st.write(enriched_question)
+        # st.write(enriched_question)
 
 
 

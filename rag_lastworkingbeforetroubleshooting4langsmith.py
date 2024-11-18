@@ -71,7 +71,7 @@ def get_retriever():
 
 
 
-# Define schema for responses
+# Define schema for response
 class AnswerWithSources(TypedDict):
     """An answer to the question, with sources."""
     answer: str
@@ -107,7 +107,7 @@ def create_prompt():
     )
     return ChatPromptTemplate.from_messages([
         ("system", system_prompt),
-        ("human", "{enriched_question}"),
+        ("human", "{input}"),
     ])
 
 # Path to prompt enrichment dictionaries
@@ -142,65 +142,26 @@ def format_docs(docs):
 # @st.cache_resource
 def create_rag_pipeline():
     prompt = create_prompt()
-    
-    # Processes multiple transformations:
-    # 1. 
-
-
-
-    
-
-
-    # Step 3: Create RAG chain
-    # Create a dictionary by explicitly mapping a input key with the value from the input dictionary and a context key with a value applied by format_docs
     rag_chain_from_docs = (
         {
-            "user_question": lambda x: x["user_question"],  # Original user question
-            "enriched_question": lambda x: x["enriched_question"],  
-            "context": lambda x: format_docs(x["context"]),  # Retrieved docs
+            "input": lambda x: x["input"],
+            "context": lambda x: format_docs(x["context"]),
         }
-        # pass the dictionary through a prompt template populated with input and context values
         | prompt
-        # run through OpenAI's chat model and structures output via AnswerWithSources custom parser to include the sources used by llm
         | llm.with_structured_output(AnswerWithSources)
-        | (lambda x: {
-            "answer": x["answer"],  # Add the answer to  the dictionary
-            "llm_sources": x["sources"],  # Add llm sources  to the dictionary
-        })
     )
-
-    # Retrieve documents using enriched_question
-    retrieve_docs = (lambda x: x["enriched_question"]) | get_retriever().with_config(metadata=CONFIG)
-
-    # Combine all steps into the pipeline
-    return (
-        RunnablePassthrough
-        .assign(context=retrieve_docs)  # Add retrieved context
-        .assign(answer=rag_chain_from_docs)  # Generate and track the answer
-    )
+    retrieve_docs = (lambda x: x["input"]) | get_retriever().with_config(metadata=CONFIG)
+    return RunnablePassthrough.assign(context=retrieve_docs).assign(answer=rag_chain_from_docs)
 
 
-
-# Invoke the RAG pipeline
-def rag(user_question: str):
+# Define the RAG pipeline
+def rag(user_question):
     chain = create_rag_pipeline()
     enriched_question = enrich_question_via_code(user_question)
-    response = chain.invoke({"user_question": user_question, "enriched_question": enriched_question})
+    response = chain.invoke({"input": enriched_question})
 
+    # Response as LangChain Document object (and enriched question if I can get that working wtih langsmith)
     return response
-
-
-
-def rag_for_eval(input: dict) -> dict:
-    print("Input received by rag_for_eval:", input)
-    user_question = input["Question"]
-    chain = create_rag_pipeline()
-    enriched_question = enrich_question_via_code(user_question)
-    response = chain.invoke({"user_question": user_question, "enriched_question": enriched_question})
-    answer = response["answer"]["answer"]
-    return {"answer": answer}
-
-
 
 # Extract short source list from response
 def create_short_source_list(response):

@@ -29,7 +29,9 @@ def test_rag_pipeline_responses(question):
 
     response, enriched_question = rag.rag(question)
     print({question})
-    print({response['answer']['answer']})
+    print({response['answer']})
+    # print(f"{response['answer']['answer']}")
+    
     # Assert the response is not empty
     assert response, f"Response for question '{question}' is empty."
 
