@@ -9,6 +9,11 @@ import utils
 from streamlit_extras.stylable_container import stylable_container
 
 
+# Config LangSmith
+os.environ["LANGCHAIN_API_KEY"] = st.secrets["LANGCHAIN_API_KEY"]
+os.environ["LANGCHAIN_TRACING_V2"] = "true"
+os.environ["LANGCHAIN_PROJECT"] = "ASK_main"
+
 
 # Hide Streamlit's default UI elements: Main menu, footer, and header
 st.markdown( """ <style> [data-testid="collapsedControl"] { display: none } </style> """, unsafe_allow_html=True, )

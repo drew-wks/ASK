@@ -11,10 +11,6 @@ from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.runnables import RunnablePassthrough
 
 
-# Config LangSmith
-os.environ["LANGCHAIN_API_KEY"] = st.secrets["LANGCHAIN_API_KEY"]
-os.environ["LANGCHAIN_TRACING_V2"] = "true"
-os.environ["LANGCHAIN_PROJECT"] = "ASK_main"
 
 # Config Qdrant
 QDRANT_URL = st.secrets["QDRANT_URL"]
@@ -140,7 +136,7 @@ class AnswerWithSources(TypedDict):
     ]
 
 
-
+# THis will be removed shortly in favor of explicit coding. enough with LCEL
 # Define and cache the RAG pipeline setup
 # @st.cache_resource
 def create_rag_pipeline():
@@ -178,9 +174,51 @@ def create_rag_pipeline():
     )
 
 
+# Main RAG pipeline function
+def rag(user_question: str) -> dict:
+
+    # Enrich the question
+    enriched_question = enrich_question(user_question)
+
+    # Retrieve relevant documents using the enriched question
+    retriever = get_retriever().with_config(metadata=CONFIG)
+    context = retriever.invoke(enriched_question)  
+
+
+    # Prepare the prompt input
+    prompt = create_prompt()
+    prompt_input = {
+        "enriched_question": enriched_question,
+        "context": format_docs(context), # list of documents retreived from vector store
+    }
+
+    # Run through OpenAI's chat model
+    llm = ChatOpenAI(model=CONFIG["generation_model"], temperature=CONFIG["temperature"])
+
+    # Structure output with AnswerWithSources custom parser to include the sources used by llm
+    structured_llm = llm.with_structured_output(AnswerWithSources)
+    llm_response = structured_llm.invoke(prompt.format(**prompt_input))
+
+    return {
+        "user_question": user_question,
+        "enriched_question": enriched_question,
+        "context": context,  
+        "answer": llm_response["answer"],
+        "llm_sources": llm_response["sources"],
+    }
+
+
+
+# Specialized adapter for running evals to LangSmith
+# Accepts a input dict from langsmith.evaluation.LangChainStringEvaluator
+def rag_for_eval(input: dict) -> dict:
+    user_question = input["Question"]
+    response = rag(user_question)
+    return {"answer": response["answer"]}
+
 
 # Invoke the RAG pipeline
-def rag(user_question: str):
+def rag_working_butlcelsux(user_question: str):
     chain = create_rag_pipeline()
     enriched_question = enrich_question(user_question)
     response = chain.invoke({"user_question": user_question, "enriched_question": enriched_question})
@@ -188,8 +226,7 @@ def rag(user_question: str):
     return response
 
 
-
-def rag_for_eval(input: dict) -> dict:
+def rag_for_eval_working_butlcelsux(input: dict) -> dict:
     user_question = input["Question"]
     chain = create_rag_pipeline()
     enriched_question = enrich_question(user_question)
