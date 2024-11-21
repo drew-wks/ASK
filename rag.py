@@ -9,9 +9,10 @@ from langchain_qdrant import QdrantVectorStore
 from langchain_openai import OpenAIEmbeddings, ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.runnables import RunnablePassthrough
+from langsmith import traceable
 
 
-
+ 
 # Config Qdrant
 QDRANT_URL = st.secrets["QDRANT_URL"]
 QDRANT_API_KEY = st.secrets["QDRANT_API_KEY"]
@@ -83,6 +84,7 @@ enrichment_path = os.path.join(os.path.dirname(__file__), 'config/retrieval_cont
 
 
 # Define and cache the enrichment function to use cached context
+@traceable(run_type="chain")
 #@st.cache_data
 def enrich_question(user_question: str, filepath=enrichment_path) -> str:
     enrichment_dict = get_retrieval_context(filepath)
@@ -141,9 +143,7 @@ class AnswerWithSources(TypedDict):
 # @st.cache_resource
 def create_rag_pipeline():
     prompt = create_prompt()
-    llm = ChatOpenAI(model=CONFIG["generation_model"], temperature=CONFIG["temperature"])
-
-
+    llm = ChatOpenAI(model=CONFIG["generation_model"], temperature=CONFIG["temperature" ])
 
     # Step 3: Create RAG chain
     # Create a dictionary by explicitly mapping values from the input dict, etc.
@@ -206,7 +206,6 @@ def rag(user_question: str) -> dict:
         "answer": llm_response["answer"],
         "llm_sources": llm_response["sources"],
     }
-
 
 
 # Specialized adapter for running evals to LangSmith
