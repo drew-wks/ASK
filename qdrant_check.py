@@ -26,7 +26,7 @@ import requests
 def get_qdrant_client(api_key, url):
     """Establish connection to the Qdrant Cloud instance."""
     try:
-        print("Connecting to Qdrant...")
+        print(f"Connecting to Qdrant at {url}")
         return QdrantClient(url=url, prefer_grpc=True, api_key=api_key)
     except Exception as e:
         print("Failed to connect to Qdrant:", e)
@@ -87,7 +87,10 @@ def main():
     client = get_qdrant_client(api_key, url)
     if client:
         fetch_collection_info(client, collection_name)
+        print("Making a search request...")
         make_search_request(client, collection_name)
+        print("")
+        print("Making a metrics request...")
         fetch_metrics(api_key, url)
     else:
         print("Unable to proceed without Qdrant client connection.")
