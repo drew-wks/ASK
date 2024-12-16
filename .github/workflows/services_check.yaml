@@ -4,12 +4,8 @@ name: Services check
 on:
   schedule:
     - cron: '0 13 * * 1,5'
-    # GitHub's scheduler runs jobs on a fixed daily or weekly schedule. 
-    # This runs at 13:00 on every Monday and Friday
-  workflow_dispatch:  # enables ability to run manually 
-  push:
-    branches:
-      - main
+    # Run jobs at 13:00 on every Monday and Friday
+  workflow_dispatch:  # Ability to run manually 
 
 jobs:
   check_services:
@@ -35,7 +31,7 @@ jobs:
           QDRANT_API_KEY: ${{ secrets.QDRANT_API_KEY }}
         run: python qdrant_check.py
 
-      - name: Install Chrome to Preview Strreamlit UI
+      - name: Install Chrome to Preview Streamlit UI
         run: |
           sudo apt-get update
           sudo apt-get install -y wget unzip
