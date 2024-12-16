@@ -12,11 +12,11 @@ from langchain_core.runnables import RunnablePassthrough
 from langsmith import traceable
 
 
- 
+
 # Config Qdrant
 QDRANT_URL = st.secrets["QDRANT_URL"]
 QDRANT_API_KEY = st.secrets["QDRANT_API_KEY"]
-qdrant_path = "/tmp/local_qdrant"
+QDRANT_PATH = "/tmp/local_qdrant"  # on macOS, default is: /private/tmp/local_qdrant
 
 # Config langchain_openai
 OPENAI_API_KEY = st.secrets["OPENAI_API_KEY"] # for langchain_openai.OpenAIEmbeddings
@@ -47,7 +47,8 @@ def get_retriever():
         url=QDRANT_URL,
         prefer_grpc=True,
         api_key=QDRANT_API_KEY,
-    )  # For local, use QdrantClient(path="/tmp/local_qdrant")  # on mac: /private/tmp/local_qdrant
+        #path=QDRANT_PATH)  # local instance
+    )  
 
     qdrant = QdrantVectorStore(
         client=client,
@@ -83,7 +84,9 @@ def get_retrieval_context(file_path: str):
 enrichment_path = os.path.join(os.path.dirname(__file__), 'config/retrieval_context.xlsx')
 
 
-# Define and cache the enrichment function to use cached context
+# Define the enrichment function.
+# traceable decorator is used to trace the function in Langsmith.
+# cache_data decorator is used to cache the function in Streamlit.
 @traceable(run_type="chain")
 #@st.cache_data
 def enrich_question(user_question: str, filepath=enrichment_path) -> str:
@@ -138,41 +141,6 @@ class AnswerWithSources(TypedDict):
     ]
 
 
-# THis will be removed shortly in favor of explicit coding. enough with LCEL
-# Define and cache the RAG pipeline setup
-# @st.cache_resource
-def create_rag_pipeline():
-    prompt = create_prompt()
-    llm = ChatOpenAI(model=CONFIG["generation_model"], temperature=CONFIG["temperature" ])
-
-    # Step 3: Create RAG chain
-    # Create a dictionary by explicitly mapping values from the input dict, etc.
-    rag_chain_from_docs = (
-        {
-            "user_question": lambda x: x["user_question"],  # explicitly map the user question value to the user question key 
-            "enriched_question": lambda x: x["enriched_question"],  # ditto for enriched question
-            "context": lambda x: format_docs(x["context"]),  # Map the retrieved docs to the context key
-        }
-        # pass the dictionary through a prompt template populated with input and context values
-        | prompt
-        # run through OpenAI's chat model and structures output via AnswerWithSources custom parser to include the sources used by llm
-        | llm.with_structured_output(AnswerWithSources)
-        | (lambda x: {
-            "answer": x["answer"],  # Add the answer to  the dictionary
-            "llm_sources": x["sources"],  # Add llm sources  to the dictionary
-        })
-    )
-
-    # Retrieve documents using enriched_question
-    retrieve_docs = (lambda x: x["enriched_question"]) | get_retriever().with_config(metadata=CONFIG)
-
-    # Combine all steps into the pipeline
-    return (
-        RunnablePassthrough
-        .assign(context=retrieve_docs)  # Add retrieved context
-        .assign(answer=rag_chain_from_docs)  # Generate and track the answer
-    )
-
 
 # Main RAG pipeline function
 def rag(user_question: str) -> dict:
@@ -183,7 +151,6 @@ def rag(user_question: str) -> dict:
     # Retrieve relevant documents using the enriched question
     retriever = get_retriever().with_config(metadata=CONFIG)
     context = retriever.invoke(enriched_question)  
-
 
     # Prepare the prompt input
     prompt = create_prompt()
@@ -216,28 +183,11 @@ def rag_for_eval(input: dict) -> dict:
     return {"answer": response["answer"]}
 
 
-# Invoke the RAG pipeline
-def rag_working_butlcelsux(user_question: str):
-    chain = create_rag_pipeline()
-    enriched_question = enrich_question(user_question)
-    response = chain.invoke({"user_question": user_question, "enriched_question": enriched_question})
-
-    return response
-
-
-def rag_for_eval_working_butlcelsux(input: dict) -> dict:
-    user_question = input["Question"]
-    chain = create_rag_pipeline()
-    enriched_question = enrich_question(user_question)
-    response = chain.invoke({"user_question": user_question, "enriched_question": enriched_question})
-    return {"answer": response["answer"]["answer"]}
-
-
 
 # Extract short source list from response
 def create_short_source_list(response):
     markdown_list = []
-    
+
     for i, doc in enumerate(response['context'], start=1):
         source = doc.metadata['source']
         short_source = source.split('/')[-1].split('.')[0]
@@ -245,23 +195,23 @@ def create_short_source_list(response):
         markdown_list.append(f"*{short_source}*, page {page}\n")
 
     short_source_list = '\n'.join(markdown_list)
-    
+
     return short_source_list
 
 
 # Extract long source list from response
 def create_long_source_list(response):
     markdown_list = []
-    
+
     for i, doc in enumerate(response['context'], start=1):
         page_content = doc.page_content  
         source = doc.metadata['source']  
         short_source = source.split('/')[-1].split('.')[0]  
         page = doc.metadata['page']  
         markdown_list.append(f"**Reference {i}:**    *{short_source}*, page {page}  \n   {page_content}\n")
-    
+
     long_source_list = '\n'.join(markdown_list)
-    
+
     return long_source_list
 
 
