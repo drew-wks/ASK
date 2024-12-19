@@ -1,4 +1,5 @@
 import streamlit as st
+import os
 
 # Collapse the sidebar
 st.set_page_config(page_title="ASK Auxiliary Source of Knowledge", initial_sidebar_state="collapsed")

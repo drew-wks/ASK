@@ -4,19 +4,6 @@ import datetime
 import requests
 import pandas as pd
 import streamlit as st 
-from trubrics.integrations.streamlit import FeedbackCollector
-
-
-@st.cache_data
-def get_feedback_collector():
-    '''
-    Set up the Truberics feedback collector. Feedback is here https://trubrics.streamlit.app/?ref=blog.streamlit.io
-    '''
-    return FeedbackCollector(
-        project="default",
-        email=st.secrets["TRUBRICS_EMAIL"],
-        password=st.secrets["TRUBRICS_PASSWORD"]
-    )
 
 
 @st.cache_data
@@ -55,11 +42,11 @@ def get_openai_api_status():
 
 @st.cache_data
 def get_library_doc_catalog_excel_and_date():
-    '''Gets the most recent catalog of library documents for the user to review'''
+    '''Gets the most recent catalog of library documents'''
 
     directory_path = 'docs/library_catalog/'
     files_in_directory = os.listdir(directory_path)
-    excel_files = [file for file in files_in_directory if re.match(r'library_doc_catalog.*\.xlsx$', file)]
+    excel_files = [file for file in files_in_directory if re.match(r'library_catalog.*\.xlsx$', file)]
 
     if not excel_files:
         os.write(1,b"There's no Excel file in the directory.\n")
