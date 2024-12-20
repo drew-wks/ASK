@@ -59,7 +59,7 @@ with tab1:
     
 
 with tab2:
-    df, last_update_date = utils.get_library_doc_catalog_excel_and_date()
+    df, last_update_date = utils.get_library_catalog_excel_and_date()
     overview = read_markdown_file("docs/library_overview.md")
 
     if df is not None:
