@@ -43,7 +43,7 @@ st.markdown("""
 
 
 # Banner image
-st.image("https://raw.githubusercontent.com/dvvilkins/ASK/main/images/ASK_logotype_color.png?raw=true", use_container_width=True)
+st.image("https://raw.githubusercontent.com/drew-wks/ASK/main/images/ASK_logotype_color.png?raw=true", use_container_width=True)
 
 
 # Check Open AI service status

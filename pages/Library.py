@@ -44,7 +44,7 @@ def read_markdown_file(markdown_file):
 
 
 
-st.image("https://raw.githubusercontent.com/dvvilkins/ASK/main/images/ASK_logotype_color.png?raw=true", use_container_width=True)
+st.image("https://raw.githubusercontent.com/drew-wks/ASK/main/images/ASK_logotype_color.png?raw=true", use_container_width=True)
 
 back = st.button("< Back to App", type="primary")
 if back:
