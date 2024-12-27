@@ -21,10 +21,6 @@ QDRANT_PATH = "/tmp/local_qdrant"  # on macOS, default is: /private/tmp/local_qd
 # Config langchain_openai
 OPENAI_API_KEY = st.secrets["OPENAI_API_KEY"] # for langchain_openai.OpenAIEmbeddings
 
-# Config LangSmith
-os.environ["LANGCHAIN_API_KEY"] = st.secrets["LANGCHAIN_API_KEY"]
-os.environ["LANGCHAIN_TRACING_V2"] = "true"
-os.environ["LANGCHAIN_PROJECT"] = "ASK_main"
 
 # Misc configs for tracing
 CONFIG = {
@@ -92,6 +88,7 @@ enrichment_path = os.path.join(os.path.dirname(__file__), 'config/retrieval_cont
 # Define the enrichment function.
 # traceable decorator is used to trace the function in Langsmith.
 # cache_data decorator is used to cache the function in Streamlit.
+@traceable(run_type="prompt")
 #@st.cache_data
 def enrich_question(user_question: str, filepath=enrichment_path) -> str:
     enrichment_dict = get_retrieval_context(filepath)

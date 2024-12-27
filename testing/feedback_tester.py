@@ -7,7 +7,7 @@ import os
 # Config LangSmith
 # os.environ["LANGCHAIN_API_KEY"] = st.secrets["LANGCHAIN_API_KEY"]
 # os.environ["LANGCHAIN_TRACING_V2"] = "true"
-# os.environ["LANGCHAIN_PROJECT"] = "ASK_main"
+# os.environ["LANGCHAIN_PROJECT"] = "feedback_tester.py_on_ASK_main"
 
 
 def langsmith_feedback(feedback_data):

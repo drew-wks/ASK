@@ -5,6 +5,10 @@ from streamlit_feedback import streamlit_feedback
 # Collapse the sidebar
 st.set_page_config(page_title="ASK Auxiliary Source of Knowledge", initial_sidebar_state="collapsed")
 
+# Config LangSmith
+os.environ["LANGCHAIN_API_KEY"] = st.secrets["LANGCHAIN_API_KEY"]
+os.environ["LANGCHAIN_TRACING_V2"] = "true"
+os.environ["LANGCHAIN_PROJECT"] = "ui.py_on_ASK_main"
 
 import rag
 import utils
