@@ -4,17 +4,15 @@ openai # dependency for langchain-openai
 langchain # not sure this is being used
 langchain-openai
 langchain_qdrant
-langchain-community
+langchain-community # not sure this is being used
+langsmith # tracing
 qdrant-client   # testing removing this for pydantic issue ==1.6.3
-tiktoken
-streamlit_extras
 pandas
-pytest
+pytest # testing
 openpyxl # used to import the library.xlsx file
 requests==2.32.3 #  for GitHub Actions. used to access qdrant
 selenium==4.25 #  for GitHub Actions. needed to check for app Streamlit suspension due to inactivity
+streamlit_extras
+streamlit_feedback 
+tiktoken # not sure this is being used
 webdriver-manager==4.0.2  #  for GitHub Actions. Check for Streamlit app suspension due to inactivity
-setuptools>=42
-
-
-# TODO figure out which package is using Pydantic and update it. class-based `config` is deperecated. Also, json_encoders

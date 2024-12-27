@@ -5,7 +5,7 @@ import time
     
 def test_ui():
     """
-    Test case for the Streamlit user interface I/O.
+    Test case for the Streamlit user interface I/O using streamlit testing framework AppTest.
 
     This test performs the following steps:
     1. Initializes the Streamlit app using `AppTest.from_file` with the `ui.py` script.

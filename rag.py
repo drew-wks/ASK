@@ -9,7 +9,7 @@ from langchain_qdrant import QdrantVectorStore
 from langchain_openai import OpenAIEmbeddings, ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.runnables import RunnablePassthrough
-from langsmith import traceable
+from langsmith import traceable, trace
 
 
 
@@ -20,6 +20,11 @@ QDRANT_PATH = "/tmp/local_qdrant"  # on macOS, default is: /private/tmp/local_qd
 
 # Config langchain_openai
 OPENAI_API_KEY = st.secrets["OPENAI_API_KEY"] # for langchain_openai.OpenAIEmbeddings
+
+# Config LangSmith
+os.environ["LANGCHAIN_API_KEY"] = st.secrets["LANGCHAIN_API_KEY"]
+os.environ["LANGCHAIN_TRACING_V2"] = "true"
+os.environ["LANGCHAIN_PROJECT"] = "ASK_main"
 
 # Misc configs for tracing
 CONFIG = {
@@ -87,7 +92,6 @@ enrichment_path = os.path.join(os.path.dirname(__file__), 'config/retrieval_cont
 # Define the enrichment function.
 # traceable decorator is used to trace the function in Langsmith.
 # cache_data decorator is used to cache the function in Streamlit.
-@traceable(run_type="chain")
 #@st.cache_data
 def enrich_question(user_question: str, filepath=enrichment_path) -> str:
     enrichment_dict = get_retrieval_context(filepath)
@@ -143,6 +147,7 @@ class AnswerWithSources(TypedDict):
 
 
 # Main RAG pipeline function
+@traceable(run_type="chain")
 def rag(user_question: str) -> dict:
 
     # Enrich the question
@@ -176,8 +181,9 @@ def rag(user_question: str) -> dict:
 
 
 # Specialized adapter for running evals to LangSmith
-# Accepts a input dict from langsmith.evaluation.LangChainStringEvaluator
 def rag_for_eval(input: dict) -> dict:
+    # Accepts a input dict from langsmith.evaluation.LangChainStringEvaluator
+    # Outputs a dictionary with one key which is the answer
     user_question = input["Question"]
     response = rag(user_question)
     return {"answer": response["answer"]}
@@ -214,7 +220,13 @@ def create_long_source_list(response):
 
     return long_source_list
 
-
+'''
+this does not work
+with trace("ASK User Run"):
+    enriched_question = enrich_question(user_question)
+    retriever = get_retriever().with_config(metadata=CONFIG)
+    llm_response = structured_llm.invoke(prompt.format(**prompt_input))
+'''
 
 if __name__ == "__main__":
     # Example code to test the RAG pipeline directly
