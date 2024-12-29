@@ -152,7 +152,7 @@ def rag(user_question: str) -> dict:
 
     # Retrieve relevant documents using the enriched question
     retriever = get_retriever().with_config(metadata=CONFIG)
-    context = retriever.invoke(enriched_question)  
+    context = retriever.invoke(enriched_question)
 
     # Prepare the prompt input
     prompt = create_prompt()
@@ -185,6 +185,13 @@ def rag_for_eval(input: dict) -> dict:
     response = rag(user_question)
     return {"answer": response["answer"]}
 
+
+def rag_for__hal_eval(input: dict) -> dict:
+    # Accepts a input dict from langsmith.evaluation.LangChainStringEvaluator
+    # Outputs a dictionary with one key which is the answer
+    user_question = input["Question"]
+    response = rag(user_question)
+    return {"answer": response["answer"], "contexts": response["context"]}
 
 
 # Extract short source list from response
