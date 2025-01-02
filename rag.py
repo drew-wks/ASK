@@ -8,8 +8,7 @@ from qdrant_client import QdrantClient
 from langchain_qdrant import QdrantVectorStore
 from langchain_openai import OpenAIEmbeddings, ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate
-from langchain_core.runnables import RunnablePassthrough
-from langsmith import traceable, trace
+from langsmith import traceable
 
 
 
@@ -43,7 +42,7 @@ CONFIG = {
 def get_retriever():
     '''Creates and caches the document retriever and Qdrant client.'''
 
-    # Qdnrat client cloud instance.
+    # Qdnrat client cloud instance
     client = QdrantClient(
         url=QDRANT_URL,
         prefer_grpc=True,
@@ -86,8 +85,8 @@ enrichment_path = os.path.join(os.path.dirname(__file__), 'config/retrieval_cont
 
 
 # Define the enrichment function.
-# traceable decorator is used to trace the function in Langsmith.
-# cache_data decorator is used to cache the function in Streamlit.
+# traceable decorator is used to trace the function in Langsmith
+# cache_data decorator is used to cache the function in Streamlit
 @traceable(run_type="prompt")
 #@st.cache_data
 def enrich_question(user_question: str, filepath=enrichment_path) -> str:
@@ -177,7 +176,7 @@ def rag(user_question: str) -> dict:
     }
 
 
-# Specialized adapter for running evals to LangSmith
+# Specialized adapter for running evals to LangSmith. No longer used
 def rag_for_eval(input: dict) -> dict:
     # Accepts a input dict from langsmith.evaluation.LangChainStringEvaluator
     # Outputs a dictionary with one key which is the answer
@@ -186,6 +185,7 @@ def rag_for_eval(input: dict) -> dict:
     return {"answer": response["answer"]}
 
 
+# Specialized adapter for running evals to LangSmith. No longer used
 def rag_for__hal_eval(input: dict) -> dict:
     # Accepts a input dict from langsmith.evaluation.LangChainStringEvaluator
     # Outputs a dictionary with one key which is the answer
