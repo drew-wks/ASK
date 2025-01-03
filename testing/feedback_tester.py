@@ -9,18 +9,17 @@ import rag
 # Config LangSmith if you also want the traces
 os.environ["LANGCHAIN_API_KEY"] = st.secrets["LANGCHAIN_API_KEY"]
 os.environ["LANGCHAIN_TRACING_V2"] = "true"
-os.environ["LANGCHAIN_PROJECT"] = "langchain_user_feedback_tester.ipynb_on_ASK_main"
+os.environ["LANGCHAIN_PROJECT"] = "langchain_user_feedback_tester.ipynb on ASK main/local"
 
 
 ls_client = Client()  # Defaults to the LANGCHAIN_API_KEY environment variable
-
 
 def langsmith_feedback(feedback_data):
     """Send feedback to LangSmith."""
     score = 1.0 if feedback_data["score"] == "👍" else 0.0
     run_id = st.session_state.get("run_id")  # Retrieve the run_id from session state
     if run_id:
-        st.write(f"Sending feedback for run_id: {run_id}")
+        # st.write(f"Sending feedback for run_id: {run_id}")
         ls_client.create_feedback(
             run_id=run_id,
             key="user_feedback",
@@ -32,8 +31,8 @@ def langsmith_feedback(feedback_data):
 
 
 @st.cache_data(show_spinner=False)
-def run_cached_rag(question, run_id):
-    """Run the RAG pipeline with caching."""
+def cached_rag(question, run_id):
+    """Wrapper to run the RAG pipeline with caching & feedback support."""
     return rag.rag(question, langsmith_extra={"run_id": run_id})
 
 # Streamlit app UI
@@ -44,15 +43,16 @@ user_question = st.text_input("Enter your question:")
 if "response" not in st.session_state and user_question:
     run_id = str(uuid.uuid4())
     st.session_state["run_id"] = run_id
-    st.session_state["response"] = run_cached_rag(user_question, run_id)
+    st.session_state["response"] = cached_rag(user_question, run_id)
     
 if "response" in st.session_state:
     response = st.session_state["response"]
     st.info(f"**Question:** {user_question}\n\n**Response:** {response}")
 
-feedback_data = streamlit_feedback(
-    feedback_type="thumbs", optional_text_label="[Optional] Please explain your rating, so we can improve ASK", align="flex-start")
+    # Show feedback widget once a response is returned
+    feedback_data = streamlit_feedback(
+        feedback_type="thumbs", optional_text_label="(Optional) Please explain your rating, so we can improve ASK", align="flex-start")
 
-if feedback_data:
-    st.write("Thanks for the feedback")
-    langsmith_feedback(feedback_data)
+    if feedback_data:
+        st.write("Thanks for the feedback!")
+        langsmith_feedback(feedback_data)
