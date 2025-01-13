@@ -10,8 +10,8 @@ st.set_page_config(page_title="ASK Auxiliary Source of Knowledge", initial_sideb
 # Config LangSmith
 os.environ["LANGCHAIN_API_KEY"] = st.secrets["LANGCHAIN_API_KEY"]
 os.environ["LANGCHAIN_TRACING_V2"] = "true"
-# os.environ["LANGCHAIN_PROJECT"] = "ui.py on ASK main/local" # use this for local testing
-os.environ["LANGCHAIN_PROJECT"] = "ASK Production App (ui.py on ASK main/origin)"
+os.environ["LANGCHAIN_PROJECT"] = "ui.py on ASK main/local" # use this for local testing
+# os.environ["LANGCHAIN_PROJECT"] = "ASK Production App (ui.py on ASK main/origin)"
 
 import rag
 import utils
