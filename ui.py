@@ -98,41 +98,57 @@ def cached_rag(question, run_id):
     return rag.rag(question, langsmith_extra={"run_id": run_id})
 
 
+# Initialize session state variables
+if "run_id" not in st.session_state:
+    st.session_state["run_id"] = None
+if "user_question" not in st.session_state:
+    st.session_state["user_question"] = None
+if "response" not in st.session_state:
+    st.session_state["response"] = None
+    
+
 # Main RAG pipeline
 user_question = st.text_input("Type your question or task here", max_chars=200)
-if user_question:
 
-    # Create response container
+# On new user_question, clear previous response and feedback
+if user_question and (user_question != st.session_state["user_question"]):
+    st.session_state["user_question"] = user_question
+    st.session_state.pop("response", None)
+    st.session_state["run_id"] = str(uuid.uuid4()) 
+
+    # Generate the response only if the question is new
+if st.session_state.get("user_question") and "response" not in st.session_state:
+    # Create response container and generate a response
     with st.status("Checking documents...", expanded=False) as response_container:
-        # Generate the response only if the question is new
-        if "response" not in st.session_state and user_question:
-            run_id = str(uuid.uuid4())
-            st.session_state["run_id"] = run_id
-            st.session_state["response"] = cached_rag(user_question, run_id)
-            
-        if "response" in st.session_state:
-            response = st.session_state["response"]
-        
-            short_source_list = rag.create_short_source_list(response)
-            long_source_list = rag.create_long_source_list(response)
-            example_questions.empty()  
-            st.info(f"**Question:** *{user_question}*\n\n ##### Response:\n{response['answer']}\n\n **Sources:**  \n{short_source_list}\n **Note:** \n ASK can make mistakes. Verify the sources and check your local policies.")
+        st.session_state["response"] = cached_rag(
+            st.session_state["user_question"], st.session_state["run_id"]
+        )
+        # Open response container once responses are ready
+        response_container.update(label=":blue[**Response**]", expanded=True)
 
-    # Open response container once responses are ready
-    response_container.update(label=":blue[**Response**]", expanded=True)
-
+# Format Response
+if st.session_state.get("response"):
+    response = st.session_state["response"]
+    short_source_list = rag.create_short_source_list(response)
+    long_source_list = rag.create_long_source_list(response)
+    example_questions.empty()  
+    st.info(f"**Question:** *{user_question}*\n\n ##### Response:\n{response['answer']}\n\n **Sources:**  \n{short_source_list}\n **Note:** \n ASK can make mistakes. Verify the sources and check your local policies.")
+    
     # Create a container and fill with references
     with st.status("CLICK HERE FOR FULL SOURCE DETAILS", expanded=False) as references_container:
         st.write(long_source_list)
         # st.write(enriched_question)
         
     # Show feedback widget once a response is returned
-    feedback_data = streamlit_feedback(
-        feedback_type="thumbs", optional_text_label="(Optional) Please explain your rating, so we can improve ASK", align="flex-start")
-
-    if feedback_data:
+    user_feedback = streamlit_feedback(
+        feedback_type="thumbs",
+        optional_text_label="(Optional) Please explain your rating, so we can improve ASK",
+        align="flex-start",
+    )
+        
+    if user_feedback:
         st.write("Thanks for the feedback!")
-        langsmith_feedback(feedback_data)
+        langsmith_feedback(user_feedback)
 
 
 

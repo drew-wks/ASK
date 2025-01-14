@@ -25,14 +25,14 @@ OPENAI_API_KEY = st.secrets["OPENAI_API_KEY"] # for langchain_openai.OpenAIEmbed
 CONFIG = {
     "qdrant_collection_name": "ASK_vectorstore",
     "embedding_model": "text-embedding-ada-002", # alt: text-embedding-3-large
-    "embedding_dims": 1536, # alt: 1024
-    "search_type": "mmr",
-    "k": 5,
-    'fetch_k': 20,   # fetch 30 docs then select 5
-    'lambda_mult': .7,    # 0= max diversity, 1 is min. default is 0.5
-    "score_threshold": 0.5,
-    "generation_model": "gpt-3.5-turbo-16k", # gpt-3.5-turbo-16k # gpt-4o-mini # gpt-4-turbo
-    "temperature": 0.7,
+    "ASK_embedding_dims": 1536, # alt: 1024
+    "ASK_search_type": "mmr",
+    "ASK_k": 5,
+    'ASK_fetch_k': 20,   # fetch 30 docs then select 5
+    'ASK_lambda_mult': .7,    # 0= max diversity, 1 is min. default is 0.5
+    "ASK_score_threshold": 0.5,
+    "ASK_generation_model": "gpt-3.5-turbo-16k", # gpt-3.5-turbo-16k # gpt-4o-mini # gpt-4-turbo
+    "ASK_temperature": 0.7,
 }
 
 
@@ -57,9 +57,9 @@ def get_retriever():
     )
 
     retriever = qdrant.as_retriever(
-        search_type=CONFIG["search_type"],
-        search_kwargs={'k': CONFIG["k"], "fetch_k": CONFIG["fetch_k"],
-                       "lambda_mult": CONFIG["lambda_mult"], "filter": None},  # filter documents by metadata
+        search_type=CONFIG["ASK_search_type"],
+        search_kwargs={'k': CONFIG["ASK_k"], "fetch_k": CONFIG["ASK_fetch_k"],
+                       "lambda_mult": CONFIG["ASK_lambda_mult"], "filter": None},  # filter documents by metadata
     )
 
     return retriever
@@ -161,7 +161,7 @@ def rag(user_question: str) -> dict:
     }
 
     # Run through OpenAI's chat model
-    llm = ChatOpenAI(model=CONFIG["generation_model"], temperature=CONFIG["temperature"])
+    llm = ChatOpenAI(model=CONFIG["ASK_generation_model"], temperature=CONFIG["ASK_temperature"])
 
     # Structure output with AnswerWithSources custom parser to include the sources used by llm
     structured_llm = llm.with_structured_output(AnswerWithSources)
@@ -184,14 +184,6 @@ def rag_for_eval(input: dict) -> dict:
     response = rag(user_question)
     return {"answer": response["answer"]}
 
-
-# Specialized adapter for running evals to LangSmith. No longer used
-def rag_for__hal_eval(input: dict) -> dict:
-    # Accepts a input dict from langsmith.evaluation.LangChainStringEvaluator
-    # Outputs a dictionary with one key which is the answer
-    user_question = input["Question"]
-    response = rag(user_question)
-    return {"answer": response["answer"], "contexts": response["context"]}
 
 
 # Extract short source list from response
