@@ -31,7 +31,7 @@ CONFIG = {
     'ASK_fetch_k': 20,   # fetch 30 docs then select 5
     'ASK_lambda_mult': .7,    # 0= max diversity, 1 is min. default is 0.5
     "ASK_score_threshold": 0.5,
-    "ASK_generation_model": "gpt-3.5-turbo-16k", # gpt-3.5-turbo-16k # gpt-4o-mini # gpt-4-turbo
+    "ASK_generation_model": "gpt-4o-mini", # gpt-3.5-turbo-16k # gpt-4o-mini # gpt-4-turbo
     "ASK_temperature": 0.7,
 }
 
@@ -168,10 +168,11 @@ def rag(user_question: str) -> dict:
     llm_response = structured_llm.invoke(prompt.format(**prompt_input))
 
     return {
+        "answer": llm_response["answer"],
+        "sources": [doc.metadata['title'] for doc in context],
         "user_question": user_question,
         "enriched_question": enriched_question,
         "context": context,  
-        "answer": llm_response["answer"],
         "llm_sources": llm_response["sources"],
     }
 
