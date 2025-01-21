@@ -9,6 +9,8 @@ from langchain_qdrant import QdrantVectorStore
 from langchain_openai import OpenAIEmbeddings, ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate
 from langsmith import traceable
+from langchain.retrievers import ContextualCompressionRetriever
+from langchain.retrievers.document_compressors import LLMChainExtractor
 
 
 
@@ -26,6 +28,7 @@ CONFIG = {
     "qdrant_collection_name": "ASK_vectorstore",
     "embedding_model": "text-embedding-ada-002", # alt: text-embedding-3-large
     "ASK_embedding_dims": 1536, # alt: 1024
+    "ASK_retriever_type": "ContextualCompressionRetriever",
     "ASK_search_type": "mmr",
     "ASK_k": 5,
     'ASK_fetch_k': 20,   # fetch 30 docs then select 5
@@ -145,13 +148,21 @@ class AnswerWithSources(TypedDict):
 # Main RAG pipeline function
 @traceable(run_type="chain")
 def rag(user_question: str) -> dict:
+    
+    # Run through OpenAI's chat model. This is up here becuase we sometimes use it in the retreiver too
+    llm = ChatOpenAI(model=CONFIG["ASK_generation_model"], temperature=CONFIG["ASK_temperature"])
 
     # Enrich the question
     enriched_question = enrich_question(user_question)
 
-    # Retrieve relevant documents using the enriched question
+    # Initialize a document retriever
     retriever = get_retriever().with_config(metadata=CONFIG)
-    context = retriever.invoke(enriched_question)
+    compressor = LLMChainExtractor.from_llm(llm)
+    compression_retriever = ContextualCompressionRetriever(base_compressor=compressor, base_retriever=retriever)
+    
+    # Retrieve relevant documents using the enriched question
+    context = compression_retriever.invoke(enriched_question)
+    print(f"Retrieved context: {len(context)} documents.")
 
     # Prepare the prompt input
     prompt = create_prompt()
@@ -160,8 +171,6 @@ def rag(user_question: str) -> dict:
         "context": format_docs(context), # list of documents retreived from vector store
     }
 
-    # Run through OpenAI's chat model
-    llm = ChatOpenAI(model=CONFIG["ASK_generation_model"], temperature=CONFIG["ASK_temperature"])
 
     # Structure output with AnswerWithSources custom parser to include the sources used by llm
     structured_llm = llm.with_structured_output(AnswerWithSources)
