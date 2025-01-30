@@ -7,6 +7,7 @@ import streamlit as st
 from qdrant_client import QdrantClient
 from langchain_qdrant import QdrantVectorStore
 from langchain_openai import OpenAIEmbeddings, ChatOpenAI
+from langchain_ollama import OllamaLLM
 from langchain_core.prompts import ChatPromptTemplate
 from langsmith import traceable
 from langchain.retrievers import ContextualCompressionRetriever
@@ -147,42 +148,52 @@ class AnswerWithSources(TypedDict):
 
 # Main RAG pipeline function
 @traceable(run_type="chain")
-def rag(user_question: str) -> dict:
+def rag(user_question: str, timeout: int = 60) -> dict:
     
     # Run through OpenAI's chat model. This is up here becuase we sometimes use it in the retreiver too
-    llm = ChatOpenAI(model=CONFIG["ASK_generation_model"], temperature=CONFIG["ASK_temperature"])
+    llm = ChatOpenAI(model=CONFIG["ASK_generation_model"], max_retries=2, timeout=45, temperature=CONFIG["ASK_temperature"])
 
     # Enrich the question
     enriched_question = enrich_question(user_question)
 
     # Initialize a document retriever
     retriever = get_retriever().with_config(metadata=CONFIG)
-    compressor = LLMChainExtractor.from_llm(llm)
-    compression_retriever = ContextualCompressionRetriever(base_compressor=compressor, base_retriever=retriever)
+    # compressor = LLMChainExtractor.from_llm(llm)
+    # compression_retriever = ContextualCompressionRetriever(base_compressor=compressor, base_retriever=retriever)
     
     # Retrieve relevant documents using the enriched question
-    context = compression_retriever.invoke(enriched_question)
-    print(f"Retrieved context: {len(context)} documents.")
+    try:
+        # Retrieve relevant documents using the enriched question
+        context = retriever.invoke(enriched_question)
+        print(f"Retrieved context: {len(context)} documents.")
+    except Exception as e:
+        print(f"Retriever Error: {e}")
+        context = []
+    
+    if context:
+        try:
+            # Prepare the prompt input
+            prompt = create_prompt()
+            prompt_input = {
+                "enriched_question": enriched_question,
+                "context": format_docs(context),  # list of documents retreived from vector store
+            }
+            # Structure output with AnswerWithSources custom parser to include the sources used by LLM
+            structured_llm = llm.with_structured_output(AnswerWithSources)
+            llm_response = llm.invoke(prompt.format(**prompt_input))
+            print("LLM response received")
+        except Exception as e:
+            print(f"LLM Error: {e}")
 
-    # Prepare the prompt input
-    prompt = create_prompt()
-    prompt_input = {
-        "enriched_question": enriched_question,
-        "context": format_docs(context), # list of documents retreived from vector store
-    }
-
-
-    # Structure output with AnswerWithSources custom parser to include the sources used by llm
-    structured_llm = llm.with_structured_output(AnswerWithSources)
-    llm_response = structured_llm.invoke(prompt.format(**prompt_input))
 
     return {
-        "answer": llm_response["answer"],
+        "answer": llm_response.content,
+        # "answer": llm_response["answer"], # used for the old AnswerWithSources
         "sources": [doc.metadata['title'] for doc in context],
         "user_question": user_question,
         "enriched_question": enriched_question,
         "context": context,  
-        "llm_sources": llm_response["sources"],
+        # "llm_sources": llm_response.get("sources", ["No sources returned by LLM"])
     }
 
 
