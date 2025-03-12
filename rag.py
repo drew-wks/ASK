@@ -7,10 +7,9 @@ import streamlit as st
 from qdrant_client import QdrantClient
 from langchain_qdrant import QdrantVectorStore
 from langchain_openai import OpenAIEmbeddings, ChatOpenAI
-from langchain_ollama import OllamaLLM
+from langchain_ollama import ChatOllama
 from langchain_core.prompts import ChatPromptTemplate
 from langsmith import traceable
-from langchain.retrievers import ContextualCompressionRetriever
 from langchain.retrievers.document_compressors import LLMChainExtractor
 
 
@@ -18,18 +17,21 @@ from langchain.retrievers.document_compressors import LLMChainExtractor
 # Config Qdrant
 QDRANT_URL = st.secrets["QDRANT_URL"]
 QDRANT_API_KEY = st.secrets["QDRANT_API_KEY"]
-QDRANT_PATH = "/tmp/local_qdrant"  # on macOS, default is: /private/tmp/local_qdrant
+QDRANT_PATH = "/Users/drew_wilkins/Drews_Files/Drew/Python/Localcode/Drews_Tools/qdrant_ASK_lib_tools/qdrant_db"  # on macOS, default is: /private/tmp/local_qdrant
 
 # Config langchain_openai
 OPENAI_API_KEY = st.secrets["OPENAI_API_KEY"] # for langchain_openai.OpenAIEmbeddings
 
 
 # Misc configs for tracing
-CONFIG = {
+CONFIG_OLD = {
     "qdrant_collection_name": "ASK_vectorstore",
     "embedding_model": "text-embedding-ada-002", # alt: text-embedding-3-large
     "ASK_embedding_dims": 1536, # alt: 1024
-    "ASK_retriever_type": "ContextualCompressionRetriever",
+    "splitter_type": "pypdf",
+    "chunk_size": 2000,
+    "chunking_strategy": "by_page",
+    "ASK_retriever_type": "Standard", # ContextualCompressionRetriever
     "ASK_search_type": "mmr",
     "ASK_k": 5,
     'ASK_fetch_k': 20,   # fetch 30 docs then select 5
@@ -39,6 +41,25 @@ CONFIG = {
     "ASK_temperature": 0.7,
 }
 
+CONFIG = {
+    "splitter_type": "unstructured.partition",
+    "chunk_size": 4000,
+    "chunking_strategy": "by_title",
+    "qdrant_collection_name": "ASK_vectorstore-oai-ada-002-unstructured-os",
+    "embedding_model": "text-embedding-ada-002",  # alt: text-embedding-3-large
+    "ASK_embedding_dims": 1536,  # alt: 1024
+    "vector_name": "text-dense",
+    "sparse_vector_name": "None",
+    "sparse_embedding": "None",
+    "ASK_retriever_type": "Standard",
+    "ASK_search_type": "mmr",
+    "ASK_k": 5,
+    'ASK_fetch_k': 20,   # fetch 30 docs then select 5
+    'ASK_lambda_mult': .7,    # 0= max diversity, 1 is min. default is 0.5
+    "ASK_score_threshold": 0.5,
+    "ASK_generation_model": "gpt-4o-mini",
+    "ASK_temperature": 0.7,
+}
 
 
 # Create and cache the document retriever
@@ -48,10 +69,10 @@ def get_retriever():
 
     # Qdnrat client cloud instance
     client = QdrantClient(
-        url=QDRANT_URL,
-        prefer_grpc=True,
-        api_key=QDRANT_API_KEY,
-        #path=QDRANT_PATH)  # local instance
+        #url=QDRANT_URL,
+        #prefer_grpc=True,
+        #api_key=QDRANT_API_KEY,
+        path=QDRANT_PATH  # local instance
     )  
 
     qdrant = QdrantVectorStore(
@@ -151,15 +172,23 @@ class AnswerWithSources(TypedDict):
 def rag(user_question: str, timeout: int = 60) -> dict:
     
     # Run through OpenAI's chat model. This is up here becuase we sometimes use it in the retreiver too
-    llm = ChatOpenAI(model=CONFIG["ASK_generation_model"], max_retries=2, timeout=45, temperature=CONFIG["ASK_temperature"])
+    llm = ChatOpenAI(model=CONFIG["ASK_generation_model"], max_retries=2, timeout=45,  temperature=CONFIG["ASK_temperature"])
+    
+    ollama_llm = ChatOllama(
+    model="deepseek-r1:8b",  # Specify the model you want to use
+    temperature=CONFIG["ASK_temperature"],  # Set the temperature parameter
+    client_kwargs={
+        "timeout": 50,  # Set the timeout in seconds
+        # Additional client configurations can be added here if needed
+    }
+)
 
     # Enrich the question
     enriched_question = enrich_question(user_question)
 
     # Initialize a document retriever
     retriever = get_retriever().with_config(metadata=CONFIG)
-    # compressor = LLMChainExtractor.from_llm(llm)
-    # compression_retriever = ContextualCompressionRetriever(base_compressor=compressor, base_retriever=retriever)
+
     
     # Retrieve relevant documents using the enriched question
     try:
