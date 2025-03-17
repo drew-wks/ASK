@@ -65,7 +65,7 @@ st.image("https://raw.githubusercontent.com/drew-wks/ASK/main/images/ASK_logotyp
 # Check Open AI service status
 api_status_message = utils.get_openai_api_status()
 if "operational" not in api_status_message:
-    st.error(f"ASK is currently down due to OpenAI {api_status_message}.")
+    st.error(f"ASK is currently down due to OpenAI status: '{api_status_message}'.")
 else: 
     st.write("#### Get answers to USCG Auxiliary questions from authoritative sources.")
 
