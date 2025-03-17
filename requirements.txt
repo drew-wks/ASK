@@ -8,7 +8,6 @@ langchain-ollama
 langsmith # tracing
 qdrant-client   # testing removing this for pydantic issue ==1.6.3
 pandas
-fnmatch # needed to find most recent library xlsx file
 pytest # testing
 openpyxl # used to import the library.xlsx file
 requests==2.32.3 #  for GitHub Actions. used to access qdrant
