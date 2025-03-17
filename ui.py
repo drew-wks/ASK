@@ -29,7 +29,7 @@ st.markdown("""
 
         /* Ensure consistent font rendering */
         html, body, [class*="st-"] {
-            font-family: "Arial", "Helvetica", sans-serif !important;
+            font-family: "Source Sans Pro", "Arial", "Helvetica", sans-serif !important;
         }
     </style>
     """, unsafe_allow_html=True)
