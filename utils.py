@@ -21,22 +21,26 @@ def get_openai_api_status():
         components = components_info.get('components', [])
 
         # Find the component that represents the API
-        api_component = next(
-            (component for component in components if component.get('name', '').lower() == 'api'), None)
-
-        if api_component:
-            status_message = api_component.get('status', 'unknown')
-            if status_message != 'operational':
-                return f"API status: {status_message}"
-            else:
-                return "API is operational"
+        chat_component = next(
+            (component for component in components if component.get('name', '').lower() == 'chat'), 
+            None
+        )
+            
+        if chat_component:
+            status_message = chat_component.get('status', 'unknown')
+            return f"ChatGPT API status: {status_message}" if status_message != 'operational' else "ChatGPT API is operational"
         else:
-            return 'API component not found'
+            return "ChatGPT API component not found"
 
     except requests.exceptions.HTTPError as http_err:
-        return f"HTTP error occurred: {repr(http_err)}"
+        return f"API check failed (HTTP error): {repr(http_err)}"
+    except requests.exceptions.Timeout:
+        return "API check timed out"
+    except requests.exceptions.RequestException as req_err:
+        return f"API check failed (Request error): {repr(req_err)}"
     except Exception as err:
-        return f"Error checking API status: {repr(err)}"
+        return f"API check failed (Unknown error): {repr(err)}"
+
 
 
 
