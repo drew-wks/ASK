@@ -13,13 +13,27 @@ os.environ["LANGCHAIN_TRACING_V2"] = "true"
 os.environ["LANGCHAIN_PROJECT"] = "ui.py on ASK main/local" # use this for local testing
 # os.environ["LANGCHAIN_PROJECT"] = "ASK Production App (ui.py on ASK main/origin)"
 
+
 import rag
 import utils
 from streamlit_extras.stylable_container import stylable_container
 
 
 # Hide Streamlit's default UI elements: Main menu, footer, and header
-st.markdown( """ <style> [data-testid="collapsedControl"] { display: none } </style> """, unsafe_allow_html=True, )
+st.markdown("""
+    <style>
+        /* Hide the sidebar collapse button */
+        [data-testid="collapsedControl"] { 
+            display: none; 
+        }
+
+        /* Ensure consistent font rendering */
+        html, body, [class*="st-"] {
+            font-family: "Arial", "Helvetica", sans-serif !important;
+        }
+    </style>
+    """, unsafe_allow_html=True)
+
 
 hide_streamlit_ui = """
             <style>
