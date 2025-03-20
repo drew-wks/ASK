@@ -70,7 +70,7 @@ def get_retriever():
     # Qdnrat client cloud instance
     client = QdrantClient(
         url=QDRANT_URL,
-        prefer_grpc=True,
+        # prefer_grpc=True,
         api_key=QDRANT_API_KEY,
         # path=QDRANT_PATH  # local instance
     )  
