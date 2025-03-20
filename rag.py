@@ -41,7 +41,7 @@ CONFIG = {
     "ASK_temperature": 0.7,
 }
 
-CONFIG_NEW = {
+CONFIG_UNSTRUCTURED = {
     "splitter_type": "unstructured.partition",
     "chunk_size": 4000,
     "chunking_strategy": "by_title",
