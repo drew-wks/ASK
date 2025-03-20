@@ -133,15 +133,17 @@ if user_question and (user_question != st.session_state["user_question"]):
     # Generate the response only if the question is new
 if st.session_state.get("user_question") and "response" not in st.session_state:
     # Create response container and generate a response
-    with st.status("Checking documents...", expanded=False) as response_container:
+    status_placeholder = st.empty()
+    with status_placeholder.status(label="Checking documents...", expanded=False) as response_container:
         st.session_state["response"] = cached_rag(
             st.session_state["user_question"], st.session_state["run_id"]
         )
         # Open response container once responses are ready
-        response_container.update(label=":blue[**Response**]", expanded=True)
+        # response_container.update(label=":blue[**Response**]", state="complete", expanded=True)
 
 # Format Response
 if st.session_state.get("response"):
+    status_placeholder.empty()
     response = st.session_state["response"]
     short_source_list = rag.create_short_source_list(response)
     long_source_list = rag.create_long_source_list(response)
