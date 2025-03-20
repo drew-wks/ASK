@@ -24,7 +24,7 @@ OPENAI_API_KEY = st.secrets["OPENAI_API_KEY"] # for langchain_openai.OpenAIEmbed
 
 
 # Misc configs for tracing
-CONFIG_OLD = {
+CONFIG = {
     "qdrant_collection_name": "ASK_vectorstore",
     "embedding_model": "text-embedding-ada-002", # alt: text-embedding-3-large
     "ASK_embedding_dims": 1536, # alt: 1024
@@ -41,11 +41,11 @@ CONFIG_OLD = {
     "ASK_temperature": 0.7,
 }
 
-CONFIG = {
+CONFIG_NEW = {
     "splitter_type": "unstructured.partition",
     "chunk_size": 4000,
     "chunking_strategy": "by_title",
-    "qdrant_collection_name": "ASK_vectorstore-oai-ada-002-unstructured-os",
+    "qdrant_collection_name": "ASK_vectorstore-oai-ada-002-unstructured-os", #
     "embedding_model": "text-embedding-ada-002",  # alt: text-embedding-3-large
     "ASK_embedding_dims": 1536,  # alt: 1024
     "vector_name": "text-dense",
@@ -70,7 +70,7 @@ def get_retriever():
     # Qdnrat client cloud instance
     client = QdrantClient(
         url=QDRANT_URL,
-        # prefer_grpc=True,
+        prefer_grpc=True,
         api_key=QDRANT_API_KEY,
         # path=QDRANT_PATH  # local instance
     )  
@@ -265,25 +265,3 @@ def create_long_source_list(response):
     long_source_list = '\n'.join(markdown_list)
 
     return long_source_list
-
-'''
-this does not work
-with trace("ASK User Run"):
-    enriched_question = enrich_question(user_question)
-    retriever = get_retriever().with_config(metadata=CONFIG)
-    llm_response = structured_llm.invoke(prompt.format(**prompt_input))
-'''
-
-if __name__ == "__main__":
-    # Example code to test the RAG pipeline directly
-    print("Starting RAG pipeline test")
-    
-    # Sample test question
-    user_question = "What are the requirements for boat crew certification?"
-    
-    # Run the RAG pipeline and get a response
-    response, enriched_question = rag(user_question)
-    
-    # Display the results
-    print("Enriched Question:", enriched_question)
-    print("Response:", response)
