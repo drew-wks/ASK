@@ -14,7 +14,7 @@ sys.path.insert(0, parent_dir)
 
 st.set_page_config(page_title="ASK Library", initial_sidebar_state="collapsed")
 
-st.markdown( """ <style> [data-testid="collapsedControl"] { display: none } </style> """, unsafe_allow_html=True, )
+st.markdown( """ <style> [data-testid="collapsedControl"] { display: none } html, body, [class*="st-"] {font-family: "Source Sans Pro", "Arial", "Helvetica", sans-serif !important;}</style> """, unsafe_allow_html=True, )
 
 
 hide_st_style = """
