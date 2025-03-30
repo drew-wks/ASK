@@ -1,16 +1,16 @@
-| ![Development Branch](https://img.shields.io/badge/branch-development-blue?style=for-the-badge) |
+| ![Development Branch](https://img.shields.io/badge/branch-production-blue?style=for-the-badge) |
 |---|
-| >->->-> **This is a development branch. Features here may be experimental and not fully stable.** <-<-<-<-< |
+| >->->-> **This is a production branch.** <-<-<-<-< |
 
 
 ![Logo](https://raw.githubusercontent.com/drew-wks/ASK/main/images/ASK_logotype_color.png?raw=true)
 
-ASK stands for **Auxiliary Source of Knowledge**. ASK was developed by Auxiliarist Drew Wilkins as a proof of concept to make it easier for Auxiliarists and prospective members to find Auxiliary-related information. Powered by Artificial Intelligence (AI), ASK searches over 300 Coast Guard Auxiliary references to find answers directly from authoritative sources.
+ASK stands for **Auxiliary Source of Knowledge**. ASK was developed by Auxiliarist Drew Wilkins as a proof of concept to make it easier for Auxiliarists and prospective members to find Auxiliary-related information. Powered by Artificial Intelligence (AI), ASK searches over 225 Coast Guard Auxiliary references to find answers directly from authoritative sources.
 
 ## Background
 ASK stems from the need for easier ways to find official information. Auxiliarists are surrounded by a growing amount of policy and procedure info necessary to guide their actions. However, accessing these resources is not straight-forward. The bulk of it is stowed away in PDFs scattered across various platforms, making it cumbersome to located and search. Furthermore, outdated and region-specific info can be misconstrued as applicable. 
 
-Since 2008, Auxiliary missions types have grown 36%. The Auxiliary now manages over 120 competencies and 377 tasks requiring over 245 Auxiliary-related policy documents to support. That’s almost 9000 pages of Auxiliary policies. In some cases, currency requires familiarity with eight or more policy documents, which creates an obstacle to skills development and readiness. 
+Since 2008, Auxiliary missions types have grown 36%. The Auxiliary now manages over 120 competencies and 377 tasks requiring over 225 Auxiliary-related policy documents to support. That’s almost 9000 pages of Auxiliary policies. In some cases, currency requires familiarity with eight or more policy documents, which creates an obstacle to skills development and readiness. 
 
 ASK makes it easier to find Auxiliary-related information. It takes a user’s question, examines the public USCG Auxiliary documents and then answers the question in natural language using AI.
 
@@ -83,7 +83,7 @@ Estimated year one costs are given below based on the recommended configuration.
  <img align="center" src="https://raw.githubusercontent.com/drew-wks/ASK/main/images/costs.png" alt="costs" width="50%"/>
 
 ## Github Repo Contents
-The streamlit app is a multi-page app with the TOC hidden. Streamlit runs off of ui.py. rag.py contains most of the retrieval and inference code.  
+The streamlit app is a multi-page app with the table of contents hidden. Streamlit runs off of ui.py. rag.py contains most of the retrieval and inference code.  Helper functions are contained in utils.py
 Efforts were taken to free up as much screen real estate as possible for small mobile screens. This includes:
   - Creating a rich info area located on a separate page of a multipage app and hiding the TOC
   - Linking to other pages with a hyperlink rather than a button that takes up vertical space
@@ -98,6 +98,9 @@ Other features
 Testing  
   - Development workflow is notated [here.](docs/project_development_workflow.md) 
   - Additional testing is conducted using /test, test.py, just_streamlit_text.py
+
+Library Administration
+  - The code for administrating the library is located in a separate repo. 
 
 ### How to Run Locally (using VS Code)
 1. Clone the repository
