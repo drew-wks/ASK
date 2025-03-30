@@ -45,7 +45,7 @@ def get_openai_api_status():
 
 
 @st.cache_data
-def get_library_catalog_excel_and_date():
+def get_library_catalog_excel_and_date(directory_path):
     """
     Retrieves the most recent Excel file matching the pattern 'docs_report_qdrant_cloud*.xlsx' 
     from the 'docs/library_catalog/' directory. The function returns the file as a Pandas 
@@ -56,8 +56,6 @@ def get_library_catalog_excel_and_date():
         the last modification date as a string in the format 'YYYY-MM-DDTHH:MM:SSZ'.
         Returns (None, None) if no matching file is found or if an error occurs.
     """
-    
-    directory_path = './docs/library_catalog/'
 
     try:
         files_in_directory = os.listdir(directory_path)
