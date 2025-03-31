@@ -5,7 +5,6 @@ import sys
 from pathlib import Path
 import streamlit as st
 import pandas as pd
-from streamlit_extras.switch_page_button import switch_page
 import utils
 
 parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -48,7 +47,7 @@ st.image("https://raw.githubusercontent.com/drew-wks/ASK/main/images/ASK_logotyp
 
 back = st.button("< Back to App", type="primary")
 if back:
-    switch_page("ui")
+    st.switch_page("ui")
 
 
 tab1, tab2, tab3, tab4, tab5 = st.tabs(["Overview", "Library", "FAQs", "Product Roadmap", "Feedback"])
