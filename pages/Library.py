@@ -47,7 +47,7 @@ st.image("https://raw.githubusercontent.com/drew-wks/ASK/main/images/ASK_logotyp
 
 back = st.button("< Back to App", type="primary")
 if back:
-    st.switch_page("ui")
+    st.switch_page("ui.py")
 
 
 tab1, tab2, tab3, tab4, tab5 = st.tabs(["Overview", "Library", "FAQs", "Product Roadmap", "Feedback"])
