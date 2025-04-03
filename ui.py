@@ -121,7 +121,11 @@ if "response" not in st.session_state:
     st.session_state["response"] = None
     
 
-# Main RAG pipeline
+# Create response container that can be accessed by the RAG as well as the feedback module
+status_placeholder = st.empty()
+
+
+# >>> Main RAG pipeline <<<
 user_question = st.text_input("Type your question or task here", max_chars=200)
 
 # On new user_question, clear previous response and feedback
@@ -132,8 +136,7 @@ if user_question and (user_question != st.session_state["user_question"]):
 
     # Generate the response only if the question is new
 if st.session_state.get("user_question") and "response" not in st.session_state:
-    # Create response container and generate a response
-    status_placeholder = st.empty()
+    # Generate a response
     with status_placeholder.status(label="Checking documents...", expanded=False) as response_container:
         st.session_state["response"] = cached_rag(
             st.session_state["user_question"], st.session_state["run_id"]
