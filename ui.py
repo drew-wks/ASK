@@ -154,8 +154,9 @@ if st.session_state.get("response"):
     st.info(f"**Question:** *{user_question}*\n\n ##### Response:\n{response['answer']}\n\n **Sources:**  \n{short_source_list}\n **Note:** \n ASK can make mistakes. Verify the sources and check your local policies.")
     
     # Create a container and fill with references
-    with st.status("CLICK HERE FOR FULL SOURCE DETAILS", expanded=False) as references_container:
+    with st.expander("CLICK HERE FOR FULL SOURCE DETAILS", expanded=False):
         st.write(long_source_list)
+        # st.write(enriched_question)
         # st.write(enriched_question)
         
     # Show feedback widget once a response is returned
