@@ -2,6 +2,11 @@
 # Project ASK Change Log
 All notable changes to this project will be documented in this file.  
 
+## [0.6.3] - 2025-04-10
+### Bug Fixes
+- Updated code to work with update in streamlit
+- Updated OpenAI API key to track usage specific to this project
+- 
 ## [0.6.2] - 2024-09-25
 ### Features
 - Renamed prompt_ui.py (ui.py), inference.py (rag.py) and refactored to keep clean. 
