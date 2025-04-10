@@ -23,7 +23,7 @@ QDRANT_PATH = "/Users/drew_wilkins/Drews_Files/Drew/Python/Localcode/Drews_Tools
 # Config langchain_openai
 OPENAI_API_KEY = st.secrets["OPENAI_API_KEY_ASK"] # for langchain_openai.OpenAIEmbeddings
 
-openai_api_key = st.secrets["OPENAI_API_KEY_ASK"] # for openai client in cloud environment
+os.environ["OPENAI_API_KEY"] = st.secrets["OPENAI_API_KEY_ASK"] # for openai client in cloud environment
 
 
 # Misc configs for tracing
