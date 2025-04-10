@@ -13,6 +13,7 @@ from langsmith import traceable
 from langchain.retrievers.document_compressors import LLMChainExtractor
 
 
+# st.secrets pulls from ~/.streamlit when run locally
 
 # Config Qdrant
 QDRANT_URL = st.secrets["QDRANT_URL"]
@@ -21,6 +22,8 @@ QDRANT_PATH = "/Users/drew_wilkins/Drews_Files/Drew/Python/Localcode/Drews_Tools
 
 # Config langchain_openai
 OPENAI_API_KEY = st.secrets["OPENAI_API_KEY_ASK"] # for langchain_openai.OpenAIEmbeddings
+
+openai_api_key = st.secrets["OPENAI_API_KEY_ASK"] # for openai client in cloud environment
 
 
 # Misc configs for tracing
