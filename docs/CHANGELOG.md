@@ -2,7 +2,14 @@
 # Project ASK Change Log
 All notable changes to this project will be documented in this file.  
 
-## [0.6.3] - 2025-04-10
+## [0.6.3] - 2025-04-11
+### Features
+- Enriched Full Source Details container with more metadata and better formatting
+- Sources document by name and issue date rather than by filename
+- Filter by date or scope (i.e, national, district, etc) implemented but not turned on for user
+- Vector db is now enabled for hybrid search (configured to support both sparse and dense vectors)
+- 'unit' field added to metadata to support filtering
+- 
 ### Bug Fixes
 - Updated code to work with update in streamlit
 - Updated OpenAI API key to track usage specific to this project

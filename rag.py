@@ -1,10 +1,11 @@
 import os
 import pandas as pd
 import re
-from typing import List
+from typing import List, Optional
 from typing_extensions import Annotated, TypedDict
 import streamlit as st
 from qdrant_client import QdrantClient
+from qdrant_client.http import models # for running filters on the metadata
 from langchain_qdrant import QdrantVectorStore
 from langchain_openai import OpenAIEmbeddings, ChatOpenAI
 from langchain_ollama import ChatOllama
@@ -44,33 +45,13 @@ CONFIG = {
     "ASK_temperature": 0.7,
 }
 
-CONFIG_UNSTRUCTURED = {
-    "splitter_type": "unstructured.partition",
-    "chunk_size": 4000,
-    "chunking_strategy": "by_title",
-    "qdrant_collection_name": "ASK_vectorstore-oai-ada-002-unstructured-os", #
-    "embedding_model": "text-embedding-ada-002",  # alt: text-embedding-3-large
-    "ASK_embedding_dims": 1536,  # alt: 1024
-    "vector_name": "text-dense",
-    "sparse_vector_name": "None",
-    "sparse_embedding": "None",
-    "ASK_retriever_type": "Standard",
-    "ASK_search_type": "mmr",
-    "ASK_k": 5,
-    'ASK_fetch_k': 20,   # fetch 30 docs then select 5
-    'ASK_lambda_mult': .7,    # 0= max diversity, 1 is min. default is 0.5
-    "ASK_score_threshold": 0.5,
-    "ASK_generation_model": "gpt-4o-mini",
-    "ASK_temperature": 0.7,
-}
-
 
 # Create and cache the document retriever
 @st.cache_resource
-def get_retriever():
+def get_retriever(retrieval_filter: Optional[models.Filter] = None):
     '''Creates and caches the document retriever and Qdrant client.'''
 
-    # Qdnrat client cloud instance
+    # Qdrant client cloud instance
     client = QdrantClient(
         url=QDRANT_URL,
         prefer_grpc=True,
@@ -84,10 +65,45 @@ def get_retriever():
         embedding=OpenAIEmbeddings(model=CONFIG["embedding_model"]),
     )
 
+    # Define Qdrant filters for metadata.
+    national = models.Filter(
+        must=[
+            models.FieldCondition(
+                key="metadata.scope",
+                match=models.MatchText(text="1_national")
+            )
+        ]
+    )
+
+    d7 = models.Filter(
+        should=[
+            models.FieldCondition(key="scope", match=models.MatchValue(value="1_national")),
+            models.Filter(
+                must=[
+                    models.FieldCondition(key="scope", match=models.MatchValue(value="2_district")),
+                    models.FieldCondition(key="state", match=models.MatchValue(value="07"))
+                ]
+            ),
+        ]
+    )
+        
+    issue_date = models.Filter(
+        must=[
+            models.FieldCondition(
+                key="metadata.issue_date",
+                match=models.MatchText(text="2023")
+            )
+        ]
+    )
+
+    # Use national as fallback if no filter provided
+    applied_filter = retrieval_filter or national
+
+
     retriever = qdrant.as_retriever(
         search_type=CONFIG["ASK_search_type"],
         search_kwargs={'k': CONFIG["ASK_k"], "fetch_k": CONFIG["ASK_fetch_k"],
-                       "lambda_mult": CONFIG["ASK_lambda_mult"], "filter": None},  # filter documents by metadata
+                       "lambda_mult": CONFIG["ASK_lambda_mult"], "filter": applied_filter},  # If None, no metadata filering occurs
     )
 
     return retriever
@@ -136,9 +152,9 @@ def enrich_question(user_question: str, filepath=enrichment_path) -> str:
     return enriched_question
 
 
-
 def create_prompt():
     system_prompt = (
+        "The user is a {identity}."
         "Use the following pieces of context to answer the users question. "
         "INCLUDES ALL OF THE DETAILS IN YOUR RESPONSE, INDLUDING REQUIREMENTS AND REGULATIONS. "
         "National Workshops are required for boat crew, aviation, and telecommunications when they are offered. "
@@ -170,14 +186,15 @@ class AnswerWithSources(TypedDict):
 
 
 
-# Main RAG pipeline function
+# --- Main RAG pipeline function ---
 @traceable(run_type="chain")
-def rag(user_question: str, timeout: int = 60) -> dict:
+def rag(user_question: str, timeout: int = 60, retrieval_filter: Optional[models.Filter] = None) -> dict:
+    "accepts user_question and an optional filter"
     
     # Run through OpenAI's chat model. This is up here becuase we sometimes use it in the retreiver too
     llm = ChatOpenAI(model=CONFIG["ASK_generation_model"], max_retries=2, timeout=45,  temperature=CONFIG["ASK_temperature"])
     
-    ollama_llm = ChatOllama(
+    _llm = ChatOllama(
     model="deepseek-r1:8b",  # Specify the model you want to use
     temperature=CONFIG["ASK_temperature"],  # Set the temperature parameter
     client_kwargs={
@@ -190,7 +207,10 @@ def rag(user_question: str, timeout: int = 60) -> dict:
     enriched_question = enrich_question(user_question)
 
     # Initialize a document retriever
-    retriever = get_retriever().with_config(metadata=CONFIG)
+    retriever = get_retriever(retrieval_filter=retrieval_filter).with_config(metadata=CONFIG)
+    
+    #Set the user identity
+    identity = "Auxiliary member"
 
     
     # Retrieve relevant documents using the enriched question
@@ -207,6 +227,7 @@ def rag(user_question: str, timeout: int = 60) -> dict:
             # Prepare the prompt input
             prompt = create_prompt()
             prompt_input = {
+                "identity": identity,
                 "enriched_question": enriched_question,
                 "context": format_docs(context),  # list of documents retreived from vector store
             }
@@ -229,7 +250,7 @@ def rag(user_question: str, timeout: int = 60) -> dict:
     }
 
 
-# Specialized adapter for running evals to LangSmith. No longer used
+# Adapter for running evals to LangSmith. No longer used
 def rag_for_eval(input: dict) -> dict:
     # Accepts a input dict from langsmith.evaluation.LangChainStringEvaluator
     # Outputs a dictionary with one key which is the answer
@@ -239,32 +260,39 @@ def rag_for_eval(input: dict) -> dict:
 
 
 
-# Extract short source list from response
-def create_short_source_list(response):
-    markdown_list = []
 
+def create_source_lists(response):
+    """
+    Creates and returns both the short and long source lists as strings.
+
+    Args:
+        response (dict): Contains a 'context' key with a list of document objects.
+
+    Returns:
+        tuple: (short_source_list, long_source_list) where:
+            - short_source_list is a string with a markdown reference for each document.
+            - long_source_list is a string with a detailed markdown reference for each document.
+    """
+    short_source_markdown_list = []
+    long_source_markdown_list = []
+    
     for i, doc in enumerate(response['context'], start=1):
-        source = doc.metadata['source']
-        short_source = source.split('/')[-1].split('.')[0]
+        title = doc.metadata['title']
+        date = doc.metadata['issue_date'][:4]
         page = doc.metadata['page']
-        markdown_list.append(f"*{short_source}*, page {page}\n")
-
-    short_source_list = '\n'.join(markdown_list)
-
-    return short_source_list
-
-
-# Extract long source list from response
-def create_long_source_list(response):
-    markdown_list = []
-
-    for i, doc in enumerate(response['context'], start=1):
+        publication_number = doc.metadata['publication_number']
+        organization = doc.metadata['organization']
+        short_source_markdown_list.append(f"*{title} [{date}]*, page {page}\n")
+        
         page_content = doc.page_content  
-        source = doc.metadata['source']  
-        short_source = source.split('/')[-1].split('.')[0]  
-        page = doc.metadata['page']  
-        markdown_list.append(f"**Reference {i}:**    *{short_source}*, page {page}  \n   {page_content}\n")
+        long_source_markdown_list.append(
+            f"**Reference {i}:**  \n    *{title} [{date}]*, page {page}  \n  {publication_number}  \n Issuer: {organization}  \n\n"
+            f"{page_content}\n\n  "
+            f"***  "
+        )
+    
+    short_source_list = '\n'.join(short_source_markdown_list)
+    long_source_list = '  \n'.join(long_source_markdown_list)
+    
+    return short_source_list, long_source_list
 
-    long_source_list = '\n'.join(markdown_list)
-
-    return long_source_list

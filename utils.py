@@ -7,6 +7,8 @@ from fnmatch import fnmatch
 import re
 
 
+
+
 @st.cache_data
 def get_openai_api_status():
     '''Notify user if OpenAI is down so they don't blame the app'''

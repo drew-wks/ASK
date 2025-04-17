@@ -1,11 +1,12 @@
 import streamlit as st
+st.set_page_config(page_title="ASK Auxiliary Source of Knowledge", initial_sidebar_state="collapsed")
 import os
 import uuid
 from streamlit_feedback import streamlit_feedback
 from langsmith import Client
 
 # Collapse the sidebar
-st.set_page_config(page_title="ASK Auxiliary Source of Knowledge", initial_sidebar_state="collapsed")
+
 
 # Config LangSmith
 os.environ["LANGCHAIN_API_KEY_ASK"] = st.secrets["LANGCHAIN_API_KEY"]
@@ -61,7 +62,6 @@ st.markdown("""
 # Banner image
 st.image("https://raw.githubusercontent.com/drew-wks/ASK/main/images/ASK_logotype_color.png?raw=true", use_container_width=True)
 
-
 # Check Open AI service status
 api_status_message = utils.get_openai_api_status()
 if "operational" not in api_status_message:
@@ -76,10 +76,10 @@ num_items = len(df)
 
 
 # Main app body copy
-st.markdown(f"ASK uses Artificial Intelligence (AI) to search over {num_items} Coast Guard Auxiliary references for answers. This is a working prototype for evaluation. Not an official USCG Auxiliary service. Learn more <a href='Library' target='_self'><b>here</b></a>.", unsafe_allow_html=True)
+st.markdown(f"ASK uses Artificial Intelligence (AI) to search {num_items} Coast Guard Auxiliary references for answers. This is a working prototype for evaluation. Not an official USCG Auxiliary service. Learn more <a href='Library' target='_self'><b>here</b></a>.", unsafe_allow_html=True)
 example_questions = st.empty()
 example_questions.write("""  
-    **ASK answers questions such as:**   
+    **ASK can answer questions such as:**   
     *What are the requirements to run for FC?*  
     *How do I stay current in boat crew?*   
     *¿En que ocasiones es necesario un saludo militar?*   
@@ -119,8 +119,14 @@ if "user_question" not in st.session_state:
     st.session_state["user_question"] = None
 if "response" not in st.session_state:
     st.session_state["response"] = None
-    
-
+if "retrieval_filter" not in st.session_state:
+    st.session_state.retrieval_filter = "national"
+st.sidebar.markdown("#### Experimental\n\n  The following features are experimental and may not work as expected.\n\n")
+exclude_expired = st.sidebar.checkbox("Exclude expired documents", value=False, key="exclude_expired")
+st.sidebar.caption("This excludes the Auxiliary Manual along with all Commandant Instructions issued more than 12 years ago and ALCOASTs and ALAUXs issued more than one year ago, per COMDTINST 5215.6J.\n\n")
+d7 = st.sidebar.checkbox("Include District 7 documents in results", key="d7")
+if d7 == True:
+    st.session_state.retrieval_filter = "d7"
 # Create response container that can be accessed by the RAG as well as the feedback module
 status_placeholder = st.empty()
 
@@ -148,16 +154,13 @@ if st.session_state.get("user_question") and "response" not in st.session_state:
 if st.session_state.get("response"):
     status_placeholder.empty()
     response = st.session_state["response"]
-    short_source_list = rag.create_short_source_list(response)
-    long_source_list = rag.create_long_source_list(response)
+    short_source_list, long_source_list = rag.create_source_lists(response)
     example_questions.empty()  
     st.info(f"**Question:** *{user_question}*\n\n ##### Response:\n{response['answer']}\n\n **Sources:**  \n{short_source_list}\n **Note:** \n ASK can make mistakes. Verify the sources and check your local policies.")
     
     # Create a container and fill with references
     with st.expander("CLICK HERE FOR FULL SOURCE DETAILS", expanded=False):
         st.write(long_source_list)
-        # st.write(enriched_question)
-        # st.write(enriched_question)
         
     # Show feedback widget once a response is returned
     user_feedback = streamlit_feedback(
@@ -169,8 +172,6 @@ if st.session_state.get("response"):
     if user_feedback:
         st.write("Thanks for the feedback!")
         langsmith_feedback(user_feedback)
-
-
 
 # Lock the chat input container 50 pixels above bottom of viewport
 with stylable_container(
