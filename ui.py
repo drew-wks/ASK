@@ -9,16 +9,15 @@ from langsmith import Client
 
 
 # Config LangSmith
-os.environ["LANGCHAIN_API_KEY_ASK"] = st.secrets["LANGCHAIN_API_KEY"]
+os.environ["LANGCHAIN_API_KEY_ASK"] = st.secrets["LANGCHAIN_API_KEY"] # check which account you are using
 os.environ["LANGCHAIN_TRACING_V2"] = "true"
-os.environ["LANGCHAIN_PROJECT"] = "ui.py on ASK main/local" # use this for local testing
+os.environ["LANGCHAIN_PROJECT"] = "ui.py on ASK main/cloud" # use this for local testing
 # os.environ["LANGCHAIN_PROJECT"] = "ASK Production App (ui.py on ASK main/origin)"
-
 
 import rag
 import utils
 from streamlit_extras.stylable_container import stylable_container
-
+from langsmith import traceable
 
 # Hide Streamlit's default UI elements: Main menu, footer, and header
 st.markdown("""
@@ -90,10 +89,11 @@ st.write("  ")
 
 ls_client = Client(api_key=st.secrets["LANGCHAIN_API_KEY"])
 
+
 def langsmith_feedback(feedback_data):
-    """Send feedback to LangSmith."""
+    """Send user feedback to LangSmith."""
     score = 1.0 if feedback_data["score"] == "👍" else 0.0
-    run_id = st.session_state.get("run_id")  # Retrieve the run_id from session state
+    run_id = st.session_state.get("run_id")  # 👈  Retrieve the run_id from session state
     if run_id:
         # st.write(f"Sending feedback for run_id: {run_id}")
         ls_client.create_feedback(
@@ -140,6 +140,7 @@ if user_question and (user_question != st.session_state["user_question"]):
     st.session_state.pop("response", None)
     st.session_state["run_id"] = str(uuid.uuid4()) 
 
+
     # Generate the response only if the question is new
 if st.session_state.get("user_question") and "response" not in st.session_state:
     # Generate a response
@@ -162,11 +163,13 @@ if st.session_state.get("response"):
     with st.expander("CLICK HERE FOR FULL SOURCE DETAILS", expanded=False):
         st.write(long_source_list)
         
-    # Show feedback widget once a response is returned
+        
+    # Show user feedback widget once a response is returned
     user_feedback = streamlit_feedback(
         feedback_type="thumbs",
         optional_text_label="(Optional) Please explain your rating, so we can improve ASK",
         align="flex-start",
+        key=f"user_feedback_{st.session_state.run_id}" # 👈 Unique per response to ensure widget resets
     )
         
     if user_feedback:
