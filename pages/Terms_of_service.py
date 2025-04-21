@@ -14,7 +14,9 @@ st.markdown(utils.BLOCK_CONTAINER, unsafe_allow_html=True)
 st.image(utils.LOGO, use_container_width=True)
 
 
-if utils.back_button: st.switch_page("ui.py")
+back = st.button("< Back to App", type="primary")
+if back:
+    st.switch_page("ui.py")
 
 tos = utils.get_markdown("docs/tos.md")
 

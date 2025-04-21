@@ -17,7 +17,9 @@ st.markdown(utils.BLOCK_CONTAINER, unsafe_allow_html=True)
 st.image(utils.LOGO, use_container_width=True)
 
 
-if utils.back_button: st.switch_page("ui.py")
+back = st.button("< Back to App", type="primary")
+if back:
+    st.switch_page("ui.py")
 
 
 tab1, tab2, tab3, tab4, tab5 = st.tabs(["Overview", "Library", "FAQs", "Product Roadmap", "Feedback"])
