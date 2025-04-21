@@ -2,6 +2,15 @@
 # Project ASK Change Log
 All notable changes to this project will be documented in this file.  
 
+## [0.6.4] - 2025-04-18
+### Features
+- Added terms of service page
+- Library list now includes additional metadata fields (e.g., effective date, expriation date)
+- 
+### Bug Fixes
+- Feedback resets per query instead of once per session to enable re-use
+- System now records feedback comments
+
 ## [0.6.3] - 2025-04-11
 ### Features
 - Enriched Full Source Details container with more metadata and better formatting

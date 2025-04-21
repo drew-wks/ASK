@@ -5,7 +5,6 @@ import uuid
 from streamlit_feedback import streamlit_feedback
 from langsmith import Client
 
-# Collapse the sidebar
 
 
 # Config LangSmith
@@ -19,47 +18,12 @@ import utils
 from streamlit_extras.stylable_container import stylable_container
 from langsmith import traceable
 
-# Hide Streamlit's default UI elements: Main menu, footer, and header
-st.markdown("""
-    <style>
-        /* Hide the sidebar collapse button */
-        [data-testid="collapsedControl"] { 
-            display: none; 
-        }
 
-        /* Ensure consistent font rendering */
-        html, body, [class*="st-"] {
-            font-family: "Source Sans Pro", "Arial", "Helvetica", sans-serif !important;
-        }
-    </style>
-    """, unsafe_allow_html=True)
+st.markdown(utils.COLLAPSED_CONTROL, unsafe_allow_html=True)
+st.markdown(utils.HIDE_STREAMLIT_UI, unsafe_allow_html=True)
+st.markdown(utils.BLOCK_CONTAINER_2, unsafe_allow_html=True)
+st.image(utils.LOGO, use_container_width=True)
 
-
-hide_streamlit_ui = """
-            <style>
-            #MainMenu {visibility: hidden;}
-            footer {visibility: hidden;}
-            header {visibility: hidden;}
-            </style>
-            """
-st.markdown(hide_streamlit_ui, unsafe_allow_html=True)
-
-
-# Adjust padding around the main content area for a cleaner layout
-st.markdown("""
-        <style>
-                .block-container {
-                    padding-top: 0rem;
-                    padding-bottom: 1rem;
-                    padding-left: 2rem;
-                    padding-right: 2rem;
-                }
-        </style>
-        """, unsafe_allow_html=True)
-
-
-# Banner image
-st.image("https://raw.githubusercontent.com/drew-wks/ASK/main/images/ASK_logotype_color.png?raw=true", use_container_width=True)
 
 # Check Open AI service status
 api_status_message = utils.get_openai_api_status()
@@ -138,7 +102,7 @@ user_question = st.text_input("Type your question or task here", max_chars=200)
 if user_question and (user_question != st.session_state["user_question"]):
     st.session_state["user_question"] = user_question
     st.session_state.pop("response", None)
-    st.session_state["run_id"] = str(uuid.uuid4()) 
+    st.session_state["run_id"] = str(uuid.uuid4())
 
 
     # Generate the response only if the question is new
@@ -158,12 +122,12 @@ if st.session_state.get("response"):
     short_source_list, long_source_list = rag.create_source_lists(response)
     example_questions.empty()  
     st.info(f"**Question:** *{user_question}*\n\n ##### Response:\n{response['answer']}\n\n **Sources:**  \n{short_source_list}\n **Note:** \n ASK can make mistakes. Verify the sources and check your local policies.")
-    
+
     # Create a container and fill with references
     with st.expander("CLICK HERE FOR FULL SOURCE DETAILS", expanded=False):
         st.write(long_source_list)
-        
-        
+
+
     # Show user feedback widget once a response is returned
     user_feedback = streamlit_feedback(
         feedback_type="thumbs",
@@ -171,7 +135,7 @@ if st.session_state.get("response"):
         align="flex-start",
         key=f"user_feedback_{st.session_state.run_id}" # 👈 Unique per response to ensure widget resets
     )
-        
+
     if user_feedback:
         st.write("Thanks for the feedback!")
         langsmith_feedback(user_feedback)
@@ -198,3 +162,5 @@ with stylable_container(
     """,
     unsafe_allow_html=True,
     )
+
+st.markdown(utils.FOOTER, unsafe_allow_html=True)

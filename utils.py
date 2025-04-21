@@ -1,13 +1,77 @@
 import os
 import datetime
 import requests
-import pandas as pd
 import streamlit as st 
+import pandas as pd
+from pathlib import Path
 from fnmatch import fnmatch
 import re
 
 
+parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+
+# Hide Streamlit's default UI elements: Main menu, footer, and header
+COLLAPSED_CONTROL = """
+    <style> 
+        [data-testid="collapsedControl"] { display: none } html, body, [class*="st-"] {font-family: "Source Sans Pro", "Arial", "Helvetica", sans-serif !important;}
+    </style>
+    """
+
+HIDE_STREAMLIT_UI = """
+    <style>
+        #MainMenu {visibility: hidden;}
+        footer {visibility: hidden;}
+        header {visibility: hidden;}
+    </style>
+    """
+
+BLOCK_CONTAINER = """
+        <style>
+                .block-container {
+                    padding-top: 1rem;
+                    padding-bottom: 1rem;
+                    padding-left: 3rem;
+                    padding-right: 3rem;
+                }
+        </style>
+        """
+
+BLOCK_CONTAINER_2 = """
+        <style>
+                .block-container {
+                    padding-top: 0rem;
+                    padding-bottom: 1rem;
+                    padding-left: 2rem;
+                    padding-right: 2rem;
+                }
+        </style>
+        """
+
+FOOTER = """
+    <style>
+        .app-footer {
+            bottom: 0;
+            position: sticky;
+            font-size: smaller;
+            width: 700px;
+            margin: auto;
+            background: white;
+            padding: 10px;
+            border-top: 1px solid #ccc;
+            text-align: left;
+        }
+    </style>
+    <br><br>
+    <div class="app-footer">
+        <a href="Terms_of_service" target="_self">Terms of service</a>
+    </div>
+    """
+
+LOGO = "https://raw.githubusercontent.com/drew-wks/ASK/main/images/ASK_logotype_color.png?raw=true"
+
+
+back_button = st.button("< Back to App", type="primary")
 
 @st.cache_data
 def get_openai_api_status():
@@ -45,6 +109,8 @@ def get_openai_api_status():
         return f"API check failed (Unknown error): {repr(err)}"
 
 
+def get_markdown(markdown_file):
+    return Path(markdown_file).read_text()
 
 
 @st.cache_data

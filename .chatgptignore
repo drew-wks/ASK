@@ -1,0 +1,8 @@
+# .chatgptignore
+.env*
+node_modules/
+*.pem
+dist/
+*.ignore
+secrets.toml
+credentials.toml

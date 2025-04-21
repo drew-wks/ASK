@@ -2,64 +2,34 @@ import datetime
 import base64
 import os
 import sys
-from pathlib import Path
 import streamlit as st
+st.set_page_config(page_title="ASK Auxiliary Source of Knowledge", initial_sidebar_state="collapsed")
 import pandas as pd
 import utils
 
-parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.insert(0, parent_dir)
+
+sys.path.insert(0, utils.parent_dir)
 
 
-    
-st.markdown( """ <style> [data-testid="collapsedControl"] { display: none } html, body, [class*="st-"] {font-family: "Source Sans Pro", "Arial", "Helvetica", sans-serif !important;}</style> """, unsafe_allow_html=True, )
+st.markdown(utils.COLLAPSED_CONTROL, unsafe_allow_html=True)
+st.markdown(utils.HIDE_STREAMLIT_UI, unsafe_allow_html=True)
+st.markdown(utils.BLOCK_CONTAINER, unsafe_allow_html=True)
+st.image(utils.LOGO, use_container_width=True)
 
 
-hide_st_style = """
-            <style>
-            #MainMenu {visibility: hidden;}
-            footer {visibility: hidden;}
-            header {visibility: hidden;}
-            </style>
-            """
-st.markdown(hide_st_style, unsafe_allow_html=True)
-
-st.markdown("""
-        <style>
-                .block-container {
-                    padding-top: 1rem;
-                    padding-bottom: 1rem;
-                    padding-left: 3rem;
-                    padding-right: 3rem;
-                }
-        </style>
-        """, unsafe_allow_html=True)
-
-
-
-def read_markdown_file(markdown_file):
-    return Path(markdown_file).read_text()
-
-
-
-
-st.image("https://raw.githubusercontent.com/drew-wks/ASK/main/images/ASK_logotype_color.png?raw=true", use_container_width=True)
-
-back = st.button("< Back to App", type="primary")
-if back:
-    st.switch_page("ui.py")
+if utils.back_button: st.switch_page("ui.py")
 
 
 tab1, tab2, tab3, tab4, tab5 = st.tabs(["Overview", "Library", "FAQs", "Product Roadmap", "Feedback"])
 
 with tab1:
-    overview = read_markdown_file("docs/ask_overview.md")
+    overview = utils.get_markdown("docs/ask_overview.md")
     st.markdown(overview, unsafe_allow_html=True)
     
 
 with tab2:
     df, last_update_date = utils.get_library_catalog_excel_and_date()
-    overview = read_markdown_file("docs/library_overview.md")
+    overview = utils.get_markdown("docs/library_overview.md")
 
     if df is not None:
         num_items = len(df)
@@ -80,16 +50,16 @@ with tab2:
 
     else:
         # Display the original markdown file content if df is None
-        overview = read_markdown_file("docs/library_overview.md")
+        overview = utils.get_markdown("docs/library_overview.md")
         st.markdown(overview, unsafe_allow_html=True)
 
 
 with tab3:
-    overview = read_markdown_file("docs/faqs.md")
+    overview = utils.get_markdown("docs/faqs.md")
     st.markdown(overview, unsafe_allow_html=True)
 
 with tab4:
-    roadmap = read_markdown_file("docs/roadmap.md")
+    roadmap = utils.get_markdown("docs/roadmap.md")
     st.markdown(roadmap, unsafe_allow_html=True)
     
     
@@ -107,3 +77,4 @@ with tab5:
     st.markdown('Send an email to uscgaux.drew@wks.us.''')
     
 
+st.markdown(utils.FOOTER, unsafe_allow_html=True) 
