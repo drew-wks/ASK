@@ -1,6 +1,6 @@
 import datetime
 import base64
-import os
+import os  # needed for local testing
 import sys
 import streamlit as st
 st.set_page_config(page_title="ASK Auxiliary Source of Knowledge", initial_sidebar_state="collapsed")
@@ -42,7 +42,7 @@ with tab2:
         st.markdown(f"{num_items} items. Last update: {last_update_date}")  
 
         # Display the DataFrame
-        display_df = df[['title', 'publication_number', 'organization', 'issue_date', 'expiration_date']]
+        display_df = df[['title', 'publication_number', 'organization', 'issue_date', 'expiration_date', 'scope', 'unit']]
         edited_df = st.data_editor(display_df, use_container_width=True, hide_index=False, disabled=True)
         isim = f'ASK_catalog_export{last_update_date}.csv'
         indir = edited_df.to_csv(index=False)

@@ -1,6 +1,6 @@
 import streamlit as st
 st.set_page_config(page_title="ASK Auxiliary Source of Knowledge", initial_sidebar_state="collapsed")
-import os
+import os  # needed for local testing
 import uuid
 from streamlit_feedback import streamlit_feedback
 from langsmith import Client
@@ -83,14 +83,35 @@ if "user_question" not in st.session_state:
     st.session_state["user_question"] = None
 if "response" not in st.session_state:
     st.session_state["response"] = None
-if "retrieval_filter" not in st.session_state:
-    st.session_state.retrieval_filter = "national"
+if "filter_conditions" not in st.session_state:
+    st.session_state.filter_conditions = {}
 st.sidebar.markdown("#### Experimental\n\n  The following features are experimental and may not work as expected.\n\n")
-exclude_expired = st.sidebar.checkbox("Exclude expired documents", value=False, key="exclude_expired")
+exclude_expired = st.sidebar.checkbox("Exclude expired documents", value=False)
+if exclude_expired:
+    st.session_state.filter_conditions["exclude_expired"] = True
+else:
+    st.session_state.filter_conditions.pop("exclude_expired", None)
+
 st.sidebar.caption("This excludes the Auxiliary Manual along with all Commandant Instructions issued more than 12 years ago and ALCOASTs and ALAUXs issued more than one year ago, per COMDTINST 5215.6J.\n\n")
-d7 = st.sidebar.checkbox("Include District 7 documents in results", key="d7")
-if d7 == True:
-    st.session_state.retrieval_filter = "d7"
+include_d7 = st.sidebar.checkbox("Include District 7 documents in results")
+if include_d7:
+    st.session_state.filter_conditions.update({
+        "scope": "district",
+        "unit": "D7"
+    })
+else:
+    # Default to national scope
+    st.session_state.filter_conditions.update({
+        "scope": "national"
+    })
+    st.session_state.filter_conditions.pop("unit", None)
+
+# Always include only public release documents
+st.session_state.filter_conditions["public_release"] = True
+
+# Just for debug visibility:
+filter_conditions = st.session_state.filter_conditions
+st.sidebar.write("Current filter_conditions:", filter_conditions)
 # Create response container that can be accessed by the RAG as well as the feedback module
 status_placeholder = st.empty()
 
