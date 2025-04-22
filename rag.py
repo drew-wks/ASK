@@ -39,7 +39,7 @@ CONFIG = {
     "ASK_retriever_type": "Standard", # ContextualCompressionRetriever
     "ASK_search_type": "mmr",
     "ASK_k": 5,
-    'ASK_fetch_k': 20,   # fetch 30 docs then select 5
+    'ASK_fetch_k': 20,   # fetch 20 docs then select 5
     'ASK_lambda_mult': .7,    # 0= max diversity, 1 is min. default is 0.5
     "ASK_score_threshold": 0.5,
     "ASK_generation_model": "gpt-4o-mini", # gpt-3.5-turbo-16k # gpt-4o-mini # gpt-4-turbo
@@ -266,7 +266,7 @@ def create_source_lists(response):
         organization = (lambda x: f"Issuer: {x.strip()}" if x and x.strip() else None)(doc.metadata.get("organization"))
 
 
-        short_source_markdown_list.append(f"* {scope} {unit} {title} [{date}], page {page}\n  ")
+        short_source_markdown_list.append(f"*{scope} {unit} {title} [{date}], page {page}\n  ")
         
         page_content = doc.page_content  
         long_source_markdown_list.append(
