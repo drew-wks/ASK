@@ -266,7 +266,7 @@ def create_source_lists(response):
         organization = (lambda x: f"Issuer: {x.strip()}" if x and x.strip() else None)(doc.metadata.get("organization"))
 
 
-        short_source_markdown_list.append(f"*{scope} {unit} {title} [{date}], page {page}\n  ")
+        short_source_markdown_list.append(f"{scope} {unit} {title} [{date}], page {page}\n  ")
         
         page_content = doc.page_content  
         long_source_markdown_list.append(
