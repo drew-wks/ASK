@@ -12,6 +12,7 @@ from langchain_openai import OpenAIEmbeddings, ChatOpenAI
 from langchain_ollama import ChatOllama  # to test other LLMs
 from langchain_core.prompts import ChatPromptTemplate
 from langsmith import traceable  #RAG pipeline instrumentation platform
+from filter_utils import build_retrieval_filter
 
 
 # st.secrets pulls from ~/.streamlit when run locally
@@ -45,66 +46,7 @@ CONFIG = {
     "ASK_temperature": 0.7,
 }
 
-
-# Create a filter to use for document retrieval
-def build_retrieval_filter(filter_conditions: Optional[dict[str, str | bool | None]] = None) -> Optional[models.Filter]:
-    """
-    Builds a Qdrant-compatible filter object from the provided filter_conditions dictionary.
-
-    Parameters:
-        filter_conditions (dict, optional): Dictionary of filter keys and values.
-            Special keys:
-                - "exclude_expired" (bool): If True, filters out documents with expiration dates before today.
-                - "expiration_date" (str, optional): Override the default current date for expiration logic.
-                - "scope" (str): Document scope, e.g., "national", "District", "local".
-                - "unit" (str): Unit identifier, e.g., "7", "1NR", etc.
-            Any other key with a value of `True` will be included as a metadata match filter.
-
-    Example:
-        filter_conditions = {
-            "exclude_expired": True,
-            "scope": "District",
-            "unit": "7",
-            "public_release": True
-        }
-
-    Returns:
-        Optional[models.Filter]: A Qdrant Filter object if conditions exist, otherwise None.
-    """
-    must_conditions = []
-    filter_conditions = filter_conditions or {}
-
-    # Set filters for expiration date
-    if filter_conditions.get("exclude_expired"):
-        must_conditions.append(
-            models.FieldCondition(
-                key="metadata.expiration_date",
-                range=models.DatetimeRange(gt=datetime.now(timezone.utc).isoformat())  # datetime > today
-            )
-        )
-
-    # Set filters for scope and unit 
-    scope = filter_conditions.get("scope", "national")  # defaults to national
-    must_conditions.append(
-        models.FieldCondition(key="metadata.scope", match=models.MatchValue(value=scope))
-    )
-    if scope != "national":
-        unit = filter_conditions.get("unit")
-        if unit:
-            must_conditions.append(
-                models.FieldCondition(key="metadata.unit", match=models.MatchValue(value=unit))
-            )
-
-    # Dynamically set filters for any boolean flags received
-    for key, value in filter_conditions.items():
-        if key in {"exclude_expired", "expiration_date", "scope", "unit"}:
-            continue
-        if value is True:
-            must_conditions.append(
-                models.FieldCondition(key=f"metadata.{key}", match=models.MatchValue(value=True))
-            )
-
-    return models.Filter(must=must_conditions) if must_conditions else None
+#retrieval filter function is defined in filter_utils.py
 
 
 # Create and cache the document retriever
