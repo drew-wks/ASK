@@ -5,7 +5,7 @@ Planned improvements for ASK. Submit your requests on the Feedback page
 [ ] Test new document pre-processing approaches that can parse table and image info  
 [ ] Reason through contradictions in corpus docs (e.g., conflicting policies)  
 [ ] Test other private and [open-source embedding models](https://huggingface.co/spaces/mteb/leaderboard) incl. cohere, anarchy  
-[ ] Incorporate search filtering (hybrid search) capability, possible via sparce vectors  
+[X] Incorporate search filtering (hybrid search) capability, possible via sparce vectors  
 [ ] Test search filtering Include effective date in retrieval and explore giving greater to weight to more recent documents: currently assessing   
 [x] Switch from GPT 3.5 to o1 for retrieval  
 [x] Test new document pre-processing approaches that can preseve semantic meaning contained in its hierarchical structure (e.g., unstructured.io open source lib)  

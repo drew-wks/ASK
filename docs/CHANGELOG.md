@@ -2,12 +2,22 @@
 # Project ASK Change Log
 All notable changes to this project will be documented in this file.  
 
+## [0.7.4] - 2025-04-22
+### Features
+- Implementing retreival filtering (experimental)
+
+### Bug Fixes
+- Moved "Checking documents..." appear below "Type your question or task here"
+- cached_rag function was missing a parameter
+- Fixed metadata data type issue with unit and expiration_date fields
+- Fixed page nubering to start at 1 instead of 0 in results
+
 ## [0.6.4] - 2025-04-18
 ### Features
 - Added terms of service page
 - Library list now includes additional metadata fields (e.g., effective date, expriation date)
 - 
-### Bug Fixes
+
 - Feedback resets per query instead of once per session to enable re-use
 - System now records feedback comments
 

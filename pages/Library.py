@@ -11,10 +11,7 @@ import utils
 sys.path.insert(0, utils.parent_dir)
 
 
-st.markdown(utils.COLLAPSED_CONTROL, unsafe_allow_html=True)
-st.markdown(utils.HIDE_STREAMLIT_UI, unsafe_allow_html=True)
-st.markdown(utils.BLOCK_CONTAINER, unsafe_allow_html=True)
-st.image(utils.LOGO, use_container_width=True)
+utils.apply_styles()
 
 
 back = st.button("< Back to App", type="primary")

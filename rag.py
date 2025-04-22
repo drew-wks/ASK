@@ -1,19 +1,17 @@
 import os  # needed for local testing
-import pandas as pd  
 import re
+from datetime import datetime, timezone
 from typing import List, Optional
 from typing_extensions import Annotated, TypedDict
+import pandas as pd 
 import streamlit as st
-from datetime import datetime
 from qdrant_client import QdrantClient
 from qdrant_client.http import models  # for running filters on the metadata
-from qdrant_client.http.models import DatetimeRange
 from langchain_qdrant import QdrantVectorStore
 from langchain_openai import OpenAIEmbeddings, ChatOpenAI
-from langchain_ollama import ChatOllama
+from langchain_ollama import ChatOllama  # to test other LLMs
 from langchain_core.prompts import ChatPromptTemplate
-from langsmith import traceable
-from langchain.retrievers.document_compressors import LLMChainExtractor
+from langsmith import traceable  #RAG pipeline instrumentation platform
 
 
 # st.secrets pulls from ~/.streamlit when run locally
@@ -29,7 +27,7 @@ OPENAI_API_KEY = st.secrets["OPENAI_API_KEY_ASK"] # for langchain_openai.OpenAIE
 os.environ["OPENAI_API_KEY"] = st.secrets["OPENAI_API_KEY_ASK"] # for openai client in cloud environment
 
 
-# Misc configs for tracing
+# Misc configs for RAG tracing in LangSmith
 CONFIG = {
     "qdrant_collection_name": "ASK_vectorstore",
     "embedding_model": "text-embedding-ada-002", # alt: text-embedding-3-large
@@ -48,7 +46,7 @@ CONFIG = {
 }
 
 
-# Create a filter
+# Create a filter to use for document retrieval
 def build_retrieval_filter(filter_conditions: Optional[dict[str, str | bool | None]] = None) -> Optional[models.Filter]:
     """
     Builds a Qdrant-compatible filter object from the provided filter_conditions dictionary.
@@ -76,33 +74,28 @@ def build_retrieval_filter(filter_conditions: Optional[dict[str, str | bool | No
     must_conditions = []
     filter_conditions = filter_conditions or {}
 
-     # Handle expiration date
+    # Set filters for expiration date
     if filter_conditions.get("exclude_expired"):
         must_conditions.append(
             models.FieldCondition(
                 key="metadata.expiration_date",
-                range=DatetimeRange(gt=datetime.now(
-                    timezone.utc).isoformat())  # datetime > today
+                range=models.DatetimeRange(gt=datetime.now(timezone.utc).isoformat())  # datetime > today
             )
         )
 
-    # Handle scope and unit
-    scope = filter_conditions.get("scope", "national")
+    # Set filters for scope and unit 
+    scope = filter_conditions.get("scope", "national")  # defaults to national
+    must_conditions.append(
+        models.FieldCondition(key="metadata.scope", match=models.MatchValue(value=scope))
+    )
     if scope != "national":
-        must_conditions.append(
-            models.FieldCondition(key="metadata.scope", match=models.MatchValue(value=scope))
-        )
         unit = filter_conditions.get("unit")
         if unit:
             must_conditions.append(
                 models.FieldCondition(key="metadata.unit", match=models.MatchValue(value=unit))
             )
-    elif filter_conditions.get("scope") == "national":
-        must_conditions.append(
-            models.FieldCondition(key="metadata.scope", match=models.MatchValue(value="national"))
-        )
 
-    # Add dynamic boolean flags for any other filter conditions received
+    # Dynamically set filters for any boolean flags received
     for key, value in filter_conditions.items():
         if key in {"exclude_expired", "expiration_date", "scope", "unit"}:
             continue
@@ -115,7 +108,7 @@ def build_retrieval_filter(filter_conditions: Optional[dict[str, str | bool | No
 
 
 # Create and cache the document retriever
-@st.cache_resource
+#@st.cache_resource
 def get_retriever(retrieval_filter: Optional[models.Filter]):
     '''Creates and caches the document retriever and Qdrant client with optional filters.'''
 
@@ -132,19 +125,6 @@ def get_retriever(retrieval_filter: Optional[models.Filter]):
         client=client,
         collection_name=CONFIG["qdrant_collection_name"],
         embedding=OpenAIEmbeddings(model=CONFIG["embedding_model"]),
-    )
-
-
-    d7 = models.Filter(
-        should=[
-            models.FieldCondition(key="metadata.scope", match=models.MatchValue(value="national")),
-            models.Filter(
-                must=[
-                    models.FieldCondition(key="metadata.scope", match=models.MatchValue(value="district")),
-                    models.FieldCondition(key="metadata.unit", match=models.MatchValue(value="070"))
-                ]
-            ),
-        ]
     )
 
     retriever = qdrant.as_retriever(
@@ -238,10 +218,13 @@ def rag(
     user_question: str,
     timeout: int = 60,
     filter_conditions: Optional[dict[str, str | bool | None]] = None,
+    langsmith_extra: Optional[dict] = None,
 ) -> dict:
     "accepts user_question and an optional filter"
     
     # Run through OpenAI's chat model. This is up here becuase we sometimes use it in the retreiver too
+ 
+    
     llm = ChatOpenAI(model=CONFIG["ASK_generation_model"], max_retries=2, timeout=45,  temperature=CONFIG["ASK_temperature"])
     
     _llm = ChatOllama(
@@ -252,72 +235,59 @@ def rag(
         # Additional client configurations can be added here if needed
     }
 )
-
+    print("\n🤖 Initiated RAG pipeline")
     # Enrich the question
     enriched_question = enrich_question(user_question)
-
-    # Define the retrieval filter (optional)
-    retrieval_filter = build_retrieval_filter(filter_conditions)
-        
-    # Initialize a document retriever with filter
-    retriever = get_retriever(retrieval_filter=retrieval_filter).with_config(metadata=CONFIG)
+    print("\nQuestion has been enriched")
     
     # Set the user identity
     identity = "Auxiliary member"
 
-    
-    # Retrieve relevant documents using the enriched question
-    try:
-        # Retrieve relevant documents using the enriched question
-        context = retriever.invoke(enriched_question)
-        print(f"Retrieved context: {len(context)} documents.")
-    except Exception as e:
-        print(f"Retriever Error: {e}")
-        context = []
-    
-    if not context:
-        return {
-            "answer": (
-                "❗️I couldn't find any documents that match your filters.\n\n"
-                "Please try relaxing your filters."
-            ),
-            "sources": [],
-            "user_question": user_question,
-            "enriched_question": enriched_question,
-            "context": [],
-        }
-    
-    try:
-        # Prepare the prompt input
-        prompt = create_prompt()
-        prompt_input = {
-            "identity": identity,
-            "enriched_question": enriched_question,
-            "context": format_docs(context),  # list of documents retreived from vector store
-        }
-        # Structure output with AnswerWithSources custom parser to include the sources used by LLM
-        structured_llm = llm.with_structured_output(AnswerWithSources)
-        llm_response = llm.invoke(prompt.format(**prompt_input))
-        print("LLM response received")
-    except Exception as e:
-        print(f"LLM Error: {e}")
-        return {
-        "answer": f"⚠️ There was a problem generating a response: {e}",
+    # Initialize response dict
+    response = {
+        "answer": "⚠️ Something went wrong before answering.",
         "sources": [],
         "user_question": user_question,
         "enriched_question": enriched_question,
         "context": [],
     }
-
-    return {
-        "answer": llm_response.content,
-        # "answer": llm_response["answer"], # used for the old AnswerWithSources
-        "sources": [doc.metadata['title'] for doc in context],
-        "user_question": user_question,
-        "enriched_question": enriched_question,
-        "context": context,  
-        # "llm_sources": llm_response.get("sources", ["No sources returned by LLM"])
-    }
+    
+    # build filter (optional) and retriever
+    print (f"Received filter conditions from user: \n{filter_conditions}")
+    retrieval_filter = build_retrieval_filter(filter_conditions)
+    print (f"\nCreated retrieval filter: \n{retrieval_filter}")
+    retriever = get_retriever(retrieval_filter=retrieval_filter).with_config(metadata=CONFIG)
+    
+    
+    # Retrieve relevant documents using the enriched question
+    try:
+        context = retriever.invoke(enriched_question)
+        response["context"] = context
+        print(f"\n📄 Retrieved context: {len(context)} documents")
+        if not context:
+            response["answer"] = (
+                "❗️I couldn't find any documents that match your filters. Please try relaxing your filters."
+            )
+            return response
+    except Exception as e:
+        print(f"⚠️ Retriever Error: {e}")
+    
+    # Prepare the prompt input
+    try:
+        prompt = create_prompt()
+        prompt_input = {
+            "identity": identity,
+            "enriched_question": enriched_question,
+            "context": format_docs(context),  # list of documents from vectorstore
+        }
+        llm_response = llm.invoke(prompt.format(**prompt_input))
+        response["answer"] = llm_response.content
+        response["sources"] = [doc.metadata["title"] for doc in context]
+        print("🧠 Received LLM response")
+    except Exception as e:
+        print(f"LLM Error: {e}")
+        response["answer"] = f"⚠️ There was a problem generating a response: {e}",
+    return response
 
 
 # Adapter for running evals to LangSmith. No longer used
@@ -327,8 +297,6 @@ def rag_for_eval(input: dict) -> dict:
     user_question = input["Question"]
     response = rag(user_question)
     return {"answer": response["answer"]}
-
-
 
 
 def create_source_lists(response):
@@ -349,7 +317,7 @@ def create_source_lists(response):
     for i, doc in enumerate(response['context'], start=1):
         title = doc.metadata['title']
         date = doc.metadata['issue_date'][:4]
-        page = doc.metadata['page']
+        page = str(int(doc.metadata['page']) + 1) # no page 0
         publication_number = doc.metadata['publication_number']
         organization = doc.metadata['organization']
         short_source_markdown_list.append(f"*{title} [{date}]*, page {page}\n")

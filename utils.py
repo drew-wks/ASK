@@ -71,7 +71,12 @@ FOOTER = """
 LOGO = "https://raw.githubusercontent.com/drew-wks/ASK/main/images/ASK_logotype_color.png?raw=true"
 
 
-back_button = st.button("< Back to App", type="primary")
+def apply_styles():
+    st.markdown(COLLAPSED_CONTROL, unsafe_allow_html=True)
+    st.markdown(HIDE_STREAMLIT_UI, unsafe_allow_html=True)
+    st.markdown(BLOCK_CONTAINER_2, unsafe_allow_html=True)
+    st.image(LOGO, use_container_width=True)
+
 
 @st.cache_data
 def get_openai_api_status():
