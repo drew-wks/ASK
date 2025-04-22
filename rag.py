@@ -56,15 +56,15 @@ def build_retrieval_filter(filter_conditions: Optional[dict[str, str | bool | No
             Special keys:
                 - "exclude_expired" (bool): If True, filters out documents with expiration dates before today.
                 - "expiration_date" (str, optional): Override the default current date for expiration logic.
-                - "scope" (str): Document scope, e.g., "national", "district", "local".
-                - "unit" (str): Unit identifier, e.g., "D7", "D1NR", etc.
+                - "scope" (str): Document scope, e.g., "national", "District", "local".
+                - "unit" (str): Unit identifier, e.g., "7", "1NR", etc.
             Any other key with a value of `True` will be included as a metadata match filter.
 
     Example:
         filter_conditions = {
             "exclude_expired": True,
-            "scope": "district",
-            "unit": "D7",
+            "scope": "District",
+            "unit": "7",
             "public_release": True
         }
 
@@ -318,13 +318,17 @@ def create_source_lists(response):
         title = doc.metadata['title']
         date = doc.metadata['issue_date'][:4]
         page = str(int(doc.metadata['page']) + 1) # no page 0
-        publication_number = doc.metadata['publication_number']
-        organization = doc.metadata['organization']
-        short_source_markdown_list.append(f"*{title} [{date}]*, page {page}\n")
+        publication_number = (lambda x: (s := str(x).strip()) and s or " ")(doc.metadata.get("publication_number"))
+        scope = (lambda x: " " if not x or str(x).strip().lower() == "national" else str(x).strip())(doc.metadata.get("scope"))
+        unit = (lambda x: (s := str(x).strip()) and s or " ")(doc.metadata.get("unit"))
+        organization = (lambda x: f"Issuer: {x.strip()}" if x and x.strip() else None)(doc.metadata.get("organization"))
+
+
+        short_source_markdown_list.append(f"*{scope} {unit} {title} [{date}]*, page {page}\n  ")
         
         page_content = doc.page_content  
         long_source_markdown_list.append(
-            f"**Reference {i}:**  \n    *{title} [{date}]*, page {page}  \n  {publication_number}  \n Issuer: {organization}  \n\n"
+            f"**Reference {i}:**  \n    *{scope} {unit} {title} [{date}]*, page {page}  \n  {publication_number}  \n  {organization}\n   {scope} {unit}\n\n  "
             f"{page_content}\n\n  "
             f"***  "
         )

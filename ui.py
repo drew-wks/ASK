@@ -15,6 +15,7 @@ os.environ["LANGCHAIN_PROJECT"] = "ui.py on ASK main/cloud" # use this for local
 
 import rag
 import utils
+import sidebar   
 from streamlit_extras.stylable_container import stylable_container
 from langsmith import traceable
 
@@ -43,7 +44,6 @@ example_questions.write("""
     *What are the requirements to run for FC?*  
     *How do I stay current in boat crew?*   
     *¿En que ocasiones es necesario un saludo militar?*   
-    
 """)
 st.write("  ")
 
@@ -77,7 +77,6 @@ def cached_rag(question, filter_selections, run_id):
     )
 
 
-
 def initialize_session_states():
     if "run_id" not in st.session_state:
         st.session_state["run_id"] = None
@@ -87,37 +86,10 @@ def initialize_session_states():
         st.session_state["response"] = None
     if "filter_conditions" not in st.session_state:
         st.session_state.filter_conditions = {}
-    st.session_state.filter_conditions["public_release"] = True
 
 initialize_session_states()
 
-
-st.sidebar.markdown("#### Experimental\n\n  The following features are experimental and may not work as expected.\n\n")
-exclude_expired = st.sidebar.checkbox("Exclude expired documents", value=False)
-if exclude_expired:
-    st.session_state.filter_conditions["exclude_expired"] = True
-else:
-    st.session_state.filter_conditions.pop("exclude_expired", None)
-
-st.sidebar.caption("This excludes the Auxiliary Manual along with all Commandant Instructions issued more than 12 years ago and ALCOASTs and ALAUXs issued more than one year ago, per COMDTINST 5215.6J.\n\n")
-include_d7 = st.sidebar.checkbox("Include District 7 documents in results")
-if include_d7:
-    st.session_state.filter_conditions.update({
-        "scope": "district",
-        "unit": "070"
-    })
-else:
-    # Default to national scope
-    st.session_state.filter_conditions.update({
-        "scope": "national"
-    })
-    st.session_state.filter_conditions.pop("unit", None)
-
-
-
-# Just for debug visibility:
-filter_conditions = st.session_state.filter_conditions
-st.sidebar.write("Current filter_conditions:", filter_conditions)
+st.session_state["filter_conditions"] = sidebar.build_sidebar()
 
 
 
@@ -139,8 +111,6 @@ if st.session_state.get("user_question") and "response" not in st.session_state:
         st.session_state["response"] = cached_rag(
             st.session_state["user_question"], st.session_state.filter_conditions, st.session_state["run_id"]
         )
-        # Open response container once responses are ready
-        # response_container.update(label=":blue[**Response**]", state="complete", expanded=True)
 
 # Format Response
 if st.session_state.get("response"):
