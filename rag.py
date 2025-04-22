@@ -270,7 +270,7 @@ def create_source_lists(response):
         
         page_content = doc.page_content  
         long_source_markdown_list.append(
-            f"**Reference {i}:**  \n    *{scope} {unit} {title} [{date}], page {page}  \n  {publication_number}  \n  {organization}\n   {scope} {unit}\n\n  "
+            f"**Reference {i}:**  \n    {scope} {unit} {title} [{date}], page {page}  \n  {publication_number}  \n  {organization}\n   {scope} {unit}\n\n  "
             f"{page_content}\n\n  "
             f"***  "
         )
