@@ -7,7 +7,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 # This uses pytest to test the response quality of the RAG pipeline using ground truth questions. It works however langsmith is so much easier to use.
 
-import utils
+import ui_utils
 import rag
 from rag import CONFIG
 

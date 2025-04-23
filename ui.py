@@ -14,17 +14,17 @@ os.environ["LANGCHAIN_PROJECT"] = "ui.py on ASK main/cloud" # use this for local
 
 
 import rag
-import utils
+import ui_utils
 import sidebar   
 from streamlit_extras.stylable_container import stylable_container
 from langsmith import traceable
 
 
-utils.apply_styles()
+ui_utils.apply_styles()
 
 
 # Check Open AI service status
-api_status_message = utils.get_openai_api_status()
+api_status_message = ui_utils.get_openai_api_status()
 if "operational" not in api_status_message:
     st.error(f"ASK is currently down due to OpenAI issue: '{api_status_message}.'")
 else: 
@@ -32,7 +32,7 @@ else:
 
 
 # Get the library catalog
-df, last_update_date = utils.get_library_catalog_excel_and_date()
+df, last_update_date = ui_utils.get_library_catalog_excel_and_date()
 num_items = len(df)
 
 
@@ -161,4 +161,4 @@ with stylable_container(
     unsafe_allow_html=True,
     )
 
-st.markdown(utils.FOOTER, unsafe_allow_html=True)
+st.markdown(ui_utils.FOOTER, unsafe_allow_html=True)

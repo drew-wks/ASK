@@ -1,6 +1,6 @@
 # sidebar.py
 import streamlit as st
-import utils
+import ui_utils
 
 __all__ = ["build_sidebar"]          # so autoflake/ruff know what’s public
 

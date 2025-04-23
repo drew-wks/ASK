@@ -5,13 +5,13 @@ import sys
 import streamlit as st
 st.set_page_config(page_title="ASK Auxiliary Source of Knowledge", initial_sidebar_state="collapsed")
 import pandas as pd
-import utils
+import ui_utils
 
 
-sys.path.insert(0, utils.parent_dir)
+sys.path.insert(0, ui_utils.parent_dir)
 
 
-utils.apply_styles()
+ui_utils.apply_styles()
 
 
 back = st.button("< Back to App", type="primary")
@@ -22,13 +22,13 @@ if back:
 tab1, tab2, tab3, tab4, tab5 = st.tabs(["Overview", "Library", "FAQs", "Product Roadmap", "Feedback"])
 
 with tab1:
-    overview = utils.get_markdown("docs/ask_overview.md")
+    overview = ui_utils.get_markdown("docs/ask_overview.md")
     st.markdown(overview, unsafe_allow_html=True)
     
 
 with tab2:
-    df, last_update_date = utils.get_library_catalog_excel_and_date()
-    overview = utils.get_markdown("docs/library_overview.md")
+    df, last_update_date = ui_utils.get_library_catalog_excel_and_date()
+    overview = ui_utils.get_markdown("docs/library_overview.md")
 
     if df is not None:
         num_items = len(df)
@@ -49,16 +49,16 @@ with tab2:
 
     else:
         # Display the original markdown file content if df is None
-        overview = utils.get_markdown("docs/library_overview.md")
+        overview = ui_utils.get_markdown("docs/library_overview.md")
         st.markdown(overview, unsafe_allow_html=True)
 
 
 with tab3:
-    overview = utils.get_markdown("docs/faqs.md")
+    overview = ui_utils.get_markdown("docs/faqs.md")
     st.markdown(overview, unsafe_allow_html=True)
 
 with tab4:
-    roadmap = utils.get_markdown("docs/roadmap.md")
+    roadmap = ui_utils.get_markdown("docs/roadmap.md")
     st.markdown(roadmap, unsafe_allow_html=True)
     
     
@@ -76,4 +76,4 @@ with tab5:
     st.markdown('Send an email to uscgaux.drew@wks.us.''')
     
 
-st.markdown(utils.FOOTER, unsafe_allow_html=True) 
+st.markdown(ui_utils.FOOTER, unsafe_allow_html=True) 
