@@ -1,0 +1,11 @@
+pytest
+pandas
+nbformat
+nbconvert
+IPython
+pyright
+
+fastapi
+uvicorn
+flake8
+httpx
