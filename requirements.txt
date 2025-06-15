@@ -17,5 +17,5 @@ streamlit_feedback
 tiktoken # not sure this is being used
 webdriver-manager==4.0.2  #  for GitHub Actions. Check for Streamlit app suspension due to inactivity
 
-git+https://github.com/drew-wks/uscgaux.git@main#egg=uscgaux
+# git+https://github.com/drew-wks/uscgaux.git@main#egg=uscgaux
 
