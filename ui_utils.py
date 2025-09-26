@@ -1,5 +1,8 @@
 import os  # needed for local testing
 import datetime
+import logging
+from collections.abc import Mapping
+from typing import List
 import requests
 import streamlit as st 
 import pandas as pd
@@ -70,6 +73,17 @@ FOOTER = """
 
 LOGO = "https://raw.githubusercontent.com/drew-wks/ASK/main/images/ASK_logotype_color.png?raw=true"
 
+logger = logging.getLogger(__name__)
+
+_STATUS_COMPONENT_KEYWORDS = (
+    "chat completions",
+    "chatgpt api",
+    "responses",
+    "assistants",
+    "agent",
+    "gpts",
+)
+
 
 def apply_styles():
     st.markdown(COLLAPSED_CONTROL, unsafe_allow_html=True)
@@ -78,40 +92,138 @@ def apply_styles():
     st.image(LOGO, use_container_width=True)
 
 
-@st.cache_data
-def get_openai_api_status():
-    '''Notify user if OpenAI is down so they don't blame the app'''
+def _get_nested_string(data: Mapping[str, object], *path: str) -> str:
+    """Return a string value from a nested mapping path."""
 
-    components_url = 'https://status.openai.com/api/v2/components.json'
-    status_message = ''
+    current: object = data
+    for key in path:
+        if isinstance(current, Mapping):
+            current = current.get(key)
+            continue
+        if hasattr(current, "get"):
+            try:
+                current = current.get(key)  # type: ignore[call-arg]
+                continue
+            except Exception:  # pragma: no cover - defensive
+                return ""
+        if hasattr(current, "__getitem__"):
+            try:
+                current = current[key]  # type: ignore[index]
+                continue
+            except Exception:  # pragma: no cover - defensive
+                return ""
+        return ""
+    if current is None or isinstance(current, Mapping):
+        return ""
+    return str(current).strip()
+
+
+def _resolve_chat_component_key() -> str:
+    """Determine the chat component key for matching service status."""
+
+    try:
+        secrets_obj = st.secrets
+        secrets_mapping: Mapping[str, object]
+        if isinstance(secrets_obj, Mapping):
+            secrets_mapping = secrets_obj
+        else:
+            secrets_mapping = dict(secrets_obj)  # type: ignore[arg-type]
+
+        secret_paths = (
+            ("RAG", "GENERATION", "generation_model"),
+            ("RAG", "GENERATION", "langchain_chat_model"),
+            ("ASK_generation_model",),
+            ("generation_model",),
+        )
+        for path in secret_paths:
+            value = _get_nested_string(secrets_mapping, *path)
+            if value:
+                return value.lower()
+    except Exception:  # st.secrets raises if unset
+        logger.debug("Unable to read OpenAI model from secrets", exc_info=True)
+
+    env_vars = ("ASK_GENERATION_MODEL", "OPENAI_CHAT_MODEL", "OPENAI_MODEL")
+    for env_key in env_vars:
+        env_value = os.getenv(env_key, "").strip()
+        if env_value:
+            return env_value.lower()
+
+    try:
+        import rag  # type: ignore import-not-found
+
+        config = getattr(rag, "CONFIG", None)
+        if isinstance(config, Mapping):
+            model = str(
+                config.get("ASK_generation_model")
+                or config.get("generation_model")
+                or ""
+            ).strip()
+            if model:
+                return model.lower()
+    except Exception:
+        logger.debug("Unable to infer OpenAI model from rag.CONFIG", exc_info=True)
+
+    return ""
+
+
+@st.cache_data
+def get_openai_api_status() -> str:
+    """Return availability summary for OpenAI chat endpoints.
+
+    Returns:
+        str: Human-readable summary describing OpenAI chat component availability.
+    """
+
+    components_url = "https://status.openai.com/api/v2/components.json"
+    component_key = _resolve_chat_component_key()
 
     try:
         response = requests.get(components_url, timeout=10)
-        # Raises an HTTPError if the HTTP request returned an unsuccessful status code
         response.raise_for_status()
-        components_info = response.json()
-        components = components_info.get('components', [])
+        payload = response.json()
+        components = payload.get("components", [])
 
-        # Find the component that represents the API
-        chat_component = next(
-            (component for component in components if component.get('name', '').lower() == 'chat'), 
-            None
-        )
-            
-        if chat_component:
-            status_message = chat_component.get('status', 'unknown')
-            return f"ChatGPT API status: {status_message}" if status_message != 'operational' else "ChatGPT API is operational"
-        else:
+        relevant_components: List[Mapping[str, object]] = []
+        for component in components:
+            if not isinstance(component, Mapping):
+                continue
+            name = str(component.get("name", "")).strip()
+            if not name:
+                continue
+            normalized_name = name.lower()
+            if any(keyword in normalized_name for keyword in _STATUS_COMPONENT_KEYWORDS) or (
+                component_key and component_key in normalized_name
+            ):
+                relevant_components.append(component)
+
+        if not relevant_components:
+            logger.warning(
+                "OpenAI status components missing for key '%s'",
+                component_key or "unknown",
+            )
             return "ChatGPT API component not found"
 
-    except requests.exceptions.HTTPError as http_err:
-        return f"API check failed (HTTP error): {repr(http_err)}"
+        degraded = [
+            f"{component.get('name', 'Unknown')}: {component.get('status', 'unknown')}"
+            for component in relevant_components
+            if str(component.get("status", "")).strip().lower() != "operational"
+        ]
+        if degraded:
+            return "OpenAI chat components degraded - " + "; ".join(degraded)
+
+        component_names = ", ".join(
+            str(component.get("name", "Unknown")) for component in relevant_components
+        )
+        return f"OpenAI chat components operational ({component_names})"
+
+    except requests.exceptions.HTTPError as exc:
+        return f"API check failed (HTTP error): {repr(exc)}"
     except requests.exceptions.Timeout:
         return "API check timed out"
-    except requests.exceptions.RequestException as req_err:
-        return f"API check failed (Request error): {repr(req_err)}"
-    except Exception as err:
-        return f"API check failed (Unknown error): {repr(err)}"
+    except requests.exceptions.RequestException as exc:
+        return f"API check failed (Request error): {repr(exc)}"
+    except Exception as exc:  # pylint: disable=broad-except
+        return f"API check failed (Unknown error): {repr(exc)}"
 
 
 def get_markdown(markdown_file):
